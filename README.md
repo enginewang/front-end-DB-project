@@ -1,6 +1,6 @@
 ## The front-end part of the Database project
 
-last updated in <2019-4-2>
+last updated in <2019-4-2> by enginewang
 
 <br>
 
@@ -22,7 +22,11 @@ vue --version:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3.5.5 &nbsp;&nbsp
 
 #### Run this project
 
+`git clone git@github.com:enginewang/front-end-DB-project.git`
+
 `cd dbproject`
+
+`sudo npm install --unsafe-perm`
 
 `npm run serve`
 
@@ -36,6 +40,22 @@ DONE  Compiled successfully in 609ms
 ```
 
 open `localhost:8080` in your browser to see the demo
+
+<br>
+
+#### Related Websites
+
+**Learn HTML/css/Javascript**
+
+<a href="https://www.w3schools.com/"> w3school (en)</a>
+
+<a href="http://www.w3school.com.cn/"> w3school (zh)</a>
+
+**Learn Vue.js**
+
+<a href="https://vuejs.org/"> Vue.js </a>
+
+
 
 <br>
 
