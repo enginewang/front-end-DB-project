@@ -2,9 +2,9 @@
 
 last updated in <2019-4-2>
 
-[toc]
+<br>
 
-##### pre-install
+#### pre-install
 
 node.js (don't forget to check the availability of npm)
 
@@ -12,7 +12,7 @@ vue-cli
 
 <br>
 
-##### version
+#### version
 
 node --version: &nbsp;&nbsp;11.13.0 &nbsp;&nbsp;&nbsp;( latest version )
 
@@ -20,9 +20,9 @@ vue --version:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3.5.5 &nbsp;&nbsp
 
 <br>
 
-##### Run this project
+#### Run this project
 
-`cd dbproject`
+`cd dbproject`
 
 `npm run serve`
 
@@ -35,12 +35,12 @@ DONE  Compiled successfully in 609ms
  - Network: http://192.168.50.176:8080/
 ```
 
-open `localhost:8080` in your browser
+open `localhost:8080` in your browser to see the demo
 
 <br>
 
 
-##### Vue-Cli Configuration (manually)
+#### Vue-Cli Configuration (manually)
 
 ```bash
 Check the features needed for your project:
