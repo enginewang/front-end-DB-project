@@ -7,16 +7,17 @@ last updated in <2019-5-21>
 
 #### version
 
-> node v12.1.0
-
+> node -v12.1.0
+>
+> yarn -v1.16.0
 
 <br>
 
 #### Run this project
 
 ```
-npm install
-npm start
+yarn install
+yarn start
 ```
 
 and follow the guide to open in your browser
