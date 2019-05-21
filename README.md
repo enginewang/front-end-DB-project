@@ -17,7 +17,7 @@ last updated in <2019-5-21>
 
 ```
 yarn install
-yarn start
+yarn serve
 ```
 
 and follow the guide to open in your browser
