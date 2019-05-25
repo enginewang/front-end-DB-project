@@ -1,10 +1,10 @@
 <template>
-  <div>warehouse, fuck you world</div>
+  <div>search, fuck you world</div>
 </template>
 
 <script>
 export default {
-  name: 'WareHouse'
+  name: 'Search'
 }
 </script>
 

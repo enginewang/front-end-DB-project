@@ -12,22 +12,6 @@ export const asyncRouterMap = [
         meta: { title: '首页' },
         redirect: '/dashboard/workplace',
         children: [
-            // warehouse
-            {
-                path: '/warehouse',
-                name: 'warehouse',
-                redirect: '/warehouse/warehouse',
-                component: RouteView,
-                meta: { title: '仓库', keepAlive: true, icon: bxAnaalyse },
-                children: [
-                    {
-                        path: '/warehouse/warehouse',
-                        name: 'Warehouse',
-                        component: () => import('@/views/warehouse/Warehouse'),
-                        meta: { title: '仓库', keepAlive: false }
-                    },
-                ]
-            },
             // dashboard
             {
                 path: '/dashboard',
@@ -54,6 +38,42 @@ export const asyncRouterMap = [
                         component: () => import('@/views/dashboard/Workplace'),
                         meta: { title: '工作台', keepAlive: true, permission: ['dashboard'] }
                     }
+                ]
+            },
+
+            // warehouse
+            {
+                path: '/warehouse',
+                name: 'warehouse',
+                redirect: '/warehouse/search',
+                component: RouteView,
+                meta: { title: '仓库', keepAlive: true, icon: bxAnaalyse },
+                children: [
+                    {
+                        path: '/warehouse/search',
+                        name: 'Search',
+                        component: () => import('@/views/warehouse/Search'),
+                        meta: { title: '查找', keepAlive: false }
+                    },
+
+                    {
+                        path: '/warehouse/update',
+                        name: 'Update',
+                        component: () => import('@/views/warehouse/Update'),
+                        meta: { title: '修改', keepAlive: false }
+                    },
+                    {
+                        path: '/warehouse/delete',
+                        name: 'Delete',
+                        component: () => import('@/views/warehouse/Delete'),
+                        meta: { title: '删除', keepAlive: false }
+                    },
+                    {
+                        path: '/warehouse/add',
+                        name: 'Add',
+                        component: () => import('@/views/warehouse/Add'),
+                        meta: { title: '增加', keepAlive: false }
+                    },
                 ]
             },
 
