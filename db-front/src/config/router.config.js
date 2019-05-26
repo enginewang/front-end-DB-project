@@ -52,27 +52,8 @@ export const asyncRouterMap = [
                     {
                         path: '/warehouse/search',
                         name: 'Search',
-                        component: () => import('@/views/warehouse/Search'),
+                        component: () => import('@/views/warehouse/Warehouse'),
                         meta: { title: '查找', keepAlive: false }
-                    },
-
-                    {
-                        path: '/warehouse/update',
-                        name: 'Update',
-                        component: () => import('@/views/warehouse/Update'),
-                        meta: { title: '修改', keepAlive: false }
-                    },
-                    {
-                        path: '/warehouse/delete',
-                        name: 'Delete',
-                        component: () => import('@/views/warehouse/Delete'),
-                        meta: { title: '删除', keepAlive: false }
-                    },
-                    {
-                        path: '/warehouse/add',
-                        name: 'Add',
-                        component: () => import('@/views/warehouse/Add'),
-                        meta: { title: '增加', keepAlive: false }
                     },
                 ]
             },
