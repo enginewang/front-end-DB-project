@@ -40,3 +40,4 @@ and follow the guide to open in your browser
 3. Learn antd
 
 - [Ant Design Vue Pro](https://pro.loacg.com/docs/getting-started)
+- [Ant Design Vue](https://vue.ant.design/docs/vue/introduce-cn/)
