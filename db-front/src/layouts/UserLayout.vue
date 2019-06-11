@@ -4,7 +4,8 @@
       <div class="top">
         <div class="header">
           <a href="/">
-            <img src="~@/assets/logo.svg" class="logo" alt="logo">
+            
+            <img src="/EportLogo.png" class="logo" alt="logo" >
             <span class="title">Eport</span>
           </a>
         </div>
@@ -80,7 +81,7 @@ export default {
         text-align: center;
 
         .header {
-          height: 44px;
+          height: 78px;
           line-height: 44px;
           
 
@@ -95,10 +96,11 @@ export default {
           }
 
           .logo {
-            height: 44px;
-            vertical-align: top;
-            margin-right: 16px;
+            height: 78px;
+            width: 98px;
+            vertical-align:top;
             border-style: none;
+            
           }
 
           .title {
@@ -107,7 +109,7 @@ export default {
             font-family: Avenir, 'Helvetica Neue', Arial, Helvetica, sans-serif;
             font-weight: 600;
             position: relative;
-            top: 2px;
+            top: 28px;
           }
         }
         .desc {
