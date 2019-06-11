@@ -17,7 +17,7 @@
             <a-input
               size="large"
               type="text"
-              placeholder="账户: admin"
+              placeholder="账户: 您的用户名"
               v-decorator="[
                 'username',
                 {rules: [{ required: true, message: '请输入帐户名或邮箱地址' }, { validator: handleUsernameOrEmail }], validateTrigger: 'change'}
@@ -32,7 +32,7 @@
               size="large"
               type="password"
               autocomplete="false"
-              placeholder="密码: admin or ant.design"
+              placeholder="密码: 您的密码，比如：admin "
               v-decorator="[
                 'password',
                 {rules: [{ required: true, message: '请输入密码' }], validateTrigger: 'blur'}
@@ -42,7 +42,7 @@
             </a-input>
           </a-form-item>
         </a-tab-pane>
-        <a-tab-pane key="tab2" tab="手机号登录">
+        <!--<a-tab-pane key="tab2" tab="手机号登录">
           <a-form-item>
             <a-input size="large" type="text" placeholder="手机号" v-decorator="['mobile', {rules: [{ required: true, pattern: /^1[34578]\d{9}$/, message: '请输入正确的手机号' }], validateTrigger: 'change'}]">
               <a-icon slot="prefix" type="mobile" :style="{ color: 'rgba(0,0,0,.25)' }"/>
@@ -68,9 +68,10 @@
             </a-col>
           </a-row>
         </a-tab-pane>
+        -->
       </a-tabs>
 
-      <a-form-item>
+      <!--<a-form-item>
         <a-checkbox v-decorator="['rememberMe']">自动登录</a-checkbox>
         <router-link
           :to="{ name: 'recover', params: { user: 'aaa'} }"
@@ -78,6 +79,7 @@
           style="float: right;"
         >忘记密码</router-link>
       </a-form-item>
+      -->
 
       <a-form-item style="margin-top:24px">
         <a-button
@@ -91,7 +93,7 @@
       </a-form-item>
 
       <div class="user-login-other">
-        <span>其他登录方式</span>
+        <!--<span>其他登录方式</span>
         <a>
           <a-icon class="item-icon" type="alipay-circle"></a-icon>
         </a>
@@ -100,7 +102,7 @@
         </a>
         <a>
           <a-icon class="item-icon" type="weibo-circle"></a-icon>
-        </a>
+        </a>-->
         <router-link class="register" :to="{ name: 'register' }">注册账户</router-link>
       </div>
     </a-form>
@@ -190,6 +192,7 @@ export default {
           delete loginParams.username
           loginParams[!state.loginType ? 'email' : 'username'] = values.username
           loginParams.password = md5(values.password)
+          console.log(loginParams)
           Login(loginParams)
             .then((res) => this.loginSuccess(res))
             .catch(err => this.requestFailed(err))
@@ -296,7 +299,7 @@ export default {
     margin-top: 24px;
     line-height: 22px;
 
-    .item-icon {
+    /*.item-icon {
       font-size: 24px;
       color: rgba(0, 0, 0, 0.2);
       margin-left: 16px;
@@ -308,6 +311,7 @@ export default {
         color: #1890ff;
       }
     }
+    */
 
     .register {
       float: right;
