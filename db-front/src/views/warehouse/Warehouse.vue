@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- input bar -->
     <div>
       <a-form class="ant-advanced-search-form" :form="form">
         <a-row :gutter="24">
@@ -32,6 +33,8 @@
         </a-row>
       </a-form>
     </div>
+    <!-- input bar end -->
+    <!-- table -->
     <a-table :columns="columns" :dataSource="wData" bordered>
       <template
         v-for="col in ['id','name', 'address','area']"
@@ -62,10 +65,12 @@
         </div>
       </template>
     </a-table>
+    <!-- table end -->
   </div>
 </template>
 
 <script>
+// columns type name
 const columns = [{
   title: 'id',
   dataIndex: 'id',
@@ -92,6 +97,8 @@ const columns = [{
   dataIndex: 'operation',
   scopedSlots: { customRender: 'operation' }
 }]
+
+// warehouse data
 const wData = []
 for (let i = 0; i < 100; i++) {
   wData.push({
@@ -134,15 +141,18 @@ export default {
     }
   },
   methods: {
+    // clear all input
     onClickClearSelect () {
       this.warehouseData.id = ''
       this.warehouseData.name = ''
       this.warehouseData.address = ''
       this.warehouseData.area = ''
     },
+    // submit
     onClickSubmit () {
       console.log(this.warehouseData)
       this.onClickClearSelect()
+      // to be complete
     },
     handleChange (value, key, column) {
       const newData = [...this.wData]
@@ -152,6 +162,7 @@ export default {
         this.wData = newData
       }
     },
+    // functions in table
     edit (key) {
       const newData = [...this.wData]
       const target = newData.filter(item => key === item.key)[0]
@@ -178,7 +189,8 @@ export default {
         this.wData = newData
       }
     }
-  }
+  },
+
 }
 </script>
 
