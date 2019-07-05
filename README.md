@@ -1,15 +1,15 @@
 The front-end part of the Database project
 
-last updated in <2019-5-27>
+last updated in <2019-7-5>
 
 
 #### version
 
-> node -v 12.3.1
+> node -v 12.5.0
 >
 > yarn -v 1.16.0
 >
-> Vue-cli -v 3.7.0
+> Vue-cli -v 3.9.1
 
 
 #### Run this project
