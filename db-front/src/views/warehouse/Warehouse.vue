@@ -100,15 +100,6 @@ const columns = [{
 
 // warehouse data
 const wData = []
-for (let i = 0; i < 100; i++) {
-  wData.push({
-    key: i.toString(),
-    id: i.toString(),
-    name: `Edrward ${i}`,
-    address: `London Park no. ${i}`,
-    area: 32
-  })
-}
 export default {
   name: 'Search',
   data () {
@@ -190,6 +181,11 @@ export default {
       }
     }
   },
+  mounted () {
+    this.axios.get('/warehouse').then((response) => {
+      console.log(response)
+    })
+  }
 
 }
 </script>
