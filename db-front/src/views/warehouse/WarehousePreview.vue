@@ -1,64 +1,67 @@
 <template>
-  <div>
-    <!-- input bar -->
-    <div>
-      <a-form class="ant-advanced-search-form" :form="form">
-        <a-row :gutter="24">
-          <a-col :md="8" :sm="24">
-            <a-form-item :label="attributeID.cnType">
-              <a-input :placeholder="attributeID.guide" v-model="inputData[attributeID.type]"/>
-            </a-form-item>
-          </a-col>
-          <a-col :md="8" :sm="24">
-            <a-form-item :label="attributeAddress.cnType">
-              <a-select v-model="inputData[attributeAddress.type]">
-                <a-select-option value="0">地址1</a-select-option>
-                <a-select-option value="1">地址2</a-select-option>
-                <a-select-option value="2">地址3</a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col :span="24" :style="{ textAlign: 'right' }">
-            <div class="button-group">
-              <a-button
-                size="large"
-                class="button"
-                type="primary"
-                @click="onClickSubmit"
-                :disabled="emptyInput"
-              >查询</a-button>
-              <a-button
-                size="large"
-                class="button"
-                type="danger"
-                @click="onClickClearSelect"
-                :disabled="emptyInput"
-                ghost
-              >重置</a-button>
-            </div>
-          </a-col>
-        </a-row>
-      </a-form>
-    </div>
-    <!-- input bar end -->
-    <!-- table -->
-    <a-table :columns="columns" :dataSource="previewData" bordered>
-      <template
-        v-for="col in ['id','icon', 'address']"
-        :slot="col"
-        slot-scope="text"
-      >
-        <div :key="col">
-          {{ text }}
-        </div>
-      </template>
-      <div slot="operation" slot-scope="text, record">
-        <div>
-          <a @click="() => goto(record.key)">跳转到该仓库详情页</a>
-        </div>
+  <div id="layout">
+    <a-layout>
+      <a-layout-header>仓库预览</a-layout-header>
+      <!-- input bar -->
+      <div>
+        <a-form class="ant-advanced-search-form" :form="form">
+          <a-row :gutter="24">
+            <a-col :md="8" :sm="24">
+              <a-form-item :label="attributeID.cnType">
+                <a-input :placeholder="attributeID.guide" v-model="inputData[attributeID.type]"/>
+              </a-form-item>
+            </a-col>
+            <a-col :md="8" :sm="24">
+              <a-form-item :label="attributeAddress.cnType">
+                <a-select v-model="inputData[attributeAddress.type]">
+                  <a-select-option value="0">地址1</a-select-option>
+                  <a-select-option value="1">地址2</a-select-option>
+                  <a-select-option value="2">地址3</a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col :span="24" :style="{ textAlign: 'right' }">
+              <div class="button-group">
+                <a-button
+                  size="large"
+                  class="button"
+                  type="primary"
+                  @click="onClickSubmit"
+                  :disabled="emptyInput"
+                >查询</a-button>
+                <a-button
+                  size="large"
+                  class="button"
+                  type="danger"
+                  @click="onClickClearSelect"
+                  :disabled="emptyInput"
+                  ghost
+                >重置</a-button>
+              </div>
+            </a-col>
+          </a-row>
+        </a-form>
       </div>
-    </a-table>
-    <!-- table end -->
+      <!-- input bar end -->
+      <!-- table -->
+      <a-table :columns="columns" :dataSource="previewData" bordered>
+        <template
+          v-for="col in ['id','icon', 'address']"
+          :slot="col"
+          slot-scope="text"
+        >
+          <div :key="col">
+            {{ text }}
+          </div>
+        </template>
+        <div slot="operation" slot-scope="text, record">
+          <div>
+            <a @click="() => goto(record.key)">跳转到该仓库详情页</a>
+          </div>
+        </div>
+      </a-table>
+      <!-- table end -->
+    </a-layout>
   </div>
 </template>
 
@@ -153,6 +156,9 @@ export default {
 
 <style lang="less" scoped>
 @import '~ant-design-vue/lib/style/themes/default.less';
+#layout .ant-layout-header {
+  color: #fff;
+}
 .button-group {
   margin-bottom: 1rem;
   .button {

@@ -1,7 +1,10 @@
 <template>
-  <div>
-    <!-- select display type -->
-    <div>
+  <div id="layout">
+    <!-- warehouse message -->
+    <a-layout>
+      <a-layout-header>仓库详情</a-layout-header>
+      <!-- warehouse message end -->
+      <!-- select display type -->
       <a-form class="ant-advanced-search-form" :form="form">
         <a-row :gutter="24">
           <a-col :span="24">
@@ -28,47 +31,47 @@
           </a-col>
         </a-row>
       </a-form>
-    </div>
-    <!-- select display type end -->
-    <!-- table -->
-    <a-table :columns="columns" :dataSource="detailData" bordered>
-      <template
-        v-for="col in ['id','model', 'type', 'number']"
-        :slot="col"
-        slot-scope="text, record"
-      >
-        <div :key="col">
-          <a-input
-            v-if="record.editable"
-            style="margin: -5px 0"
-            :value="text"
-            @change="e => handleChange(e.target.value, record.key, col)"
-          />
-          <div v-else>{{ text }}</div>
+      <!-- select display type end -->
+      <!-- table -->
+      <a-table :columns="columns" :dataSource="detailData" bordered>
+        <template
+          v-for="col in ['id','model', 'type', 'number']"
+          :slot="col"
+          slot-scope="text, record"
+        >
+          <div :key="col">
+            <a-input
+              v-if="record.editable"
+              style="margin: -5px 0"
+              :value="text"
+              @change="e => handleChange(e.target.value, record.key, col)"
+            />
+            <div v-else>{{ text }}</div>
+          </div>
+        </template>
+        <div slot="operation" slot-scope="text, record">
+          <div class="editable-row-operations">
+            <span v-if="record.editable">
+              <a @click="() => save(record.key)">Save</a>
+              &nbsp;
+              &nbsp;
+              &nbsp;
+              <a-popconfirm title="Sure to cancel?" @confirm="() => cancel(record.key)">
+                <a>Cancel</a>
+              </a-popconfirm>
+            </span>
+            <span v-else>
+              <a @click="() => edit(record.key)">Edit</a>
+              &nbsp;
+              &nbsp;
+              &nbsp;
+              <a @click="() => del(record.key)">Delete</a>
+            </span>
+          </div>
         </div>
-      </template>
-      <div slot="operation" slot-scope="text, record">
-        <div class="editable-row-operations">
-          <span v-if="record.editable">
-            <a @click="() => save(record.key)">Save</a>
-            &nbsp;
-            &nbsp;
-            &nbsp;
-            <a-popconfirm title="Sure to cancel?" @confirm="() => cancel(record.key)">
-              <a>Cancel</a>
-            </a-popconfirm>
-          </span>
-          <span v-else>
-            <a @click="() => edit(record.key)">Edit</a>
-            &nbsp;
-            &nbsp;
-            &nbsp;
-            <a @click="() => del(record.key)">Delete</a>
-          </span>
-        </div>
-      </div>
-    </a-table>
+      </a-table>
     <!-- table end -->
+    </a-layout>
   </div>
 </template>
 
@@ -176,7 +179,11 @@ export default {
 
 <style lang="less" scoped>
 @import '~ant-design-vue/lib/style/themes/default.less';
+#layout .ant-layout-header {
+  color: #fff;
+}
 .button-group {
+  margin-top: 1rem;
   margin-bottom: 1rem;
   .button {
     margin-right: 5rem;

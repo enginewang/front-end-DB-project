@@ -9,3 +9,8 @@
 - axios api create
 - create warehousePreview.vue
 - create warehouseDetail.vue
+
+## [0.1.2] - 2019.7.6
+- warehousePreview almost done
+- warehouseDetail half done, plan to add scheduling
+- to do: add router from warehousePreview to warehouseDetail, edit relative api and mock
