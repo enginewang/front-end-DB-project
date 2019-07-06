@@ -55,12 +55,19 @@
         <div class="editable-row-operations">
           <span v-if="record.editable">
             <a @click="() => save(record.key)">Save</a>
+            &nbsp;
+            &nbsp;
+            &nbsp;
             <a-popconfirm title="Sure to cancel?" @confirm="() => cancel(record.key)">
               <a>Cancel</a>
             </a-popconfirm>
           </span>
           <span v-else>
             <a @click="() => edit(record.key)">Edit</a>
+            &nbsp;
+            &nbsp;
+            &nbsp;
+            <a @click="() => del(record.key)">Delete</a>
           </span>
         </div>
       </template>
@@ -163,6 +170,9 @@ export default {
         target.editable = true
         this.wData = newData
       }
+    },
+    del (key) {
+        // uncompleted
     },
     save (key) {
       const newData = [...this.wData]
