@@ -4,13 +4,20 @@
     <div>
       <a-form class="ant-advanced-search-form" :form="form">
         <a-row :gutter="24">
-          <a-col v-for="( item,index ) in attribute" :key="index" :span="8">
-            <a-form-item :label="item.cnType">
-              <a-input :placeholder="item.guide" v-model="warehouseData[item.type]"/>
+          <a-col :md="8" :sm="24">
+            <a-form-item :label="attributeID.cnType">
+              <a-input :placeholder="attributeID.guide" v-model="warehouseData[attributeID.type]"/>
             </a-form-item>
           </a-col>
-        </a-row>
-        <a-row>
+          <a-col :md="8" :sm="24">
+            <a-form-item :label="attributeAddress.cnType">
+              <a-select v-model="warehouseData[attributeAddress.type]">
+                <a-select-option value="0">地址1</a-select-option>
+                <a-select-option value="1">地址2</a-select-option>
+                <a-select-option value="2">地址3</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
           <a-col :span="24" :style="{ textAlign: 'right' }">
             <div class="button-group">
               <a-button
@@ -37,7 +44,7 @@
     <!-- table -->
     <a-table :columns="columns" :dataSource="wData" bordered>
       <template
-        v-for="col in ['id','name', 'address','area']"
+        v-for="col in ['id','icon', 'address']"
         :slot="col"
         slot-scope="text, record"
       >
@@ -77,31 +84,25 @@
 </template>
 
 <script>
-import { getInitWarehouse } from "@/api/warehouse"
+import { getInitWarehouse } from '@/api/warehouse'
 
 // columns type name
 const columns = [{
   title: 'id',
   dataIndex: 'id',
-  width: '10%',
+  width: '20%',
   scopedSlots: { customRender: 'id' }
 }, {
-  title: 'name',
-  dataIndex: 'name',
-  width: '15%',
-  scopedSlots: { customRender: 'name' }
+  title: 'icon',
+  dataIndex: 'icon',
+  width: '10%',
+  scopedSlots: { customRender: 'icon' }
 }, {
   title: 'address',
   dataIndex: 'address',
   width: '40%',
   scopedSlots: { customRender: 'address' }
 }, {
-  title: 'area',
-  dataIndex: 'area',
-  width: '20%',
-  scopedSlots: { customRender: 'area' }
-},
-{
   title: 'operation',
   dataIndex: 'operation',
   scopedSlots: { customRender: 'operation' }
@@ -114,17 +115,19 @@ export default {
   data () {
     this.cacheData = wData.map(item => ({ ...item }))
     return {
-      attribute: [
-        { type: 'id', cnType: 'ID', guide: '请输入ID' },
-        { type: 'name', cnType: '名称', guide: '请输入名称' },
-        { type: 'address', cnType: '地址', guide: '请输入地址' },
-        { type: 'area', cnType: '面积', guide: '请输入面积' }
-      ],
+      attributeID: {
+        type: 'id',
+        cnType: 'ID',
+        guide: '请输入ID'
+      },
+      attributeAddress: {
+        type: 'address',
+        cnType: '地址',
+        guide: '请输入地址'
+      },
       warehouseData: {
         id: '',
-        name: '',
-        address: '',
-        area: ''
+        address: '请选择地址'
       },
       wData,
       columns,
@@ -133,7 +136,7 @@ export default {
   },
   computed: {
     emptyInput () {
-      if (this.warehouseData.id !== '' || this.warehouseData.name !== '' || this.warehouseData.address !== '' || this.warehouseData.area !== '') {
+      if (this.warehouseData.id !== '' || this.warehouseData.address !== '请选择地址') {
         return false
       } else {
         return true
@@ -144,9 +147,7 @@ export default {
     // clear all input
     onClickClearSelect () {
       this.warehouseData.id = ''
-      this.warehouseData.name = ''
-      this.warehouseData.address = ''
-      this.warehouseData.area = ''
+      this.warehouseData.address = '请选择地址'
     },
     // submit
     onClickSubmit () {
@@ -172,7 +173,7 @@ export default {
       }
     },
     del (key) {
-        // uncompleted
+      // to be completed
     },
     save (key) {
       const newData = [...this.wData]
