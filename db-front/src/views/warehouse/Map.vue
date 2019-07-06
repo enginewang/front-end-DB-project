@@ -70,13 +70,20 @@ function initialize() {
   const map = new BMap.Map("map")
   window.map = map
   window.map.centerAndZoom(startPoint, 15)
-  var loadCount = 1;
+  map.enableScrollWheelZoom(true);
+	// 覆盖区域图层测试
+	map.addTileLayer(new BMap.PanoramaCoverageLayer());
+
+	var stCtrl = new BMap.PanoramaControl(); //构造全景控件
+	stCtrl.setOffset(new BMap.Size(20, 20));
+	map.addControl(stCtrl);//添加全景控件
+  var loadCount = 1
   map.addEventListener("tilesloaded",function(){
     if(loadCount == 1){
-        map.setCenter(startPoint);
+        map.setCenter(startPoint)
     }       
-    loadCount = loadCount + 1;
-  });
+    loadCount = loadCount + 1
+  })
 }
 
 function addTestWarehouseMarker(){
