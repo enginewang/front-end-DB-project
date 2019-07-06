@@ -43,17 +43,17 @@ export const asyncRouterMap = [
 
             // warehouse
             {
-                path: '/warehouse',
-                name: 'warehouse',
-                redirect: '/warehouse/search',
+                path: '/warehousePreview',
+                name: 'warehousePreview',
+                redirect: '/warehouse/preview',
                 component: RouteView,
                 meta: { title: '仓库', keepAlive: true, icon: bxAnaalyse },
                 children: [
                     {
-                        path: '/warehouse/search',
-                        name: 'Search',
-                        component: () => import('@/views/warehouse/Warehouse'),
-                        meta: { title: '查找', keepAlive: false }
+                        path: '/warehouse/preview',
+                        name: 'Preview',
+                        component: () => import('@/views/warehouse/WarehousePreview'),
+                        meta: {title: '预览', keepAlive: false}
                     },
                 ]
             },

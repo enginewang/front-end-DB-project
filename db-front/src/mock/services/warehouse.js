@@ -1,6 +1,6 @@
 import Mock from 'mockjs2'
 
-const warehouseMock = () => {
+const warehousePreview = () => {
   return [
     {
       'key': 1,
@@ -23,4 +23,4 @@ const warehouseMock = () => {
   ]
 }
 
-Mock.mock(/\/warehouse/, 'get', warehouseMock)
+Mock.mock(/\/warehouse\/preview/, 'get', warehousePreview)

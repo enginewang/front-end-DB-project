@@ -1,14 +1,15 @@
 import { axios } from '@/utils/request'
 
 const api = {
-  warehouse: '/warehouse'
+  warehousePreview: '/warehouse/preview',
+  warehouseDetail: '/warehouse/detail'
 }
 
 export default api
 
-export function getInitWarehouse () {
+export function getWarehousePreview () {
   return axios({
-    url: api.warehouse,
+    url: api.warehousePreview,
     method: 'get'
   })
 }
