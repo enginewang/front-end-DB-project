@@ -66,9 +66,21 @@ export const asyncRouterMap = [
                         component: () => import('@/views/warehouse/WarehouseDetail'),
                         meta: {
                             title: '详细', keepAlive: false
-                    }
+                      }
+                    }, {
+                        path: '/warehouse/map',
+                        name: 'Map',
+                        component: () => import('@/views/warehouse/Map'),
+                        meta: { title: '地图', keepAlive: false }
                     }
                 ]
+            },
+            // 器材表单操作
+            {
+                path: '/equipment:pageNo([1-9]\\d*)?',
+                name: 'equipment',
+                meta: { title: '器材', keepAlive: true, icon: 'table', permission: ['table'] },
+                component: () => import('@/views/equipment/Equipment'),
             },
 
             // forms
