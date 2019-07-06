@@ -56,7 +56,7 @@
         </template>
         <div slot="operation" slot-scope="text, record">
           <div>
-            <router-link to="/warehouse/detail" @click="() => goto(record.key)">跳转到该仓库详情页</router-link>
+            <router-link :to="{ name: 'Detail', params:{ id: goto(record.key) } }">跳转到该仓库详情页</router-link>
           </div>
         </div>
       </a-table>
@@ -95,7 +95,6 @@ const previewData = []
 export default {
   name: 'Preview',
   data () {
-    this.cacheData = previewData.map(item => ({ ...item }))
     return {
       attributeID: {
         type: 'id',
@@ -142,6 +141,7 @@ export default {
       const newData = [...this.previewData]
       const target = newData.filter(item => key === item.key)[0]
       console.log(target.id)
+      return target.id
     }
   },
   mounted () {

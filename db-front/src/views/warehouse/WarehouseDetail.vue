@@ -114,7 +114,8 @@ export default {
     return {
       detailData,
       columns,
-      form: this.$form.createForm(this)
+      form: this.$form.createForm(this),
+      warehouseID : this.$route.params.id
     }
   },
   methods: {
@@ -172,6 +173,7 @@ export default {
     getWarehouseDetail().then((response) => {
       this.detailData = [...response]
     })
+    console.log(this.$route.params.id)
   }
 
 }
