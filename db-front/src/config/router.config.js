@@ -55,6 +55,12 @@ export const asyncRouterMap = [
                         component: () => import('@/views/warehouse/WarehousePreview'),
                         meta: {title: '预览', keepAlive: false}
                     },
+                    {
+                        path: '/warehouse/Detail',
+                        name: 'Detail',
+                        component: () => import('@/views/warehouse/WarehouseDetail'),
+                        meta: {title: '详细', keepAlive: false}
+                    }
                 ]
             },
 

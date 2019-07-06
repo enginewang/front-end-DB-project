@@ -23,4 +23,16 @@ const warehousePreview = () => {
   ]
 }
 
+const warehouseDetail = () => {
+  return [
+    {
+      'key': 1,
+      'id': 1,
+      'model': 'GTX1080',
+      'type': 'Equipment',
+      'number': 1000
+    }
+  ]
+}
 Mock.mock(/\/warehouse\/preview/, 'get', warehousePreview)
+Mock.mock(/\/warehouse\/detail/, 'get', warehouseDetail)

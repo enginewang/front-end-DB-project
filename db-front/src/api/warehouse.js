@@ -13,3 +13,11 @@ export function getWarehousePreview () {
     method: 'get'
   })
 }
+
+export function getWarehouseDetail (parameter) {
+  return axios({
+    url: api.warehouseDetail,
+    method: 'get',
+    param: parameter
+  })
+}

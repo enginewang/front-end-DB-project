@@ -1,50 +1,39 @@
 <template>
   <div>
-    <!-- input bar -->
+    <!-- select display type -->
     <div>
       <a-form class="ant-advanced-search-form" :form="form">
         <a-row :gutter="24">
-          <a-col :md="8" :sm="24">
-            <a-form-item :label="attributeID.cnType">
-              <a-input :placeholder="attributeID.guide" v-model="warehouseData[attributeID.type]"/>
-            </a-form-item>
-          </a-col>
-          <a-col :md="8" :sm="24">
-            <a-form-item :label="attributeAddress.cnType">
-              <a-select v-model="warehouseData[attributeAddress.type]">
-                <a-select-option value="0">地址1</a-select-option>
-                <a-select-option value="1">地址2</a-select-option>
-                <a-select-option value="2">地址3</a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col :span="24" :style="{ textAlign: 'right' }">
+          <a-col :span="24">
             <div class="button-group">
               <a-button
                 size="large"
                 class="button"
                 type="primary"
-                @click="onClickSubmit"
-                :disabled="emptyInput"
-              >查询</a-button>
+                @click="onClickAll"
+              >全显示</a-button>
               <a-button
                 size="large"
                 class="button"
-                type="danger"
-                @click="onClickClearSelect"
-                :disabled="emptyInput"
-                ghost
-              >重置</a-button>
+                type="primary"
+                @click="onClickAccessory"
+              >仅配件</a-button>
+              <a-button
+                size="large"
+                class="button"
+                type="primary"
+                @click="onClickEquipment"
+              >仅器材</a-button>
             </div>
           </a-col>
         </a-row>
       </a-form>
     </div>
-    <!-- input bar end -->
+    <!-- select display type end -->
     <!-- table -->
-    <a-table :columns="columns" :dataSource="wData" bordered>
+    <a-table :columns="columns" :dataSource="detailData" bordered>
       <template
-        v-for="col in ['id','icon', 'address']"
+        v-for="col in ['id','model', 'type', 'number']"
         :slot="col"
         slot-scope="text, record"
       >
@@ -55,10 +44,10 @@
             :value="text"
             @change="e => handleChange(e.target.value, record.key, col)"
           />
-          <template v-else>{{ text }}</template>
+          <div v-else>{{ text }}</div>
         </div>
       </template>
-      <template slot="operation" slot-scope="text, record">
+      <div slot="operation" slot-scope="text, record">
         <div class="editable-row-operations">
           <span v-if="record.editable">
             <a @click="() => save(record.key)">Save</a>
@@ -77,31 +66,36 @@
             <a @click="() => del(record.key)">Delete</a>
           </span>
         </div>
-      </template>
+      </div>
     </a-table>
     <!-- table end -->
   </div>
 </template>
 
 <script>
-import { getInitWarehouse } from '@/api/warehouse'
+import { getWarehouseDetail } from '@/api/warehouse'
 
 // columns type name
 const columns = [{
   title: 'id',
   dataIndex: 'id',
-  width: '20%',
+  width: '15%',
   scopedSlots: { customRender: 'id' }
 }, {
-  title: 'icon',
-  dataIndex: 'icon',
-  width: '10%',
-  scopedSlots: { customRender: 'icon' }
+  title: 'model',
+  dataIndex: 'model',
+  width: '15%',
+  scopedSlots: { customRender: 'model' }
 }, {
-  title: 'address',
-  dataIndex: 'address',
-  width: '40%',
-  scopedSlots: { customRender: 'address' }
+  title: 'type',
+  dataIndex: 'type',
+  width: '10%',
+  scopedSlots: { customRender: 'type' }
+}, {
+  title: 'number',
+  dataIndex: 'number',
+  width: '20%',
+  scopedSlots: { customRender: 'number' }
 }, {
   title: 'operation',
   dataIndex: 'operation',
@@ -109,95 +103,71 @@ const columns = [{
 }]
 
 // warehouse data
-const wData = []
+const detailData = []
 export default {
-  name: 'Search',
+  name: 'Detail',
   data () {
-    this.cacheData = wData.map(item => ({ ...item }))
+    this.cacheData = detailData.map(item => ({ ...item }))
     return {
-      attributeID: {
-        type: 'id',
-        cnType: 'ID',
-        guide: '请输入ID'
-      },
-      attributeAddress: {
-        type: 'address',
-        cnType: '地址',
-        guide: '请输入地址'
-      },
-      warehouseData: {
-        id: '',
-        address: '请选择地址'
-      },
-      wData,
+      detailData,
       columns,
       form: this.$form.createForm(this)
     }
   },
-  computed: {
-    emptyInput () {
-      if (this.warehouseData.id !== '' || this.warehouseData.address !== '请选择地址') {
-        return false
-      } else {
-        return true
-      }
-    }
-  },
   methods: {
-    // clear all input
-    onClickClearSelect () {
-      this.warehouseData.id = ''
-      this.warehouseData.address = '请选择地址'
-    },
     // submit
-    onClickSubmit () {
-      console.log(this.warehouseData)
-      this.onClickClearSelect()
+    onClickAll () {
+      console.log('All')
       // to be complete
     },
+    onClickAccessory () {
+      console.log('Accessory')
+    },
+    onClickEquipment () {
+      console.log('Equipment')
+    },
     handleChange (value, key, column) {
-      const newData = [...this.wData]
+      const newData = [...this.detailData]
       const target = newData.filter(item => key === item.key)[0]
       if (target) {
         target[column] = value
-        this.wData = newData
+        this.detailData = newData
       }
     },
     // functions in table
     edit (key) {
-      const newData = [...this.wData]
+      const newData = [...this.detailData]
       const target = newData.filter(item => key === item.key)[0]
       if (target) {
         target.editable = true
-        this.wData = newData
+        this.detailData = newData
       }
     },
     del (key) {
       // to be completed
     },
     save (key) {
-      const newData = [...this.wData]
+      const newData = [...this.detailData]
       const target = newData.filter(item => key === item.key)[0]
       if (target) {
         delete target.editable
-        this.wData = newData
+        this.detailData = newData
         this.cacheData = newData.map(item => ({ ...item }))
       }
     },
     cancel (key) {
-      const newData = [...this.wData]
+      const newData = [...this.detailData]
       const target = newData.filter(item => key === item.key)[0]
       if (target) {
         Object.assign(target, this.cacheData.filter(item => key === item.key)[0])
         delete target.editable
-        this.wData = newData
+        this.detailData = newData
       }
     }
   },
   mounted () {
-    getInitWarehouse().then((response) => {
-      console.log(...response)
-      this.wData = [...response]
+    getWarehouseDetail().then((response) => {
+      this.detailData = [...response]
     })
   }
 
@@ -209,8 +179,8 @@ export default {
 .button-group {
   margin-bottom: 1rem;
   .button {
-    margin-left: 0.5rem;
-    margin-left: 0.5rem;
+    margin-right: 5rem;
+    margin-left: .5rem;
   }
 }
 </style>

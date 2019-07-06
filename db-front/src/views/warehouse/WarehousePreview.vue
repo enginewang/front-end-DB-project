@@ -6,12 +6,12 @@
         <a-row :gutter="24">
           <a-col :md="8" :sm="24">
             <a-form-item :label="attributeID.cnType">
-              <a-input :placeholder="attributeID.guide" v-model="warehouseData[attributeID.type]"/>
+              <a-input :placeholder="attributeID.guide" v-model="inputData[attributeID.type]"/>
             </a-form-item>
           </a-col>
           <a-col :md="8" :sm="24">
             <a-form-item :label="attributeAddress.cnType">
-              <a-select v-model="warehouseData[attributeAddress.type]">
+              <a-select v-model="inputData[attributeAddress.type]">
                 <a-select-option value="0">地址1</a-select-option>
                 <a-select-option value="1">地址2</a-select-option>
                 <a-select-option value="2">地址3</a-select-option>
@@ -42,7 +42,7 @@
     </div>
     <!-- input bar end -->
     <!-- table -->
-    <a-table :columns="columns" :dataSource="wData" bordered>
+    <a-table :columns="columns" :dataSource="previewData" bordered>
       <template
         v-for="col in ['id','icon', 'address']"
         :slot="col"
@@ -52,11 +52,11 @@
           {{ text }}
         </div>
       </template>
-      <template slot="operation" slot-scope="text, record">
+      <div slot="operation" slot-scope="text, record">
         <div>
           <a @click="() => goto(record.key)">跳转到该仓库详情页</a>
         </div>
-      </template>
+      </div>
     </a-table>
     <!-- table end -->
   </div>
@@ -88,11 +88,11 @@ const columns = [{
 }]
 
 // warehouse data
-const wData = []
+const previewData = []
 export default {
   name: 'Preview',
   data () {
-    this.cacheData = wData.map(item => ({ ...item }))
+    this.cacheData = previewData.map(item => ({ ...item }))
     return {
       attributeID: {
         type: 'id',
@@ -104,18 +104,18 @@ export default {
         cnType: '地址',
         guide: '请输入地址'
       },
-      warehouseData: {
+      inputData: {
         id: '',
         address: '请选择地址'
       },
-      wData,
+      previewData,
       columns,
       form: this.$form.createForm(this)
     }
   },
   computed: {
     emptyInput () {
-      if (this.warehouseData.id !== '' || this.warehouseData.address !== '请选择地址') {
+      if (this.inputData.id !== '' || this.inputData.address !== '请选择地址') {
         return false
       } else {
         return true
@@ -125,18 +125,18 @@ export default {
   methods: {
     // clear all input
     onClickClearSelect () {
-      this.warehouseData.id = ''
-      this.warehouseData.address = '请选择地址'
+      this.inputData.id = ''
+      this.inputData.address = '请选择地址'
     },
     // submit
     onClickSubmit () {
-      console.log(this.warehouseData)
+      console.log(this.inputData)
       this.onClickClearSelect()
       // to be complete
     },
     // functions in table
     goto (key) {
-      const newData = [...this.wData]
+      const newData = [...this.previewData]
       const target = newData.filter(item => key === item.key)[0]
       console.log(target.id)
     }
@@ -144,7 +144,7 @@ export default {
   mounted () {
     getWarehousePreview().then((response) => {
       console.log(...response)
-      this.wData = [...response]
+      this.previewData = [...response]
     })
   }
 
@@ -156,7 +156,7 @@ export default {
 .button-group {
   margin-bottom: 1rem;
   .button {
-    margin-left: 0.5rem;
+    margin-right: 0.5rem;
     margin-left: 0.5rem;
   }
 }
