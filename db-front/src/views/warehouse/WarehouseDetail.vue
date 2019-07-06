@@ -82,27 +82,27 @@ import { getWarehouseDetail } from '@/api/warehouse'
 
 // columns type name
 const columns = [{
-  title: 'id',
+  title: '编号',
   dataIndex: 'id',
   width: '15%',
   scopedSlots: { customRender: 'id' }
 }, {
-  title: 'model',
+  title: '型号',
   dataIndex: 'model',
   width: '15%',
   scopedSlots: { customRender: 'model' }
 }, {
-  title: 'type',
+  title: '类别',
   dataIndex: 'type',
   width: '10%',
   scopedSlots: { customRender: 'type' }
 }, {
-  title: 'number',
+  title: '数量',
   dataIndex: 'number',
   width: '20%',
   scopedSlots: { customRender: 'number' }
 }, {
-  title: 'operation',
+  title: '操作',
   dataIndex: 'operation',
   scopedSlots: { customRender: 'operation' }
 }]

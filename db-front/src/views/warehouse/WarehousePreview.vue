@@ -70,27 +70,27 @@ import { getWarehousePreview } from '@/api/warehouse'
 
 // columns type name
 const columns = [{
-  title: 'id',
+  title: '编号',
   dataIndex: 'id',
   width: '15%',
   scopedSlots: { customRender: 'id' }
 }, {
-  title: 'icon',
+  title: '图标',
   dataIndex: 'icon',
-  width: '5%',
+  width: '8%',
   scopedSlots: { customRender: 'icon' }
 }, {
-  title: 'name',
+  title: '名称',
   dataIndex: 'name',
   width: '15%',
   scopedSlots: { customRender: 'name' }
 }, {
-  title: 'address',
+  title: '地址',
   dataIndex: 'address',
   width: '40%',
   scopedSlots: { customRender: 'address' }
 }, {
-  title: 'operation',
+  title: '操作',
   dataIndex: 'operation',
   scopedSlots: { customRender: 'operation' }
 }]
