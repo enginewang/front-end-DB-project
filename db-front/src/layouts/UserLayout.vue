@@ -96,11 +96,12 @@ export default {
           }
 
           .logo {
-            height: 78px;
-            width: 98px;
+            height: 50px;
+            width: 50px;
             vertical-align:top;
             border-style: none;
-            
+            margin-top: 17px;
+            margin-right: 16px;
           }
 
           .title {

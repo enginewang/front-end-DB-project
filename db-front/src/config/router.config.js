@@ -58,6 +58,36 @@ export const asyncRouterMap = [
                 ]
             },
 
+            // sheets
+            {
+                path: '/sheets',
+                name: 'sheets',
+                redirect: '/sheets/workSheet',
+                component: RouteView,
+                meta: { title: '各类表单', keepAlive: true, icon: "table" },
+                children: [
+                    {
+                        path: '/sheets/workSheet',
+                        name: 'workSheet',
+                        component: () => import('@/views/sheets/workSheet'),
+                        meta: {title: '工单', keepAlive: false}
+                    },
+                    {
+                        path: '/sheets/repairSheet',
+                        name: 'repairSheet',
+                        component: () => import('@/views/sheets/repairSheet'),
+                        meta: {title: '报修单', keepAlive: false}
+                    },
+                    {
+                        path: '/sheets/checkSheet',
+                        name: 'checksheet',
+                        component: () => import('@/views/sheets/checkSheet'),
+                        meta: {title: '巡检单', keepAlive: false}
+                    },
+                ]
+            },
+
+
             // forms
             {
                 path: '/form',
