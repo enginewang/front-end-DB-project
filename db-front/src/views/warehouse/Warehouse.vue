@@ -70,6 +70,8 @@
 </template>
 
 <script>
+import { getInitWarehouse } from "@/api/warehouse"
+
 // columns type name
 const columns = [{
   title: 'id',
@@ -182,8 +184,9 @@ export default {
     }
   },
   mounted () {
-    this.axios.get('/warehouse').then((response) => {
-      console.log(response)
+    getInitWarehouse().then((response) => {
+      console.log(...response)
+      this.wData = [...response]
     })
   }
 

@@ -6,10 +6,9 @@ const api = {
 
 export default api
 
-export function getInitWarehouse (parameter) {
+export function getInitWarehouse () {
     return axios({
         url: api.warehouse,
-        method: get,
-        params: parameter
+        method: 'get',
     })
 }
