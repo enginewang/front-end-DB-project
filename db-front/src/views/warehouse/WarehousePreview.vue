@@ -56,7 +56,7 @@
         </template>
         <div slot="operation" slot-scope="text, record">
           <div>
-            <a @click="() => goto(record.key)">跳转到该仓库详情页</a>
+            <router-link to="/warehouse/detail" @click="() => goto(record.key)">跳转到该仓库详情页</router-link>
           </div>
         </div>
       </a-table>
@@ -157,7 +157,8 @@ export default {
 <style lang="less" scoped>
 @import '~ant-design-vue/lib/style/themes/default.less';
 #layout .ant-layout-header {
-  color: #fff;
+  background: #fff;
+  color: #666;
 }
 .button-group {
   margin-bottom: 1rem;

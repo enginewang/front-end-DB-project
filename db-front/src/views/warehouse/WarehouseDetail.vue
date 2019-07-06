@@ -180,7 +180,8 @@ export default {
 <style lang="less" scoped>
 @import '~ant-design-vue/lib/style/themes/default.less';
 #layout .ant-layout-header {
-  color: #fff;
+  background: #fff;
+  color: #666;
 }
 .button-group {
   margin-top: 1rem;
