@@ -40,7 +40,7 @@ export const asyncRouterMap = [
                     }
                 ]
             },
-
+            
             // warehouse
             {
                 path: '/warehouse',
@@ -64,7 +64,16 @@ export const asyncRouterMap = [
                 meta: { title: '器材', keepAlive: true, icon: 'table', permission: ['table'] },
                 component: () => import('@/views/equipment/Equipment'),
             },
-
+            // accessory
+            {
+                path: '/accessory',
+                name: 'accessory',
+                component: RouteView,
+                meta: { title: '配件', keepAlive: true, icon: 'table'  },
+                component: () => import('@/views/accessory/Accessory'),
+               
+          
+            },
             // forms
             {
                 path: '/form',

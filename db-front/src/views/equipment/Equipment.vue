@@ -115,7 +115,8 @@ export default {
         { type: 'model', cnType: '型号', guide: '请输入器材型号' },
         { type: 'name', cnType: '地址', guide: '请输入地址' },
         { type: 'warehouse', cnType: '所在仓库', guide: '请输入所在仓库' },
-        { type: 'equipment', cnType: '价格', guide: '请输入价格' }
+        { type: 'price-floor', cnType: '价格下限', guide: '请输入价格下限' },
+        { type: 'price-ceiling', cnType: '价格上限', guide: '请输入价格上限' }
       ],
       equipmentData: {
         id: '',
