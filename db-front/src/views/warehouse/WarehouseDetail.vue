@@ -2,7 +2,9 @@
   <div id="layout">
     <!-- warehouse message -->
     <a-layout>
-      <a-layout-header>仓库详情</a-layout-header>
+      <a-layout-header>
+        您现在位于 {{ warehouseAddress }} 的 {{ warehouseName }}
+      </a-layout-header>
       <!-- warehouse message end -->
       <!-- select display type -->
       <a-form class="ant-advanced-search-form" :form="form">
@@ -115,7 +117,9 @@ export default {
       detailData,
       columns,
       form: this.$form.createForm(this),
-      warehouseID : this.$route.params.id
+      warehouseID: this.$route.params.id,
+      warehouseName: this.$route.params.name,
+      warehouseAddress: this.$route.params.address
     }
   },
   methods: {
@@ -173,7 +177,6 @@ export default {
     getWarehouseDetail().then((response) => {
       this.detailData = [...response]
     })
-    console.log(this.$route.params.id)
   }
 
 }

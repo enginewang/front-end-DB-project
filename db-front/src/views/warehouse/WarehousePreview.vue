@@ -46,7 +46,7 @@
       <!-- table -->
       <a-table :columns="columns" :dataSource="previewData" bordered>
         <template
-          v-for="col in ['id','icon', 'address']"
+          v-for="col in ['id','icon', 'name', 'address']"
           :slot="col"
           slot-scope="text"
         >
@@ -56,7 +56,7 @@
         </template>
         <div slot="operation" slot-scope="text, record">
           <div>
-            <router-link :to="{ name: 'Detail', params:{ id: goto(record.key) } }">跳转到该仓库详情页</router-link>
+            <router-link :to="{ name: 'Detail', params:{ id: getID(record.key), name: getName(record.key), address: getAddress(record.id) } }">转到仓库详情页</router-link>
           </div>
         </div>
       </a-table>
@@ -72,13 +72,18 @@ import { getWarehousePreview } from '@/api/warehouse'
 const columns = [{
   title: 'id',
   dataIndex: 'id',
-  width: '20%',
+  width: '15%',
   scopedSlots: { customRender: 'id' }
 }, {
   title: 'icon',
   dataIndex: 'icon',
-  width: '10%',
+  width: '5%',
   scopedSlots: { customRender: 'icon' }
+}, {
+  title: 'name',
+  dataIndex: 'name',
+  width: '15%',
+  scopedSlots: { customRender: 'name' }
 }, {
   title: 'address',
   dataIndex: 'address',
@@ -137,11 +142,20 @@ export default {
       // to be complete
     },
     // functions in table
-    goto (key) {
+    getID (key) {
       const newData = [...this.previewData]
       const target = newData.filter(item => key === item.key)[0]
-      console.log(target.id)
       return target.id
+    },
+    getName (key) {
+      const newData = [...this.previewData]
+      const target = newData.filter(item => key === item.key)[0]
+      return target.name
+    },
+    getAddress (key) {
+      const newData = [...this.previewData]
+      const target = newData.filter(item => key === item.key)[0]
+      return target.address
     }
   },
   mounted () {

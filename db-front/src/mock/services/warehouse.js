@@ -6,19 +6,22 @@ const warehousePreview = () => {
       'key': 1,
       'id': 1,
       'icon': 0,
-      'address': 'address1'
+      'name': '第一仓库',
+      'address': '四平路'
     },
     {
       'key': 2,
       'id': 2,
       'icon': 1,
-      'address': 'address2'
+      'name': '第二仓库',
+      'address': '嘉定校区'
     },
     {
       'key': 3,
       'id': 3,
       'icon': 2,
-      'address': 'address3'
+      'name': '第三仓库',
+      'address': '杨浦区'
     }
   ]
 }

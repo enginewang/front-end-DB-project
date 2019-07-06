@@ -60,7 +60,7 @@ export const asyncRouterMap = [
                         }
                     },
                     {
-                        path: '/warehouse/detail/:id',
+                        path: '/warehouse/detail/:id&:name&:address',
                         name: 'Detail',
                         hidden: true,
                         component: () => import('@/views/warehouse/WarehouseDetail'),
