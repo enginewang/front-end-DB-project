@@ -37,5 +37,17 @@ const warehouseDetail = () => {
     }
   ]
 }
-Mock.mock(/\/warehouse\/preview/, 'get', warehousePreview)
-Mock.mock(/\/warehouse\/detail/, 'get', warehouseDetail)
+
+const warehouseAll = () => {
+  return [
+    {
+      'name': '嘉定仓库'
+    },
+    {
+      'name': '四平仓库'
+    }
+  ]
+}
+Mock.mock(/\/warehouse\/previewData/, 'get', warehousePreview)
+Mock.mock(/\/warehouse\/detailData/, 'get', warehouseDetail)
+Mock.mock(/\/warehouse\/all/, 'get', warehouseAll)

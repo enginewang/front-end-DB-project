@@ -1,8 +1,9 @@
 import { axios } from '@/utils/request'
 
 const api = {
-  warehousePreview: '/warehouse/preview',
-  warehouseDetail: '/warehouse/detail'
+  warehousePreview: '/warehouse/previewData',
+  warehouseDetail: '/warehouse/detailData',
+  warehouseAll: '/warehouse/all'
 }
 
 export default api
@@ -19,5 +20,12 @@ export function getWarehouseDetail (parameter) {
     url: api.warehouseDetail,
     method: 'get',
     param: parameter
+  })
+}
+
+export function getAllWarehouse () {
+  return axios({
+    url: api.warehouseAll,
+    method: 'get'
   })
 }

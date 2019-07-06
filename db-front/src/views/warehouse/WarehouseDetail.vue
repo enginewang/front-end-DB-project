@@ -34,43 +34,50 @@
         </a-row>
       </a-form>
       <!-- select display type end -->
+
       <!-- table -->
       <a-table :columns="columns" :dataSource="detailData" bordered>
         <template
           v-for="col in ['id','model', 'type', 'number']"
           :slot="col"
-          slot-scope="text, record"
+          slot-scope="text"
         >
           <div :key="col">
-            <a-input
-              v-if="record.editable"
-              style="margin: -5px 0"
-              :value="text"
-              @change="e => handleChange(e.target.value, record.key, col)"
-            />
-            <div v-else>{{ text }}</div>
+            <div>{{ text }}</div>
           </div>
         </template>
-        <div slot="operation" slot-scope="text, record">
+        <template slot="operation" slot-scope="text, record">
           <div class="editable-row-operations">
-            <span v-if="record.editable">
-              <a @click="() => save(record.key)">Save</a>
-              &nbsp;
-              &nbsp;
-              &nbsp;
-              <a-popconfirm title="Sure to cancel?" @confirm="() => cancel(record.key)">
-                <a>Cancel</a>
-              </a-popconfirm>
-            </span>
-            <span v-else>
-              <a @click="() => edit(record.key)">Edit</a>
-              &nbsp;
-              &nbsp;
-              &nbsp;
-              <a @click="() => del(record.key)">Delete</a>
-            </span>
+            <a-button @click="() => schedule(record.key)">调度</a-button>
+            <!-- modal -->
+            <a-modal
+              title="Basic Modal"
+              v-model="visible"
+              @ok="handleOk"
+            >
+              <div class="modal">
+                调出到
+                <a-select
+                  style="width: 200px"
+                >
+                  <a-select-option v-for="(item, index) in allWarehouse" :key="index">
+                    {{ item.name }}
+                  </a-select-option>
+                </a-select>
+                仓库
+              </div>
+              <div class="modal">
+                数量:
+                <a-input-number
+                  :max="max"
+                  :min="min"
+                  class="input"
+                />
+              </div>
+            </a-modal>
+            <!-- modal end -->
           </div>
-        </div>
+        </template>
       </a-table>
     <!-- table end -->
     </a-layout>
@@ -78,23 +85,23 @@
 </template>
 
 <script>
-import { getWarehouseDetail } from '@/api/warehouse'
+import { getWarehouseDetail, getAllWarehouse } from '@/api/warehouse'
 
 // columns type name
 const columns = [{
   title: '编号',
   dataIndex: 'id',
-  width: '15%',
+  width: '20%',
   scopedSlots: { customRender: 'id' }
 }, {
   title: '型号',
   dataIndex: 'model',
-  width: '15%',
+  width: '20%',
   scopedSlots: { customRender: 'model' }
 }, {
   title: '类别',
   dataIndex: 'type',
-  width: '10%',
+  width: '20%',
   scopedSlots: { customRender: 'type' }
 }, {
   title: '数量',
@@ -112,14 +119,17 @@ const detailData = []
 export default {
   name: 'Detail',
   data () {
-    this.cacheData = detailData.map(item => ({ ...item }))
     return {
       detailData,
       columns,
       form: this.$form.createForm(this),
       warehouseID: this.$route.params.id,
       warehouseName: this.$route.params.name,
-      warehouseAddress: this.$route.params.address
+      warehouseAddress: this.$route.params.address,
+      visible: false,
+      max: 0,
+      min: 0,
+      allWarehouse: []
     }
   },
   methods: {
@@ -134,47 +144,25 @@ export default {
     onClickEquipment () {
       console.log('Equipment')
     },
-    handleChange (value, key, column) {
-      const newData = [...this.detailData]
-      const target = newData.filter(item => key === item.key)[0]
-      if (target) {
-        target[column] = value
-        this.detailData = newData
-      }
-    },
     // functions in table
-    edit (key) {
+    schedule (key) {
       const newData = [...this.detailData]
       const target = newData.filter(item => key === item.key)[0]
-      if (target) {
-        target.editable = true
-        this.detailData = newData
-      }
+      console.log(target)
+      this.max = target.number
+      this.visible = true
+      getAllWarehouse().then((response) => {
+        console.log(response)
+        this.allWarehouse = [...response]
+      })
     },
-    del (key) {
+    handleOk (e) {
       // to be completed
-    },
-    save (key) {
-      const newData = [...this.detailData]
-      const target = newData.filter(item => key === item.key)[0]
-      if (target) {
-        delete target.editable
-        this.detailData = newData
-        this.cacheData = newData.map(item => ({ ...item }))
-      }
-    },
-    cancel (key) {
-      const newData = [...this.detailData]
-      const target = newData.filter(item => key === item.key)[0]
-      if (target) {
-        Object.assign(target, this.cacheData.filter(item => key === item.key)[0])
-        delete target.editable
-        this.detailData = newData
-      }
+      this.visible = false
     }
   },
   mounted () {
-    getWarehouseDetail().then((response) => {
+    getWarehouseDetail({ id: this.warehouseID }).then((response) => {
       this.detailData = [...response]
     })
   }
@@ -195,5 +183,10 @@ export default {
     margin-right: 5rem;
     margin-left: .5rem;
   }
+}
+
+.modal {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 </style>

@@ -47,18 +47,18 @@
       <a-table :columns="columns" :dataSource="previewData" bordered>
         <template
           v-for="col in ['id','icon', 'name', 'address']"
-          :slot="col"
+          slot="col"
           slot-scope="text"
         >
           <div :key="col">
             {{ text }}
           </div>
         </template>
-        <div slot="operation" slot-scope="text, record">
-          <div>
+        <template slot="operation" slot-scope="text, record">
+          <div class="editable-row-operations">
             <router-link :to="{ name: 'Detail', params:{ id: getID(record.key), name: getName(record.key), address: getAddress(record.id) } }">转到仓库详情页</router-link>
           </div>
-        </div>
+        </template>
       </a-table>
       <!-- table end -->
     </a-layout>
