@@ -55,8 +55,15 @@ export const asyncRouterMap = [
                         component: () => import('@/views/warehouse/Warehouse'),
                         meta: { title: '查找', keepAlive: false }
                     },
+                    {
+                        path: '/warehouse/map',
+                        name: 'Map',
+                        component: () => import('@/views/warehouse/Map'),
+                        meta: { title: '地图', keepAlive: false }
+                    },
                 ]
             },
+            
 
             // forms
             {

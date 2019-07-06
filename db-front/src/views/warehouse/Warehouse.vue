@@ -189,7 +189,7 @@ export default {
         this.wData = newData
       }
     }
-  },
+  }
 
 }
 </script>

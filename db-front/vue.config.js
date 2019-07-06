@@ -29,6 +29,9 @@ module.exports = {
   },
 
   chainWebpack: (config) => {
+    config.externals({
+      'BMap': 'BMap'
+    })
     config.resolve.alias
       .set('@$', resolve('src'))
 
