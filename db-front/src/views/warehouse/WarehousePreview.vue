@@ -98,9 +98,6 @@ export default {
 
       // data
       input: '',
-      fuseOption:{
-        key: ['id'],
-      },
       previewData: [],
       previewDataShow: [],
       address: [],
