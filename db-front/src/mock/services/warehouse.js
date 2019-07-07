@@ -1,30 +1,47 @@
 import Mock from 'mockjs2'
 
-const warehousePreview = () => {
+const address = () => {
+  return {
+    'data': [
+      '杨浦区',
+      '嘉定区'
+    ]
+  }
+}
+
+const all = () => {
   return {
     'data': [
       {
-        'key': 1,
-        'id': 1,
-        'icon': 0,
-        'name': '第一仓库',
-        'address': '四平路'
+        'name': '嘉定仓库'
       },
       {
-        'key': 2,
-        'id': 2,
-        'icon': 1,
-        'name': '第二仓库',
-        'address': '嘉定校区'
+        'name': '四平仓库'
       },
       {
-        'key': 3,
-        'id': 3,
-        'icon': 2,
-        'name': '第三仓库',
-        'address': '杨浦区'
+        'name': '五角场仓库'
       }
     ]
+  }
+}
+
+const detail = (data) => {
+  let detail = [
+    {
+      'name': '嘉定仓库',
+      'address': '嘉定区'
+    },
+    {
+      'name': '四平仓库',
+      'address': '杨浦区'
+    },
+    {
+      'name': '五角场仓库',
+      'address': '杨浦区'
+    }
+  ]
+  return {
+    'data': detail[data.body]
   }
 }
 
@@ -184,44 +201,39 @@ const goods = (data) => {
   }
 }
 
-const warehouseAll = () => {
+const preview = () => {
   return {
     'data': [
       {
-        'name': '嘉定仓库'
+        'key': 1,
+        'id': 1,
+        'icon': 0,
+        'name': '嘉定仓库',
+        'address': '嘉定区'
       },
       {
-        'name': '四平仓库'
+        'key': 2,
+        'id': 2,
+        'icon': 1,
+        'name': '四平仓库',
+        'address': '杨浦区'
       },
       {
-        'name': '五角场仓库'
+        'key': 3,
+        'id': 3,
+        'icon': 2,
+        'name': '五角场仓库',
+        'address': '杨浦区'
       }
     ]
   }
 }
 
-const warehouseDetail = (data) => {
-  console.log(data)
-  let detail = [
-    {
-      'name': '嘉定仓库',
-      'address': '嘉定区'
-    },
-    {
-      'name': '四平仓库',
-      'address': '杨浦区'
-    },
-    {
-      'name': '五角场仓库',
-      'address': '杨浦区'
-    }
-  ]
-  return {
-    'data': detail[data.body]
-  }
 
-}
-Mock.mock(/\/warehouse\/previewData/, 'get', warehousePreview)
-Mock.mock(/\/warehouse\/detailData/, 'post', warehouseDetail)
-Mock.mock(/\/warehouse\/all/, 'get', warehouseAll)
-Mock.mock(/\/warehouse\/good/, 'post', goods)
+
+
+Mock.mock(/\/warehouse\/address/, 'get', address)
+Mock.mock(/\/warehouse\/all/, 'get', all)
+Mock.mock(/\/warehouse\/detail/, 'post', detail)
+Mock.mock(/\/warehouse\/goods/, 'post', goods)
+Mock.mock(/\/warehouse\/preview/, 'get', preview)

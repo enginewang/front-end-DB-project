@@ -8,16 +8,7 @@
           <a-row :gutter="24">
             <a-col :md="8" :sm="24">
               <a-form-item :label="attributeID.cnType">
-                <a-input :placeholder="attributeID.guide" v-model="inputData[attributeID.type]"/>
-              </a-form-item>
-            </a-col>
-            <a-col :md="8" :sm="24">
-              <a-form-item :label="attributeAddress.cnType">
-                <a-select v-model="inputData[attributeAddress.type]">
-                  <a-select-option value="0">地址1</a-select-option>
-                  <a-select-option value="1">地址2</a-select-option>
-                  <a-select-option value="2">地址3</a-select-option>
-                </a-select>
+                <a-input :placeholder="attributeID.guide" v-model="attributeID.inputID"/>
               </a-form-item>
             </a-col>
             <a-col :span="24" :style="{ textAlign: 'right' }">
@@ -66,78 +57,58 @@
 </template>
 
 <script>
-import { getWarehousePreview } from '@/api/warehouse'
+import { getWarehousePreview, getAddress } from '@/api/warehouse'
 
-// columns type name
-const columns = [{
-  title: '编号',
-  dataIndex: 'id',
-  width: '15%',
-  scopedSlots: { customRender: 'id' },
-  sorter: (a, b) => a.id - b.id
-}, {
-  title: '图标',
-  dataIndex: 'icon',
-  width: '8%',
-  scopedSlots: { customRender: 'icon' }
-}, {
-  title: '名称',
-  dataIndex: 'name',
-  width: '15%',
-  scopedSlots: { customRender: 'name' },
-  sorter: (a, b) => a.id - b.id
-}, {
-  title: '地址',
-  dataIndex: 'address',
-  width: '40%',
-  scopedSlots: { customRender: 'address' },
-  filters: [{
-    text: '四平路',
-    value: '四平路'
-  },
-  {
-    text: '嘉定校区',
-    value: '嘉定校区'
-  },
-  {
-    text: '杨浦区',
-    value: '杨浦区'
-  }],
-  onFilter: (value, record) => record.address.indexOf(value) === 0
-}, {
-  title: '操作',
-  dataIndex: 'operation',
-  scopedSlots: { customRender: 'operation' }
-}]
-
-// warehouse data
-const previewData = []
 export default {
   name: 'Preview',
   data () {
     return {
+      // form
+      form: this.$form.createForm(this),
+      columns : [{
+        title: '编号',
+        dataIndex: 'id',
+        width: '15%',
+        scopedSlots: { customRender: 'id' },
+        sorter: (a, b) => a.id - b.id
+      }, {
+        title: '图标',
+        dataIndex: 'icon',
+        width: '8%',
+        scopedSlots: { customRender: 'icon' }
+      }, {
+        title: '名称',
+        dataIndex: 'name',
+        width: '15%',
+        scopedSlots: { customRender: 'name' },
+        sorter: (a, b) => a.id - b.id
+      }, {
+        title: '地址',
+        dataIndex: 'address',
+        width: '40%',
+        scopedSlots: { customRender: 'address' },
+        filters: [],
+        onFilter: (value, record) => record.address.indexOf(value) === 0
+      }, {
+        title: '操作',
+        dataIndex: 'operation',
+        scopedSlots: { customRender: 'operation' }
+      }],
+
+      // data
       attributeID: {
         type: 'id',
         cnType: 'ID',
-        guide: '请输入ID'
+        guide: '请输入ID',
+        input: ''
       },
-      attributeAddress: {
-        type: 'address',
-        cnType: '地址',
-        guide: '请输入地址'
-      },
-      inputData: {
-        id: '',
-        address: '请选择地址'
-      },
-      previewData,
-      columns,
-      form: this.$form.createForm(this)
+      previewData: [],
+      address: [],
     }
   },
   computed: {
     emptyInput () {
-      if (this.inputData.id !== '' || this.inputData.address !== '请选择地址') {
+      if (this.attributeID.inputID !== '') {
         return false
       } else {
         return true
@@ -147,26 +118,32 @@ export default {
   methods: {
     // clear all input
     onClickClearSelect () {
-      this.inputData.id = ''
-      this.inputData.address = '请选择地址'
+      this.attributeID.inputID = ''
     },
     // submit
     onClickSubmit () {
-      console.log(this.inputData)
       this.onClickClearSelect()
       // to be complete
     },
-    // functions in table
     getID (key) {
       const newData = [...this.previewData]
       const target = newData.filter(item => key === item.key)[0]
       return target.id
     },
   },
-  mounted () {
+  created () {
     getWarehousePreview().then((response) => {
-      console.log(...response.data)
       this.previewData = [...response.data]
+    })
+    getAddress().then((response) => {
+      this.address = [...response.data]
+      for(let val of this.address){
+        let temp = {
+          text: val,
+          value: val
+        }
+        this.columns[3].filters.push(temp)
+      }
     })
   }
 

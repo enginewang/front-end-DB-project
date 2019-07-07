@@ -105,61 +105,56 @@
 <script>
 import { postWarehouseDetail, getAllWarehouse , postGoods } from '@/api/warehouse'
 
-// columns type name
-const ecol = [{
-  title: '编号',
-  dataIndex: 'id',
-  width: '20%',
-  sorter: (a, b) => a.id < b.id,
-  scopedSlots: { customRender: 'id' }
-}, {
-  title: '型号',
-  dataIndex: 'model',
-  width: '20%',
-  sorter: (a, b) => a.model < b.model,
-  scopedSlots: { customRender: 'model' }
-}, {
-  title: '数量',
-  dataIndex: 'number',
-  width: '20%',
-  sorter: (a, b) => a.number < b.number,
-  scopedSlots: { customRender: 'number' }
-}, {
-  title: '操作',
-  dataIndex: 'operation',
-  scopedSlots: { customRender: 'operation' }
-}]
-
-const acol = [{
-  title: '型号',
-  dataIndex: 'model',
-  width: '30%',
-  sorter: (a, b) => a.model < b.model,
-  scopedSlots: { customRender: 'model' }
-}, {
-  title: '数量',
-  dataIndex: 'number',
-  width: '20%',
-  sorter: (a, b) => a.number < b.number,
-  scopedSlots: { customRender: 'number' }
-}, {
-  title: '操作',
-  dataIndex: 'operation',
-  scopedSlots: { customRender: 'operation' }
-}]
-
-// warehouse data
-const equipment = []
-const accessory = []
 export default {
   name: 'Detail',
   data () {
     return {
-      equipment,
-      accessory,
-      ecol,
-      acol,
+      // form
       form: this.$form.createForm(this),
+      acol : [{
+        title: '型号',
+        dataIndex: 'model',
+        width: '30%',
+        sorter: (a, b) => a.model < b.model,
+        scopedSlots: { customRender: 'model' }
+      }, {
+        title: '数量',
+        dataIndex: 'number',
+        width: '20%',
+        sorter: (a, b) => a.number < b.number,
+        scopedSlots: { customRender: 'number' }
+      }, {
+        title: '操作',
+        dataIndex: 'operation',
+        scopedSlots: { customRender: 'operation' }
+      }],
+      ecol : [{
+        title: '编号',
+        dataIndex: 'id',
+        width: '20%',
+        sorter: (a, b) => a.id < b.id,
+        scopedSlots: { customRender: 'id' }
+      }, {
+        title: '型号',
+        dataIndex: 'model',
+        width: '20%',
+        sorter: (a, b) => a.model < b.model,
+        scopedSlots: { customRender: 'model' }
+      }, {
+        title: '数量',
+        dataIndex: 'number',
+        width: '20%',
+        sorter: (a, b) => a.number < b.number,
+        scopedSlots: { customRender: 'number' }
+      }, {
+        title: '操作',
+        dataIndex: 'operation',
+        scopedSlots: { customRender: 'operation' }
+      }],
+
+      // data
+      accessory: [],
+      equipment: [],
       warehouseID: this.$route.params.id,
       warehouseDetail: {
         name: '',
@@ -188,10 +183,12 @@ export default {
     }
   },
   created () {
+    // get detail info of warehouse
     postWarehouseDetail(this.warehouseID).then((response) => {
       this.warehouseDetail.name = response.data.name
       this.warehouseDetail.address = response.data.address
     }),
+    // get info of goods
     postGoods(this.warehouseID).then((response) => {
       this.equipment = [...response.data.equipment]
       this.accessory = [...response.data.accessory]
