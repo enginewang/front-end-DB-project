@@ -14,7 +14,7 @@
                   :value="text"
                   @change="e => handleChange(e.target.value, record.key, col)"
           />
-          <template v-else>{{ text }} {{ whatafuck }}</template>
+          <template v-else>{{ text }}</template>
         </div>
       </template>
       <template slot="operation" slot-scope="text, record">
@@ -74,15 +74,15 @@
     width: '10%',
     filters: [{
       text: '正常',
-      value: '0'
+      value: '正常'
     },
       {
         text: '损坏',
-        value: '1'
+        value: '损坏'
       },
       {
         text: '维修中',
-        value: '2'
+        value: '维修中'
       }],
     onFilter: (value, record) => record.status.indexOf(value) === 0
   }, {

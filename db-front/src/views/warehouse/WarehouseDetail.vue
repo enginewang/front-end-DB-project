@@ -92,7 +92,7 @@ const columns = [{
   title: '编号',
   dataIndex: 'id',
   width: '20%',
-  scopedSlots: { customRender: 'id' }
+  scopedSlots: { customRender: 'id' },
 }, {
   title: '型号',
   dataIndex: 'model',
