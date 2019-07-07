@@ -62,7 +62,7 @@ export const asyncRouterMap = [
                 path: '/equipment:pageNo([1-9]\\d*)?',
                 name: 'equipment',
                 meta: { title: '器材', keepAlive: true, icon: 'table', permission: ['table'] },
-                component: () => import('@/views/equipment/Equipment'),
+                component: () => import('@/views/equipment/EquipmentPreview'),
             },
 
             // forms
