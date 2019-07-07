@@ -14,3 +14,9 @@ export function getWorkSheet () {
     method: 'get'
   })
 }
+export function getCheckSheet () {
+  return axios({
+    url: api.checkSheet,
+    method: 'get'
+  })
+}
