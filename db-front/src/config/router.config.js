@@ -131,6 +131,14 @@ export const asyncRouterMap = [
                 ]
             },
 
+            // 员工信息
+            {
+                path: '/staff:pageNo([1-9]\\d*)?',
+                name: 'staff',
+                meta: { title: '员工', keepAlive: true, icon: 'table', permission: ['table'] },
+                component: () => import('@/views/staff/Staff'),
+            },
+
 
             // forms
             {
