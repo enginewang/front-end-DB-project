@@ -150,6 +150,12 @@ export const asyncRouterMap = [
                 meta: { title: '列表页', icon: 'table', permission: ['table'] },
                 children: [
                     {
+                        path: '/list/workorder-list',
+                        name: 'WorkorderList',
+                        component: () => import('@/views/list/WorkorderList'),
+                        meta: { title: '工单列表', keepAlive: true, permission: ['table'] }
+                    },
+                    {
                         path: '/list/table-list/:pageNo([1-9]\\d*)?',
                         name: 'TableListWrapper',
                         hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu

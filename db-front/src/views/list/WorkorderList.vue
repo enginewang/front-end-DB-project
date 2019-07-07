@@ -22,16 +22,26 @@
         <standard-form-row title="其它选项" grid last>
           <a-row>
             <a-col :lg="8" :md="10" :sm="10" :xs="24">
-              <a-form-item :wrapper-col="{ sm: { span: 16 }, xs: { span: 24 } }" label="作者">
-                <a-select
-                  style="max-width: 200px; width: 100%;"
-                  mode="multiple"
-                  placeholder="不限"
-                  v-decorator="['author']"
-                  @change="handleChange"
+              <a-form-item :wrapper-col="{ sm: { span: 16 }, xs: { span: 24 } }" label="ID">
+                <a-tooltip
+                  :trigger="['focus']"
+                  placement="topLeft"
+                  overlayClassName="numeric-input"
                 >
-                  <a-select-option value="lisa">王昭君</a-select-option>
-                </a-select>
+                  <span slot="title" v-if="idFilterValue" class="numeric-input-title">
+                    {{idFilterValue !== '-' ? idFilterValue : '-'}}
+                  </span>
+                  <template slot="title" v-else>
+                    Input ID
+                  </template>
+                  <a-input
+                    :value="idFilterValue"
+                    @change="onIdFilterChange"
+                    placeholder="Input ID"
+                    maxLength="25"
+                    style="width: 120px"
+                  />
+                </a-tooltip>
               </a-form-item>
             </a-col>
             <a-col :lg="8" :md="10" :sm="10" :xs="24">
@@ -52,9 +62,9 @@
     </a-card>
 
     <div class="ant-pro-pages-list-projects-cardList">
-      <a-list :loading="loading" :data-source="data" :grid="{ gutter: 24, xl: 4, lg: 3, md: 3, sm: 2, xs: 1 }">
+      <a-list :loading="loading" :data-source="data" :grid="{ gutter: 24, xl: 4, lg: 3, md: 3, sm: 2, xs: 1 }" :pagination="pagination">
         <a-list-item slot="renderItem" slot-scope="item">
-          <a-card class="ant-pro-pages-list-projects-card" hoverable>
+          <a-card class="ant-pro-pages-list-projects-card" hoverable :loading="loading">
             <img slot="cover" :src="item.cover" :alt="item.title" />
             <a-card-meta :title="item.title">
               <template slot="description">
@@ -63,7 +73,7 @@
             </a-card-meta>
             <div class="cardItemContent">
               <span>{{ item.updatedAt | fromNow }}</span>
-              <div class="avatarList">
+              <!-- <div class="avatarList">
                 <avatar-list size="mini">
                   <avatar-list-item
                     v-for="(member, i) in item.members"
@@ -72,11 +82,20 @@
                     :tips="member.name"
                   />
                 </avatar-list>
-              </div>
+              </div> -->
             </div>
           </a-card>
         </a-list-item>
       </a-list>
+      <!-- <div id="pagination" >
+        <a-pagination
+          :total="totalCards"
+          :showTotal="(total, range) => `${range[0]}-${range[1]} of ${total} items`"
+          :pageSize="8"
+          :defaultCurrent="1"
+        />
+      </div> -->
+      
     </div>
   </div>
 </template>
@@ -84,6 +103,8 @@
 <script>
 import moment from 'moment'
 import { TagSelect, StandardFormRow, Ellipsis, AvatarList } from '@/components'
+import Fuse from 'fuse.js'
+var pageData = null
 const TagSelectOption = TagSelect.Option
 const AvatarListItem = AvatarList.AvatarItem
 
@@ -100,7 +121,29 @@ export default {
     return {
       data: [],
       form: this.$form.createForm(this),
-      loading: true
+      loading: true,
+      pagination:{
+        pageSize: 8,
+        showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
+        defaultCurrent: 1,
+        showQuickJumper: true,
+        onChange: this.onChange
+      },
+      idFilterValue: '',
+      fusejsOptions: {
+        shouldSort: true,
+        tokenize: true,
+        threshold: 1.0,
+        location: 0,
+        distance: 100,
+        maxPatternLength: 32,
+        minMatchCharLength: 1,
+        keys: [
+          "title",
+          "description"
+        ]
+
+      },
     }
   },
   filters: {
@@ -120,7 +163,32 @@ export default {
         console.log('res', res)
         this.data = res.result
         this.loading = false
+        pageData = this.data
       })
+    },
+    onChange(){
+      console.log("quick jump")
+    },
+    onIdFilterChange (e) {
+      const {value} = e.target
+      console.log("ok")
+      this.idFilterValue = value
+      this.filterOnce()
+    },
+    filterOnce(){
+      var oldData = pageData
+      var options = this.fusejsOptions
+      var fuse = new Fuse(oldData, options)
+      var result = fuse.search(this.idFilterValue)
+      console.log(result)
+      if(result != null && result.length > 0){
+        console.log("updated")
+        this.data = result
+      }
+      else{
+        console.log("updated null")
+        this.data = pageData
+      }
     }
   }
 }
