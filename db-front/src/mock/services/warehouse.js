@@ -95,14 +95,14 @@ const goods = (data) => {
           'key': 9,
           'id': 10009,
           'model': 'i7-8700k',
-          'type': 'Equipment',
+          'type': 'Accessory',
           'number': 1000
         },
         {
           'key': 10,
           'id': 10010,
           'model': 'i7-8700k',
-          'type': 'Equipment',
+          'type': 'Accessory',
           'number': 1000
         }
     ]
@@ -147,7 +147,7 @@ const warehouseDetail = (data) => {
   return {
     'data': detail[data.body]
   }
-  
+
 }
 Mock.mock(/\/warehouse\/previewData/, 'get', warehousePreview)
 Mock.mock(/\/warehouse\/detailData/, 'post', warehouseDetail)

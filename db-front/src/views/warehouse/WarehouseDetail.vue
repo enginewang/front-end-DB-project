@@ -6,7 +6,7 @@
         您现在位于  {{ warehouseDetail.address }}  的 {{ warehouseDetail.name }}
       </a-layout-header>
       <!-- warehouse message end -->
-
+      <br>
       <!-- table -->
       <a-table :columns="columns" :dataSource="goods" bordered>
         <template
@@ -64,21 +64,20 @@ const columns = [{
   title: '编号',
   dataIndex: 'id',
   width: '20%',
+  sorter: (a, b) => a.id - b.id,
   scopedSlots: { customRender: 'id' }
 }, {
   title: '型号',
   dataIndex: 'model',
   width: '20%',
+  sorter: (a, b) => a.model - b.model,
   scopedSlots: { customRender: 'model' }
-}, {
-  title: '类别',
-  dataIndex: 'type',
-  width: '20%',
-  scopedSlots: { customRender: 'type' }
-}, {
+},
+{
   title: '数量',
   dataIndex: 'number',
   width: '20%',
+  sorter: (a, b) => a.number - b.number,
   scopedSlots: { customRender: 'number' }
 }, {
   title: '操作',
@@ -129,7 +128,7 @@ export default {
     }),
     postGoods(this.warehouseID).then((response) => {
       this.goods = [...response.data]
-    }) 
+    })
   }
 
 }
