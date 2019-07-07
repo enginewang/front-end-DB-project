@@ -29,6 +29,9 @@ module.exports = {
   },
 
   chainWebpack: (config) => {
+    config.externals({
+      'BMap': 'BMap'
+    })
     config.resolve.alias
       .set('@$', resolve('src'))
 
@@ -94,7 +97,7 @@ module.exports = {
 
   // disable source map in production
   productionSourceMap: false,
-  lintOnSave: undefined,
+  lintOnSave: false,
   // babel-loader no-ignore node_modules/*
   transpileDependencies: []
 }

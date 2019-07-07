@@ -66,10 +66,52 @@ export const asyncRouterMap = [
                         component: () => import('@/views/warehouse/WarehouseDetail'),
                         meta: {
                             title: '详细', keepAlive: false
-                    }
+                      }
+                    }, {
+                        path: '/warehouse/map',
+                        name: 'Map',
+                        component: () => import('@/views/warehouse/Map'),
+                        meta: { title: '地图', keepAlive: false }
                     }
                 ]
             },
+            // 器材表单操作
+            {
+                path: '/equipment:pageNo([1-9]\\d*)?',
+                name: 'equipment',
+                meta: { title: '器材', keepAlive: true, icon: 'table', permission: ['table'] },
+                component: () => import('@/views/equipment/Equipment'),
+            },
+
+            // sheets
+            {
+                path: '/sheets',
+                name: 'sheets',
+                redirect: '/sheets/workSheet',
+                component: RouteView,
+                meta: { title: '各类表单', keepAlive: true, icon: "table" },
+                children: [
+                    {
+                        path: '/sheets/workSheet',
+                        name: 'workSheet',
+                        component: () => import('@/views/sheets/workSheet'),
+                        meta: {title: '工单', keepAlive: false}
+                    },
+                    {
+                        path: '/sheets/repairSheet',
+                        name: 'repairSheet',
+                        component: () => import('@/views/sheets/repairSheet'),
+                        meta: {title: '报修单', keepAlive: false}
+                    },
+                    {
+                        path: '/sheets/checkSheet',
+                        name: 'checksheet',
+                        component: () => import('@/views/sheets/checkSheet'),
+                        meta: {title: '巡检单', keepAlive: false}
+                    },
+                ]
+            },
+
 
             // forms
             {
