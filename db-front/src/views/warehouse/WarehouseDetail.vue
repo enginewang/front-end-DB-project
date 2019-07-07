@@ -3,40 +3,12 @@
     <!-- warehouse message -->
     <a-layout>
       <a-layout-header>
-        您现在位于 {{ warehouseAddress }} 的 {{ warehouseName }}
+        您现在位于  {{ warehouseDetail.address }}  的 {{ warehouseDetail.name }}
       </a-layout-header>
       <!-- warehouse message end -->
-      <!-- select display type -->
-      <a-form class="ant-advanced-search-form" :form="form">
-        <a-row :gutter="24">
-          <a-col :span="24">
-            <div class="button-group">
-              <a-button
-                size="large"
-                class="button"
-                type="primary"
-                @click="onClickAll"
-              >全显示</a-button>
-              <a-button
-                size="large"
-                class="button"
-                type="primary"
-                @click="onClickAccessory"
-              >仅配件</a-button>
-              <a-button
-                size="large"
-                class="button"
-                type="primary"
-                @click="onClickEquipment"
-              >仅器材</a-button>
-            </div>
-          </a-col>
-        </a-row>
-      </a-form>
-      <!-- select display type end -->
-
-      <!-- table -->
-      <a-table :columns="columns" :dataSource="detailData" bordered>
+      <br>
+      <!-- equipment table -->
+      <a-table :columns="ecol" :dataSource="equipment" bordered>
         <template
           v-for="col in ['id','model', 'type', 'number']"
           :slot="col"
@@ -51,7 +23,7 @@
             <a-button @click="() => schedule(record.key)">调度</a-button>
             <!-- modal -->
             <a-modal
-              title="Basic Modal"
+              title="调度"
               v-model="visible"
               @ok="handleOk"
             >
@@ -79,53 +51,115 @@
           </div>
         </template>
       </a-table>
-    <!-- table end -->
+    <!-- equipment table end -->
+
+      <!-- accessory table -->
+      <a-table :columns="acol" :dataSource="accessory" bordered>
+        <template
+          v-for="col in ['id','model', 'type', 'number']"
+          :slot="col"
+          slot-scope="text"
+        >
+          <div :key="col">
+            <div>{{ text }}</div>
+          </div>
+        </template>
+        <template slot="operation" slot-scope="text, record">
+          <div class="editable-row-operations">
+            <a-button @click="() => schedule(record.key)">调度</a-button>
+            <!-- modal -->
+            <a-modal
+              title="调度"
+              v-model="visible"
+              @ok="handleOk"
+            >
+              <div class="modal">
+                调出到
+                <a-select
+                  style="width: 200px"
+                >
+                  <a-select-option v-for="(item, index) in allWarehouse" :key="index">
+                    {{ item.name }}
+                  </a-select-option>
+                </a-select>
+                仓库
+              </div>
+              <div class="modal">
+                数量:
+                <a-input-number
+                  :max="max"
+                  :min="min"
+                  class="input"
+                />
+              </div>
+            </a-modal>
+            <!-- modal end -->
+          </div>
+        </template>
+      </a-table>
+    <!-- accessory table end -->
     </a-layout>
   </div>
 </template>
 
 <script>
-import { getWarehouseDetail, getAllWarehouse } from '@/api/warehouse'
+import { postWarehouseDetail, getAllWarehouse , postGoods } from '@/api/warehouse'
 
-// columns type name
-const columns = [{
-  title: '编号',
-  dataIndex: 'id',
-  width: '20%',
-  scopedSlots: { customRender: 'id' }
-}, {
-  title: '型号',
-  dataIndex: 'model',
-  width: '20%',
-  scopedSlots: { customRender: 'model' }
-}, {
-  title: '类别',
-  dataIndex: 'type',
-  width: '20%',
-  scopedSlots: { customRender: 'type' }
-}, {
-  title: '数量',
-  dataIndex: 'number',
-  width: '20%',
-  scopedSlots: { customRender: 'number' }
-}, {
-  title: '操作',
-  dataIndex: 'operation',
-  scopedSlots: { customRender: 'operation' }
-}]
-
-// warehouse data
-const detailData = []
 export default {
   name: 'Detail',
   data () {
     return {
-      detailData,
-      columns,
+      // form
       form: this.$form.createForm(this),
+      acol : [{
+        title: '型号',
+        dataIndex: 'model',
+        width: '30%',
+        sorter: (a, b) => a.model < b.model,
+        scopedSlots: { customRender: 'model' }
+      }, {
+        title: '数量',
+        dataIndex: 'number',
+        width: '20%',
+        sorter: (a, b) => a.number < b.number,
+        scopedSlots: { customRender: 'number' }
+      }, {
+        title: '操作',
+        dataIndex: 'operation',
+        scopedSlots: { customRender: 'operation' }
+      }],
+      ecol : [{
+        title: '编号',
+        dataIndex: 'id',
+        width: '20%',
+        sorter: (a, b) => a.id < b.id,
+        scopedSlots: { customRender: 'id' }
+      }, {
+        title: '型号',
+        dataIndex: 'model',
+        width: '20%',
+        sorter: (a, b) => a.model < b.model,
+        scopedSlots: { customRender: 'model' }
+      }, {
+        title: '数量',
+        dataIndex: 'number',
+        width: '20%',
+        sorter: (a, b) => a.number < b.number,
+        scopedSlots: { customRender: 'number' }
+      }, {
+        title: '操作',
+        dataIndex: 'operation',
+        scopedSlots: { customRender: 'operation' }
+      }],
+
+      // data
+      accessory: [],
+      equipment: [],
       warehouseID: this.$route.params.id,
-      warehouseName: this.$route.params.name,
-      warehouseAddress: this.$route.params.address,
+      warehouseDetail: {
+        name: '',
+        address: ''
+      },
       visible: false,
       max: 0,
       min: 0,
@@ -133,27 +167,14 @@ export default {
     }
   },
   methods: {
-    // submit
-    onClickAll () {
-      console.log('All')
-      // to be complete
-    },
-    onClickAccessory () {
-      console.log('Accessory')
-    },
-    onClickEquipment () {
-      console.log('Equipment')
-    },
-    // functions in table
     schedule (key) {
-      const newData = [...this.detailData]
+      const newData = [...this.equipment]
       const target = newData.filter(item => key === item.key)[0]
       console.log(target)
       this.max = target.number
       this.visible = true
       getAllWarehouse().then((response) => {
-        console.log(response)
-        this.allWarehouse = [...response]
+        this.allWarehouse = [...response.data]
       })
     },
     handleOk (e) {
@@ -161,16 +182,16 @@ export default {
       this.visible = false
     }
   },
-  mounted () {
-    getWarehouseDetail().then((response) => {
-      const fullData = [...response]
-      const thisWarehouseId = parseInt(this.$route.params.id)
-      for (let i = 0; i < 10; i++) {
-        if (fullData[i].warehouse_id === thisWarehouseId) {
-          console.log(fullData[i])
-          this.detailData.push(fullData[i])
-        }
-      }
+  created () {
+    // get detail info of warehouse
+    postWarehouseDetail(this.warehouseID).then((response) => {
+      this.warehouseDetail.name = response.data.name
+      this.warehouseDetail.address = response.data.address
+    }),
+    // get info of goods
+    postGoods(this.warehouseID).then((response) => {
+      this.equipment = [...response.data.equipment]
+      this.accessory = [...response.data.accessory]
     })
   }
 
