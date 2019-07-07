@@ -7,8 +7,8 @@
         <a-form class="ant-advanced-search-form" :form="form">
           <a-row :gutter="24">
             <a-col :md="8" :sm="24">
-              <a-form-item :label="attributeID.cnType">
-                <a-input :placeholder="attributeID.guide" v-model="attributeID.inputID"/>
+              <a-form-item label="编号">
+                <a-input placeholder="请输入查询编号" v-model="input"/>
               </a-form-item>
             </a-col>
             <a-col :span="24" :style="{ textAlign: 'right' }">
@@ -19,7 +19,7 @@
                   type="primary"
                   @click="onClickSubmit"
                   :disabled="emptyInput"
-                >查询</a-button>
+                >刷新</a-button>
                 <a-button
                   size="large"
                   class="button"
@@ -35,7 +35,7 @@
       </div>
       <!-- input bar end -->
       <!-- table -->
-      <a-table :columns="columns" :dataSource="previewData" bordered>
+      <a-table :columns="columns" :dataSource="previewDataShow" bordered>
         <template
           v-for="col in ['id','icon', 'name', 'address']"
           slot="col"
@@ -58,6 +58,7 @@
 
 <script>
 import { getWarehousePreview, getAddress } from '@/api/warehouse'
+import Fuse from 'fuse.js'
 
 export default {
   name: 'Preview',
@@ -96,19 +97,34 @@ export default {
       }],
 
       // data
-      attributeID: {
-        type: 'id',
-        cnType: 'ID',
-        guide: '请输入ID',
-        input: ''
+      input: '',
+      fuseOption:{
+        key: ['id'],
       },
       previewData: [],
+      previewDataShow: [],
       address: [],
+    }
+  },
+  // watch for fuzzy search
+  watch: {
+    input(pattern){
+      if ( pattern == '' ){
+        this.previewDataShow = this.previewData
+      }
+      else{
+        const option = {
+          keys: ['id'],
+          threshold: 0.1
+        }
+        var fuse = new Fuse(this.previewData, option)
+        this.previewDataShow = fuse.search(pattern)
+      }
     }
   },
   computed: {
     emptyInput () {
-      if (this.attributeID.inputID !== '') {
+      if (this.input !== '') {
         return false
       } else {
         return true
@@ -118,7 +134,7 @@ export default {
   methods: {
     // clear all input
     onClickClearSelect () {
-      this.attributeID.inputID = ''
+      this.input = ''
     },
     // submit
     onClickSubmit () {
@@ -126,7 +142,7 @@ export default {
       // to be complete
     },
     getID (key) {
-      const newData = [...this.previewData]
+      const newData = [...this.previewDataShow]
       const target = newData.filter(item => key === item.key)[0]
       return target.id
     },
@@ -134,6 +150,7 @@ export default {
   created () {
     getWarehousePreview().then((response) => {
       this.previewData = [...response.data]
+      this.previewDataShow = this.previewData
     })
     getAddress().then((response) => {
       this.address = [...response.data]

@@ -8,7 +8,18 @@
       <!-- warehouse message end -->
       <br>
       <!-- equipment table -->
-      <a-table :columns="ecol" :dataSource="equipment" bordered>
+      <div>
+        <a-form class="ant-advanced-search-form" :form="form">
+          <a-row :gutter="24">
+            <a-col :md="8" :sm="24">
+              <a-form-item>
+                <a-input placeholder="请输入器材编号" v-model="equipmentInput"/>
+              </a-form-item>
+            </a-col>
+          </a-row>
+        </a-form>
+      </div>
+      <a-table :columns="ecol" :dataSource="equipmentShow" bordered>
         <template
           v-for="col in ['id','model', 'type', 'number']"
           :slot="col"
@@ -54,7 +65,18 @@
     <!-- equipment table end -->
 
       <!-- accessory table -->
-      <a-table :columns="acol" :dataSource="accessory" bordered>
+      <div>
+        <a-form class="ant-advanced-search-form" :form="form">
+          <a-row :gutter="24">
+            <a-col :md="8" :sm="24">
+              <a-form-item>
+                <a-input placeholder="请输入配件型号" v-model="accessoryInput"/>
+              </a-form-item>
+            </a-col>
+          </a-row>
+        </a-form>
+      </div>
+      <a-table :columns="acol" :dataSource="accessoryShow" bordered>
         <template
           v-for="col in ['id','model', 'type', 'number']"
           :slot="col"
@@ -104,6 +126,7 @@
 
 <script>
 import { postWarehouseDetail, getAllWarehouse , postGoods } from '@/api/warehouse'
+import Fuse from 'fuse.js'
 
 export default {
   name: 'Detail',
@@ -154,7 +177,11 @@ export default {
 
       // data
       accessory: [],
+      accessoryShow: [],
+      accessoryInput: '',
       equipment: [],
+      equipmentShow: [],
+      equipmentInput: '',
       warehouseID: this.$route.params.id,
       warehouseDetail: {
         name: '',
@@ -164,6 +191,35 @@ export default {
       max: 0,
       min: 0,
       allWarehouse: []
+    }
+  },
+  // watch for fuzzy search
+  watch:{
+    accessoryInput(pattern){
+      if ( pattern == '' ){
+        this.accessoryShow = this.accessory
+      }
+      else{
+        const option = {
+          keys: ['model'],
+          threshold: 0.1
+        }
+        var fuse = new Fuse(this.accessory, option)
+        this.accessoryShow = fuse.search(pattern)
+      }
+    },
+    equipmentInput(pattern){
+      if ( pattern == '' ){
+        this.equipmentShow = this.equipment
+      }
+      else{
+        const option = {
+          keys: ['id'],
+          threshold: 0.1
+        }
+        var fuse = new Fuse(this.equipment, option)
+        this.equipmentShow = fuse.search(pattern)
+      }
     }
   },
   methods: {
@@ -191,7 +247,9 @@ export default {
     // get info of goods
     postGoods(this.warehouseID).then((response) => {
       this.equipment = [...response.data.equipment]
+      this.equipmentShow = this.equipment
       this.accessory = [...response.data.accessory]
+      this.accessoryShow = this.accessory
     })
   }
 
