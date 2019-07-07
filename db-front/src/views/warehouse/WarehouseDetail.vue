@@ -162,8 +162,15 @@ export default {
     }
   },
   mounted () {
-    getWarehouseDetail({ id: this.warehouseID }).then((response) => {
-      this.detailData = [...response]
+    getWarehouseDetail().then((response) => {
+      const fullData = [...response]
+      const thisWarehouseId = parseInt(this.$route.params.id)
+      for (let i = 0; i < 10; i++) {
+        if (fullData[i].warehouse_id === thisWarehouseId) {
+          console.log(fullData[i])
+          this.detailData.push(fullData[i])
+        }
+      }
     })
   }
 

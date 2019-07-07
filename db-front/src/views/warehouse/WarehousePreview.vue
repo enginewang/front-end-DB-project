@@ -73,7 +73,8 @@ const columns = [{
   title: '编号',
   dataIndex: 'id',
   width: '15%',
-  scopedSlots: { customRender: 'id' }
+  scopedSlots: { customRender: 'id' },
+  sorter: (a, b) => a.id - b.id
 }, {
   title: '图标',
   dataIndex: 'icon',
@@ -83,12 +84,26 @@ const columns = [{
   title: '名称',
   dataIndex: 'name',
   width: '15%',
-  scopedSlots: { customRender: 'name' }
+  scopedSlots: { customRender: 'name' },
+  sorter: (a, b) => a.id - b.id
 }, {
   title: '地址',
   dataIndex: 'address',
   width: '40%',
-  scopedSlots: { customRender: 'address' }
+  scopedSlots: { customRender: 'address' },
+  filters: [{
+    text: '四平路',
+    value: '四平路'
+  },
+  {
+    text: '嘉定校区',
+    value: '嘉定校区'
+  },
+  {
+    text: '杨浦区',
+    value: '杨浦区'
+  }],
+  onFilter: (value, record) => record.address.indexOf(value) === 0
 }, {
   title: '操作',
   dataIndex: 'operation',
