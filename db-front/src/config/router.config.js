@@ -60,7 +60,7 @@ export const asyncRouterMap = [
                         }
                     },
                     {
-                        path: '/warehouse/detail/:id&:name&:address',
+                        path: '/warehouse/detail/:id',
                         name: 'Detail',
                         hidden: true,
                         component: () => import('@/views/warehouse/WarehouseDetail'),
@@ -75,12 +75,31 @@ export const asyncRouterMap = [
                     }
                 ]
             },
-            // 器材表单操作
+          // equipment
             {
-                path: '/equipment:pageNo([1-9]\\d*)?',
+                path: '/equipment',
                 name: 'equipment',
+                redirect: '/equipment/preview',
                 meta: { title: '器材', keepAlive: true, icon: 'table', permission: ['table'] },
-                component: () => import('@/views/equipment/Equipment'),
+                component: RouteView,
+                children: [
+                {
+                    path: '/equipment/preview',
+                    name: 'EquipPreview',
+                    component: () => import('@/views/equipment/EquipmentPreview'),
+                    meta: {
+                        title: '仓储器材', keepAlive: false
+                    }
+                },
+                {
+                    path: '/equipment/using:pageNo([1-9]\\d*)?',
+                    name: 'EquipUsing',
+                    component: () => import('@/views/equipment/EquipmentUsing'),
+                    meta: {
+                        title: '使用中器材', keepAlive: false
+                    }
+                }
+                ]
             },
 
             // sheets
