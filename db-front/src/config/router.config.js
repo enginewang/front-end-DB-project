@@ -93,7 +93,7 @@ export const asyncRouterMap = [
                 },
                 {
                   path: '/equipment/using:pageNo([1-9]\\d*)?',
-                  name: 'Using',
+                  name: 'EquipUsing',
                   component: () => import('@/views/equipment/EquipmentUsing'),
                   meta: {
                     title: '使用中器材', keepAlive: false

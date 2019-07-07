@@ -1,13 +1,23 @@
 import { axios } from '@/utils/request'
 
 const api = {
-  equipment: '/equipment'
+  equipmentUsing: '/equipment/using',
+  equipmentAll: '/equipment/all'
 }
 
-export function getEquipmentList (parameter) {
+export default api
+
+export function getEquipmentAllList () {
   return axios({
-    url: api.equipment,
-    method: 'get',
-    params: parameter
+    url: api.equipmentAll,
+    method: 'get'
   })
 }
+
+export function getEquipmentUsingList () {
+  return axios({
+    url: api.equipmentUsing,
+    method: 'get',
+  })
+}
+
