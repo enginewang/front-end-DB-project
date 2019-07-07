@@ -1,17 +1,22 @@
 <template>
   <div>
-     
     <div>
       <a-form class="ant-advanced-search-form" :form="form">
         <a-row :gutter="24">
-          <a-col v-for="( item,index ) in attribute" :key="index" :span="4">
-            <a-form-item :label="item.cnType">
-              <a-input :placeholder="item.guide" v-model="addData[item.type]"/>
+          <a-col :md="8" :sm="24">
+            <a-form-item label="巡检单单号">
+              <a-input placeholder="请输入巡检单单号" v-model="input"/>
             </a-form-item>
-          </a-col>
+            </a-col>
+            <a-col :md="8" :sm="24">
+            <a-form-item label="巡检员编号">
+              <a-input placeholder="请输入巡检员编号" v-model="input2"/>
+            </a-form-item>
+            </a-col>
+
         </a-row>
         <a-row>
-            <a-col :span="4" :style="{ textAlign: 'left' }">
+            <a-col :span="4" style=" textAlign: 'left';margin-bottom: 24px">
               <a-button
                 size="large"
                 class="button"
@@ -19,30 +24,11 @@
                 @click="onClickRefresh"
               >刷新表单</a-button>
           </a-col>
-          <a-col :span="24" :style="{ textAlign: 'right' }">
-            <div class="button-group">
-              <a-button
-                size="large"
-                class="button"
-                type="primary"
-                @click="onClickSubmit"
-                :disabled="emptyInput"
-              >查询</a-button>
-              <a-button
-                size="large"
-                class="button"
-                type="danger"
-                @click="onClickClearSelect"
-                :disabled="emptyInput"
-                ghost
-              >重置</a-button>
-            </div>
-          </a-col>
         </a-row>
       </a-form>
     </div>
     <!-- table -->
-    <a-table :columns="columns" :dataSource="Data" bordered>
+    <a-table :columns="columns" :dataSource="DataShow" bordered>
         <template
         v-for="col in ['id','potrolID', 'eqID','checkTime','checkArea']"
         :slot="col"
@@ -60,6 +46,14 @@
                 type ="primary"
                 @click="onClickDelete"
               >删除</a-button>
+              <a-modal
+                title="确认删除"
+                v-model = "visible2"
+                @ok = "handleOK"
+                >
+                <div class = "modal">
+                    是否删除本条记录
+                </div></a-modal>
             </div>
         </template>
     </a-table>
@@ -70,6 +64,7 @@
 </template>
 <script>
 import { getCheckSheet } from '@/api/sheets'
+import Fuse from 'fuse.js'
 
 const columns = [{
   title: '巡检单单号',
@@ -95,8 +90,9 @@ const columns = [{
   dataIndex: 'operation',
   scopedSlots: { customRender: 'operation' }
 }];
-const Data = []
 
+const Data = []
+const DataShow = []
 function onChange(pagination, filters, sorter) {
   console.log('params', pagination, filters, sorter);
 }
@@ -105,61 +101,71 @@ export default {
   data() {
     this.cacheData = Data.map(item => ({ ...item }))
     return {
-      attribute:[
-        {type: 'id', cnType: '巡检单单号', guide: '请输入巡检单单号'},
-        {type: 'potrolID', cnType: '巡检员编号', guide: '请输入巡检员编号'},
-      ],
       Data,
-      columns,
-      // information of add
-      addData: {
-        id: '',
-        potrolID: ''
+      DataShow,
+      input: '',
+      input2: '',
+      fuseOption:{
+        key: ['id'],
       },
       columns,
-      Data,
+      visible2: false,
       isRouterAlive: true,
       form: this.$form.createForm(this)
     }
   },
-  computed:{
-      emptyInput () {
-      if (this.addData.id !== '' || this.addData.potrolID !== '') {
-        return false
-      } else {
-        return true
+  watch:{
+      input(pattern){
+          if(pattern == ''){
+              this.DataShow = this.Data
+          }
+          else{
+              const option = {
+                  keys: ['id'],
+                  threshold: 0.1
+              }
+              var fuse = new Fuse(this.Data,option)
+              this.DataShow = fuse.search(pattern)
+          }
+      },
+      input2(pattern){
+          if(pattern == ''){
+              this.DataShow = this.Data
+          }
+          else{
+              const option = {
+                  keys: ['potrolID'],
+                  threshold: 0.1
+              }
+              var fuse = new Fuse(this.Data,option)
+              this.DataShow = fuse.search(pattern)
+          }
       }
-    }
+  },
+  computed:{
+      
   },
   methods: {
     //select
     onChange,
-    // clear all input
-    onClickClearSelect () {
-      this.addData.type = ''
-      this.addData.price = ''
-      this.addData.model = ''
-      this.addData.warehouseID = ''
-      this.addData.num = ''
-    },
-    // submit
-    onClickSubmit () {
-      console.log(this.addData)
-      this.onClickClearSelect()
-    },
+    
     onClickRefresh(){
       this.reload()
     },
     //delete
     onClickDelete () {
-      console.log('delete')
-      // to be complete
+      this.visible2 = true;
     },
+    handleOK(e){
+        this.visible2 = false;
+        //to be completed
+    }
   },
   mounted () {
     getCheckSheet().then((response) => {
       console.log(...response)
       this.Data = [...response]
+      this.DataShow = this.Data
     })
   }
   
