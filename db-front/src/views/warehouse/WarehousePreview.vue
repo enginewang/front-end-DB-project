@@ -56,7 +56,7 @@
         </template>
         <template slot="operation" slot-scope="text, record">
           <div class="editable-row-operations">
-            <router-link :to="{ name: 'Detail', params:{ id: getID(record.key), name: getName(record.key), address: getAddress(record.id) } }">转到仓库详情页</router-link>
+            <router-link :to="{ name: 'Detail', params:{ id: getID(record.key)} }">转到仓库详情页</router-link>
           </div>
         </template>
       </a-table>
@@ -162,21 +162,11 @@ export default {
       const target = newData.filter(item => key === item.key)[0]
       return target.id
     },
-    getName (key) {
-      const newData = [...this.previewData]
-      const target = newData.filter(item => key === item.key)[0]
-      return target.name
-    },
-    getAddress (key) {
-      const newData = [...this.previewData]
-      const target = newData.filter(item => key === item.key)[0]
-      return target.address
-    }
   },
   mounted () {
     getWarehousePreview().then((response) => {
-      console.log(...response)
-      this.previewData = [...response]
+      console.log(...response.data)
+      this.previewData = [...response.data]
     })
   }
 
