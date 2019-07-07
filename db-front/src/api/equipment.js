@@ -4,11 +4,10 @@ const api = {
   equipment: '/equipment'
 }
 
-export default api
-
-export function getEquipmentPreview () {
+export function getEquipmentList (parameter) {
   return axios({
-    url: api.equipment + '/preview',
-    method: 'get'
+    url: api.equipment,
+    method: 'get',
+    params: parameter
   })
 }

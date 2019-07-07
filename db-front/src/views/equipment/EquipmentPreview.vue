@@ -20,7 +20,22 @@
       </a-form>
     </div>
     <br>
-    <a-table :columns="columns" :dataSource="wData" @change="onChange" bordered>
+    <a-table :columns="columns" :dataSource="wData" bordered>
+      <template
+        v-for="col in ['id','name', 'address','area']"
+        :slot="col"
+        slot-scope="text, record"
+      >
+        <div :key="col">
+          <a-input
+            v-if="record.editable"
+            style="margin: -5px 0"
+            :value="text"
+            @change="e => handleChange(e.target.value, record.key, col)"
+          />
+          <template v-else>{{ text }}</template>
+        </div>
+      </template>
       <template slot="operation" slot-scope="text, record">
         <div class="editable-row-operations">
           <span v-if="record.editable">
@@ -42,47 +57,38 @@
 const columns = [{
   title: '器材id',
   dataIndex: 'id',
-  width: '10%',
-  sorter: (a, b) => a.id - b.id
+  width: '15%',
+  scopedSlots: { customRender: 'id' }
 }, {
   title: '名称',
   dataIndex: 'name',
-  width: '10%'
-}, {
-  title: '图标',
-  dataIndex: 'icon',
-  width: '10%'
-}, {
-  title: '型号编号',
-  dataIndex: 'model',
-  width: '15%'
-}, {
-  title: '价格',
-  dataIndex: 'price',
   width: '10%',
-  sorter: (a, b) => a.price - b.price
+  scopedSlots: { customRender: 'name' }
 }, {
-  title: '数量',
-  dataIndex: 'count',
-  width: '10%',
-  sorter: (a, b) => a.count - b.count
+    title: '图标',
+    dataIndex: 'icon',
+    width: '10%',
+    scopedSlots: { customRender: 'icon' }
 }, {
-  title: '所在仓库',
-  dataIndex: 'warehouseID',
-  width: '20%',
-  filters: [{
-    text: '四平路',
-    value: '四平路'
-  },
-  {
-    text: '嘉定校区',
-    value: '嘉定校区'
-  },
-  {
-    text: '杨浦区',
-    value: '杨浦区'
-  }],
-  onFilter: (value, record) => record.warehouseID.indexOf(value) === 0
+    title: '型号编号',
+    dataIndex: 'model',
+    width: '15%',
+    scopedSlots: { customRender: 'model' }
+}, {
+    title: '价格',
+    dataIndex: 'price',
+    width: '10%',
+    scopedSlots: { customRender: 'price' }
+}, {
+    title: '数量',
+    dataIndex: 'count',
+    width: '10%',
+    scopedSlots: { customRender: 'count' }
+}, {
+    title: '所在仓库',
+    dataIndex: 'storehouse',
+    width: '10%',
+    scopedSlots: { customRender: 'storehouse' }
 },
 {
   title: '操作',
@@ -90,42 +96,17 @@ const columns = [{
   scopedSlots: { customRender: 'operation' }
 }]
 const wData = []
-for (let i = 0; i < 20; i++) {
+for (let i = 0; i < 100; i++) {
   wData.push({
     key: i.toString(),
     id: i.toString(),
-    name: `器材 ${i}`,
-    model: `Tongji ${i}`,
-    price: `100`,
-    warehouseID: `四平路`,
+    name: `Edrward ${i}`,
+    address: `London Park no. ${i}`,
+    area: 32
   })
 }
-for (let i = 20; i < 40; i++) {
-  wData.push({
-    key: i.toString(),
-    id: i.toString(),
-    name: `Huangdu ${i}`,
-    model: `器材 ${i}`,
-    price: `200`,
-    warehouseID: `嘉定校区`,
-  })
-}
-for (let i = 20; i < 40; i++) {
-  wData.push({
-    key: i.toString(),
-    id: i.toString(),
-    name: `YP ${i}`,
-    model: `器材 ${i}`,
-    price: `300`,
-    warehouseID: `杨浦区`,
-  })
-}
-function onChange(pagination, filters, sorter) {
-  console.log('params', pagination, filters, sorter);
-}
-
 export default {
-  name: 'Search',
+  name: 'EquipPreview',
   data () {
     this.cacheData = wData.map(item => ({ ...item }))
     return {
@@ -158,7 +139,6 @@ export default {
     }
   },
   methods: {
-    onChange,
     onClickClearSelect () {
       this.equipmentData.id = ''
       this.equipmentData.name = ''

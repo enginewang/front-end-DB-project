@@ -45,25 +45,92 @@ export const asyncRouterMap = [
             {
                 path: '/warehouse',
                 name: 'warehouse',
-                redirect: '/warehouse/search',
+                redirect: '/warehouse/preview',
                 component: RouteView,
-                meta: { title: '仓库', keepAlive: true, icon: bxAnaalyse },
+                meta: {
+                    title: '仓库', keepAlive: true, icon: bxAnaalyse
+            },
                 children: [
                     {
-                        path: '/warehouse/search',
-                        name: 'Search',
-                        component: () => import('@/views/warehouse/Warehouse'),
-                        meta: { title: '查找', keepAlive: false }
+                        path: '/warehouse/preview',
+                        name: 'Preview',
+                        component: () => import('@/views/warehouse/WarehousePreview'),
+                        meta: {
+                            title: '预览', keepAlive: false
+                        }
                     },
+                    {
+                        path: '/warehouse/detail/:id&:name&:address',
+                        name: 'Detail',
+                        hidden: true,
+                        component: () => import('@/views/warehouse/WarehouseDetail'),
+                        meta: {
+                            title: '详细', keepAlive: false
+                      }
+                    }, {
+                        path: '/warehouse/map',
+                        name: 'Map',
+                        component: () => import('@/views/warehouse/Map'),
+                        meta: { title: '地图', keepAlive: false }
+                    }
                 ]
             },
             // 器材表单操作
             {
-                path: '/equipment:pageNo([1-9]\\d*)?',
+                path: '/equipment',
                 name: 'equipment',
+                redirect: '/equipment/preview',
                 meta: { title: '器材', keepAlive: true, icon: 'table', permission: ['table'] },
-                component: () => import('@/views/equipment/EquipmentPreview'),
+                component: RouteView,
+              children: [
+                {
+                  path: '/equipment/preview',
+                  name: 'EquipPreview',
+                  component: () => import('@/views/equipment/EquipmentPreview'),
+                  meta: {
+                    title: '仓储器材', keepAlive: false
+                  }
+                },
+                {
+                  path: '/equipment/using:pageNo([1-9]\\d*)?',
+                  name: 'Using',
+                  component: () => import('@/views/equipment/EquipmentUsing'),
+                  meta: {
+                    title: '使用中器材', keepAlive: false
+                  }
+                }
+              ]
             },
+
+            // sheets
+            {
+                path: '/sheets',
+                name: 'sheets',
+                redirect: '/sheets/workSheet',
+                component: RouteView,
+                meta: { title: '各类表单', keepAlive: true, icon: "table" },
+                children: [
+                    {
+                        path: '/sheets/workSheet',
+                        name: 'workSheet',
+                        component: () => import('@/views/sheets/workSheet'),
+                        meta: {title: '工单', keepAlive: false}
+                    },
+                    {
+                        path: '/sheets/repairSheet',
+                        name: 'repairSheet',
+                        component: () => import('@/views/sheets/repairSheet'),
+                        meta: {title: '报修单', keepAlive: false}
+                    },
+                    {
+                        path: '/sheets/checkSheet',
+                        name: 'checksheet',
+                        component: () => import('@/views/sheets/checkSheet'),
+                        meta: {title: '巡检单', keepAlive: false}
+                    },
+                ]
+            },
+
 
             // forms
             {

@@ -29,18 +29,3 @@ export function getAllWarehouse () {
     method: 'get'
   })
 }
-
-export function deleteWarehouse (id) {
-  return axios({
-    url: `${api.warehouseDetail}/${id}`,
-    method: 'delete'
-  })
-}
-
-export function updateWarehouse (id, parameter) {
-  return axios({
-    url: `${api.warehouseDetail}/${id}`,
-    method: 'put',
-    data: parameter
-  })
-}
