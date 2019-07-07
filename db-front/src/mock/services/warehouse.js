@@ -30,17 +30,20 @@ const detail = (data) => {
     'a0001':
     {
     'name': '嘉定仓库',
-      'address': '嘉定区'
+    'address': '嘉定区',
+    'detailAddress': '曹安公路'
   },
     'b0002':
     {
       'name': '四平仓库',
-      'address': '杨浦区'
+      'address': '杨浦区',
+      'detailAddress': '四平路1239号'
     },
     'c0003':
     {
       'name': '五角场仓库',
-      'address': '杨浦区'
+      'address': '杨浦区',
+      'detailAddress': '五角场'
     }
   }
   return {

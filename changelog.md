@@ -27,6 +27,10 @@ add API goods to get goods info, and API warehouseDetail change to get warehouse
 - UI redesign
 - to do: complete button and modal effect
 
-###[0.2.1] - 2019.7.7
+###[0.2.2] - 2019.7.7
 - to do: fuzzy-search
 - button and modal
+
+###[0.2.3] - 2019.7.7
+- add fuzzy search
+-to do modal and refresh

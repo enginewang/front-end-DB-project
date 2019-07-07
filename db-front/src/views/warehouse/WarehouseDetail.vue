@@ -3,7 +3,7 @@
     <!-- warehouse message -->
     <a-layout>
       <a-layout-header>
-        您现在位于  {{ warehouseDetail.address }}  的 {{ warehouseDetail.name }}
+        您现在位于 {{ warehouseDetail.address }} {{ warehouseDetail.detailAddress }}的 {{ warehouseDetail.name }}
       </a-layout-header>
       <!-- warehouse message end -->
       <br>
@@ -185,7 +185,8 @@ export default {
       warehouseID: this.$route.params.id,
       warehouseDetail: {
         name: '',
-        address: ''
+        address: '',
+        detailAddress: ''
       },
       visible: false,
       max: 0,
@@ -243,6 +244,7 @@ export default {
     postWarehouseDetail(this.warehouseID).then((response) => {
       this.warehouseDetail.name = response.data.name
       this.warehouseDetail.address = response.data.address
+      this.warehouseDetail.detailAddress = response.data.detailAddress
     }),
     // get info of goods
     postGoods(this.warehouseID).then((response) => {
