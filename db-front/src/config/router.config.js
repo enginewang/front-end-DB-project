@@ -40,6 +40,21 @@ export const asyncRouterMap = [
                     }
                 ]
             },
+            {
+                path: '/server',
+                name: 'server',
+                redirect: '/server/KibanaMonitor',
+                component: RouteView,
+                meta: { title: '服务器', keepAlive: true, icon: bxAnaalyse, permission: ['dashboard'] },
+                children: [
+                    {
+                        path: '/server/KibanaMonitor',
+                        name: 'KibanaMonitor',
+                        component: () => import('@/views/server/KibanaMonitor'),
+                        meta: { title: '监控', keepAlive: false, permission: ['dashboard'] }
+                    },
+                ]
+            },
 
             // warehouse
             {
