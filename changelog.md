@@ -38,3 +38,7 @@ add API goods to get goods info, and API warehouseDetail change to get warehouse
 ###[0.3.1] - 2019.7.8
 - add refresh, API.md
 - to do modal
+
+###[0.3.2] - 2019.7.8
+- complete API, schedule
+- to do: debug, info page, modal check

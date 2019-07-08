@@ -36,7 +36,7 @@
       <!-- table -->
       <a-table :columns="columns" :dataSource="previewDataShow" rowKey="id" bordered>
         <template
-          v-for="col in ['id','icon', 'name', 'address']"
+          v-for="col in ['id', 'name', 'address']"
           slot="col"
           slot-scope="text"
         >
@@ -46,7 +46,7 @@
         </template>
         <template slot="operation" slot-scope="text, record">
           <div class="editable-row-operations">
-            <router-link :to="{ name: 'Detail', params:{ id: getID(record.key)} }">转到仓库详情页</router-link>
+            <router-link :to="{ name: 'Detail', params:{ id: getID(record.id)} }">转到仓库详情页</router-link>
           </div>
         </template>
       </a-table>
@@ -72,11 +72,6 @@ export default {
         width: '15%',
         scopedSlots: { customRender: 'id' },
         sorter: (a, b) => a.id > b.id
-      }, {
-        title: '图标',
-        dataIndex: 'icon',
-        width: '8%',
-        scopedSlots: { customRender: 'icon' }
       }, {
         title: '名称',
         dataIndex: 'name',
@@ -138,9 +133,9 @@ export default {
       this.onClickClearSelect()
       this.reload()
     },
-    getID (key) {
+    getID (id) {
       const newData = [...this.previewDataShow]
-      const target = newData.filter(item => key === item.key)[0]
+      const target = newData.filter(item => id === item.id)[0]
       return target.id
     },
   },
@@ -156,7 +151,7 @@ export default {
           text: val.name,
           value: val.name
         }
-        this.columns[3].filters.push(temp)
+        this.columns[2].filters.push(temp)
       }
     })
   }

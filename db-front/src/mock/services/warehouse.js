@@ -121,65 +121,55 @@ const goods = (data) => {
         'id': '10001',
         'model': 'GTX1080',
         'type': 'Equipment',
-        'number': 1000
       },
       {
         'id': '10002',
         'model': 'GTX2080',
-        'type': 'Equipment',
-        'number': 2000
+        'type': 'Equipment'
       },
     ],
     'b0002': [
       {
         'id': '10003',
         'model': 'GTX3080',
-        'type': 'Equipment',
-        'number': 1000
+        'type': 'Equipment'
       },
       {
         'id': '10004',
         'model': 'GTX1080',
-        'type': 'Equipment',
-        'number': 1000
+        'type': 'Equipment'
       },
       {
         'id': '10005',
         'model': 'GTX980',
-        'type': 'Equipment',
-        'number': 1000
+        'type': 'Equipment'
       }
     ],
     'c0003': [
       {
         'id': '10006',
         'model': 'GTX3080',
-        'type': 'Equipment',
-        'number': 1000
+        'type': 'Equipment'
       },
       {
         'id': '10007',
         'model': 'GTX2080',
-        'type': 'Equipment',
-        'number': 1000
+        'type': 'Equipment'
       },
       {
         'id': '10008',
         'model': 'GTX1080',
-        'type': 'Equipment',
-        'number': 1000
+        'type': 'Equipment'
       },
       {
         'id': '10009',
         'model': 'i7-8700k',
-        'type': 'Accessory',
-        'number': 1000
+        'type': 'Equipment'
       },
       {
         'id': '10010',
         'model': 'i7-8700k',
-        'type': 'Accessory',
-        'number': 1000
+        'type': 'Equipment'
       }
     ]
   }
@@ -196,19 +186,16 @@ const preview = () => {
     'data': [
       {
         'id': 'a0001',
-        'icon': 0,
         'name': '嘉定仓库',
         'address': '嘉定区'
       },
       {
         'id': 'b0002',
-        'icon': 1,
         'name': '四平仓库',
         'address': '杨浦区'
       },
       {
         'id': 'c0003',
-        'icon': 2,
         'name': '五角场仓库',
         'address': '杨浦区'
       }
@@ -216,6 +203,12 @@ const preview = () => {
   }
 }
 
+const schedule = (data) => {
+  console.log(data.body)
+  return {
+    // return differs according type
+  }
+}
 
 
 
@@ -224,3 +217,4 @@ Mock.mock(/\/warehouse\/allWarehouse/, 'get', allWarehouse)
 Mock.mock(/\/warehouse\/detail/, 'post', detail)
 Mock.mock(/\/warehouse\/goods/, 'post', goods)
 Mock.mock(/\/warehouse\/preview/, 'get', preview)
+Mock.mock(/\warehouse\/schedule/, 'post', schedule)

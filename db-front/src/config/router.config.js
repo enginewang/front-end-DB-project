@@ -78,40 +78,46 @@ export const asyncRouterMap = [
             },
           // equipment
             {
-                path: '/equipment',
-                name: 'equipment',
-                redirect: '/equipment/preview',
-                meta: { title: '器材', keepAlive: true, icon: 'appstore', permission: ['table'] },
-                component: RouteView,
-                children: [
-                  {
-                    path: '/equipment/preview',
-                    name: 'EquipPreview',
-                    component: () => import('@/views/equipment/EquipmentPreview'),
-                    meta: {
-                      title: '仓储器材', keepAlive: false, icon: 'database'
-                    }
+              path: '/equipment',
+              name: 'equipment',
+              redirect: '/equipment/preview',
+              meta: {title: '器材', keepAlive: true, icon: 'appstore', permission: ['table']},
+              component: RouteView,
+              children: [
+                {
+                  path: '/equipment/preview',
+                  name: 'EquipPreview',
+                  component: () => import('@/views/equipment/EquipmentPreview'),
+                  meta: {
+                    title: '仓储器材', keepAlive: false, icon: 'database'
+                  }
+                },
+                {
+                  path: '/equipment/using:pageNo([1-9]\\d*)?',
+                  name: 'EquipUsing',
+                  component: () => import('@/views/equipment/EquipmentUsing'),
+                  meta: {
+                    title: '在用器材', keepAlive: false, icon: 'api'
+                  }
+                },
+                {
+                  path: '/equipment/detail/:id',
+                  name: 'EquipDetail',
+                  hidden: true,
+                  component: () => import('@/views/equipment/EquipInfo'),
+                  meta: {
+                    title: '器材详情', keepAlive: false, icon: 'bars'
                   },
-                  {
-                    path: '/equipment/using:pageNo([1-9]\\d*)?',
-                    name: 'EquipUsing',
-                    component: () => import('@/views/equipment/EquipmentUsing'),
-                    meta: {
-                      title: '在用器材', keepAlive: false, icon: 'api'
-                    }
-                  },
-                  {
-                    path: '/equipment/detail/:id',
-                    name: 'EquipDetail',
-                    hidden: true,
-                    component: () => import('@/views/equipment/EquipInfo'),
-                    meta: {
-                      title: '器材详情', keepAlive: false, icon: 'bars'
-                    },
-                  },
-                ]
+                },
+              ]
+          },
+            // accessory
+            {
+                path: '/accessory',
+                name:'accessory',
+                component: () => import('@/views/accessory/Accessory'),
+                meta: { title:'配件', keepAlive: true, icon: 'database'}
             },
-
             // sheets
             {
                 path: '/sheets',
