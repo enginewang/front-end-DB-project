@@ -1,31 +1,58 @@
 import { axios } from '@/utils/request'
 
 const api = {
-  warehousePreview: '/warehouse/previewData',
-  warehouseDetail: '/warehouse/detailData',
-  warehouseAll: '/warehouse/all'
+  preview: '/warehouse/preview',
+  detail: '/warehouse/detail',
+  allWarehouse: '/warehouse/allWarehouse',
+  allAddress: '/warehouse/allAddress',
+  goods: '/warehouse/goods',
+  schedule: '/warehouse/schedule'
 }
 
 export default api
 
 export function getWarehousePreview () {
   return axios({
-    url: api.warehousePreview,
+    url: api.preview,
     method: 'get'
   })
 }
 
-export function getWarehouseDetail (parameter) {
+export function postWarehouseDetail (data) {
   return axios({
-    url: api.warehouseDetail,
-    method: 'get',
-    param: parameter
+    url: api.detail,
+    method: 'post',
+    data: data
+  })
+}
+
+
+export function postGoods (data) {
+  return axios({
+    url: api.goods,
+    method: 'post',
+    data: data
   })
 }
 
 export function getAllWarehouse () {
   return axios({
-    url: api.warehouseAll,
+    url: api.allWarehouse,
     method: 'get'
+  })
+}
+
+export function getAllAddress () {
+  return axios({
+    url: api.allAddress,
+    method: 'get'
+  })
+}
+
+export function postSchedule (data) {
+  return axios({
+    url: api.schedule,
+    method: 'post',
+    data: data[0]
   })
 }

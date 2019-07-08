@@ -28,9 +28,9 @@
       <div>
         <a-table :columns="columns" :dataSource="eDataShow" rowKey="id" bordered>
           <template
-                  v-for="col in ['id', 'type', 'damage', 'address', 'status']"
-                  :slot="col"
-                  slot-scope="text"
+            v-for="col in ['id', 'type', 'damage', 'address', 'status']"
+            :slot="col"
+            slot-scope="text"
           >
             <div :key="col">
               {{ text }}
@@ -38,6 +38,11 @@
           </template>
           <template slot="status" slot-scope="text">
             <a-badge :status="text | statusTypeFilter" :text="text | statusFilter" />
+          </template>
+          <template slot="toDetail" slot-scope="text, record">
+            <div>
+              <router-link :to="{ name: 'EquipDetail', params:{ id: getID(record.id)} }">器材详情</router-link>
+            </div>
           </template>
         </a-table>
       </div>
@@ -74,33 +79,20 @@
     title: '器材编号',
     dataIndex: 'id',
     width: '15%',
+    align: 'center',
     scopedSlots: {customRender: 'id'},
-    sorter: (a, b) => a.id - b.id
+    sorter: (a, b) => parseInt(a.id.toString().slice(2)) - parseInt(b.id.toString().slice(2))
   }, {
     title: '类别',
     dataIndex: 'type',
+    align: 'center',
     width: '10%',
     scopedSlots: {customRender: 'type'}
   }, {
-    title: '损坏程度',
-    dataIndex: 'damage',
-    width: '10%',
-    scopedSlots: {customRender: 'damage'},
-    sorter: (a, b) => a.damage - b.damage
-  }, {
-    title: '型号',
-    dataIndex: 'model',
-    width: '15%',
-    scopedSlots: {customRender: 'model'}
-  }, {
-    title: '地址',
-    dataIndex: 'address',
-    width: '30%',
-    scopedSlots: {customRender: 'address'}
-  }, {
     title: '使用状态',
     dataIndex: 'status',
-    width: '10%',
+    align: 'center',
+    width: '12%',
     filters: [{
       text: '存储中',
       value: '0'
@@ -116,6 +108,31 @@
     }],
     onFilter: (value, record) => record.status.indexOf(value) === 0,
     scopedSlots: {customRender: 'status'}
+  }, {
+    title: '损坏程度',
+    dataIndex: 'damage',
+    align: 'center',
+    width: '12%',
+    scopedSlots: {customRender: 'damage'},
+    sorter: (a, b) => a.damage > b.damage
+  }, {
+    title: '型号',
+    dataIndex: 'model',
+    align: 'center',
+    width: '15%',
+    scopedSlots: {customRender: 'model'}
+  }, {
+    title: '地址',
+    dataIndex: 'address',
+    align: 'center',
+    width: '25%',
+    scopedSlots: {customRender: 'address'}
+  },{
+    title: ' ',
+    dataIndex: 'toDetail',
+    align: 'center',
+    width: '15%',
+    scopedSlots: {customRender: 'toDetail'}
   }]
   let inputID = ''
   let inputAddress = ''
@@ -162,6 +179,9 @@
       }
     },
     methods: {
+      clickJump(record){
+        console.log(record);
+      },
       onClickClearSelect() {
         this.equipmentData.type = ''
       },
@@ -210,6 +230,12 @@
         this.queryParam = {
           date: moment(new Date())
         }
+      },
+      getID(id) {
+        const newData = [...this.eDataShow]
+        const target = newData.filter(item => id === item.id)[0]
+        console.log(target.id)
+        return target.id
       }
     },
     watch: {

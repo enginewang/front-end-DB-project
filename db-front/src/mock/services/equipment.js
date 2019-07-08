@@ -45,6 +45,70 @@ const equipmentUsing = () => {
   ]
 }
 
+const equipmentDetail = (data) => {
+  let equipdetail = {
+    'eq10001':
+      {
+        name: '哑铃',
+        factory_time: '2019.07.01',
+        install_time: '2019.07.07',
+        using_time: '6 days',
+        unit: '同济大学',
+        address: '上海市嘉定区曹安公路4800号',
+        if_damage: '已损坏',
+        order: '20190707',
+      },
+    'eq10002':
+      {
+        name: '跑步机',
+        factory_time: '2019.07.01',
+        install_time: '2019.07.07',
+        using_time: '6 days',
+        unit: '清华大学',
+        address: '上海市嘉定区曹安公路4800号',
+        if_damage: '已损坏',
+        order: '20190707',
+      },
+    'eq10003':
+      {
+        name: '篮球',
+        factory_time: '2019.07.01',
+        install_time: '2019.07.07',
+        using_time: '6 days',
+        unit: '复旦大学',
+        address: '上海市嘉定区曹安公路4800号',
+        if_damage: '已损坏',
+        order: '20190707',
+      },
+    'eq10004':
+      {
+        name: '足球',
+        factory_time: '2019.07.01',
+        install_time: '2019.07.07',
+        using_time: '6 days',
+        unit: '脚痛大学',
+        address: '上海市嘉定区曹安公路4800号',
+        if_damage: '已损坏',
+        order: '20190707',
+      },
+    'eq10005':
+      {
+        name: '羽毛球',
+        factory_time: '2019.07.01',
+        install_time: '2019.07.07',
+        using_time: '6 days',
+        unit: '上海大学',
+        address: '上海市嘉定区曹安公路4800号',
+        if_damage: '已损坏',
+        order: '20190707',
+      },
+  }
+  return {
+    'data': equipdetail[data.body]
+  }
+};
+
+
 const equipmentAll = () => {
   return [
     {
@@ -95,5 +159,6 @@ const equipmentAll = () => {
   ]
 }
 
-Mock.mock(/\/equipment\/using/, 'get', equipmentUsing)
-Mock.mock(/\/equipment\/all/, 'get', equipmentAll)
+Mock.mock(/\/equipment\/using/, 'get', equipmentUsing);
+Mock.mock(/\/equipment\/detail/, 'post', equipmentDetail);
+Mock.mock(/\/equipment\/all/, 'get', equipmentAll);

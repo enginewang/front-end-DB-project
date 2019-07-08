@@ -48,60 +48,76 @@ export const asyncRouterMap = [
                 redirect: '/warehouse/preview',
                 component: RouteView,
                 meta: {
-                    title: '仓库', keepAlive: true, icon: bxAnaalyse
+                  title: '仓库', keepAlive: true, icon: 'bank'
             },
                 children: [
-                    {
-                        path: '/warehouse/preview',
-                        name: 'Preview',
-                        component: () => import('@/views/warehouse/WarehousePreview'),
-                        meta: {
-                            title: '预览', keepAlive: false
-                        }
-                    },
-                    {
-                        path: '/warehouse/detail/:id&:name&:address',
-                        name: 'Detail',
-                        hidden: true,
-                        component: () => import('@/views/warehouse/WarehouseDetail'),
-                        meta: {
-                            title: '详细', keepAlive: false
-                      }
-                    }, {
-                        path: '/warehouse/map',
-                        name: 'Map',
-                        component: () => import('@/views/warehouse/Map'),
-                        meta: { title: '地图', keepAlive: false }
+                  {
+                    path: '/warehouse/preview',
+                    name: 'Preview',
+                    component: () => import('@/views/warehouse/WarehousePreview'),
+                    meta: {
+                      title: '预览', keepAlive: false, icon: 'search'
                     }
+                  },
+                  {
+                    path: '/warehouse/detail/:id',
+                    name: 'Detail',
+                    hidden: true,
+                    component: () => import('@/views/warehouse/WarehouseDetail'),
+                    meta: {
+                      title: '详细', keepAlive: false
+                    }
+                  },
+                  {
+                    path: '/warehouse/map',
+                    name: 'Map',
+                    component: () => import('@/views/warehouse/Map'),
+                    meta: {title: '地图', keepAlive: false, icon: 'picture'}
+                  }
                 ]
             },
-            // 器材表单操作
+          // equipment
             {
-                path: '/equipment',
-                name: 'equipment',
-                redirect: '/equipment/preview',
-                meta: { title: '器材', keepAlive: true, icon: 'table', permission: ['table'] },
-                component: RouteView,
-                children: [
-                    {
-                        path: '/equipment/preview',
-                        name: 'EquipPreview',
-                        component: () => import('@/views/equipment/EquipmentPreview'),
-                        meta: {
-                            title: '仓储器材', keepAlive: false
-                        }
-                    },
-                    {
-                        path: '/equipment/using:pageNo([1-9]\\d*)?',
-                        name: 'EquipUsing',
-                        component: () => import('@/views/equipment/EquipmentUsing'),
-                        meta: {
-                            title: '在用器材', keepAlive: false
-                        }
-                    }
-                ]
+              path: '/equipment',
+              name: 'equipment',
+              redirect: '/equipment/preview',
+              meta: {title: '器材', keepAlive: true, icon: 'appstore', permission: ['table']},
+              component: RouteView,
+              children: [
+                {
+                  path: '/equipment/preview',
+                  name: 'EquipPreview',
+                  component: () => import('@/views/equipment/EquipmentPreview'),
+                  meta: {
+                    title: '仓储器材', keepAlive: false, icon: 'database'
+                  }
+                },
+                {
+                  path: '/equipment/using:pageNo([1-9]\\d*)?',
+                  name: 'EquipUsing',
+                  component: () => import('@/views/equipment/EquipmentUsing'),
+                  meta: {
+                    title: '在用器材', keepAlive: false, icon: 'api'
+                  }
+                },
+                {
+                  path: '/equipment/detail/:id',
+                  name: 'EquipDetail',
+                  hidden: true,
+                  component: () => import('@/views/equipment/EquipInfo'),
+                  meta: {
+                    title: '器材详情', keepAlive: false, icon: 'bars'
+                  },
+                },
+              ]
+          },
+            // accessory
+            {
+                path: '/accessory',
+                name:'accessory',
+                component: () => import('@/views/accessory/Accessory'),
+                meta: { title:'配件', keepAlive: true, icon: 'database'}
             },
-
             // sheets
             {
                 path: '/sheets',
@@ -114,21 +130,29 @@ export const asyncRouterMap = [
                         path: '/sheets/workSheet',
                         name: 'workSheet',
                         component: () => import('@/views/sheets/workSheet'),
-                        meta: {title: '工单', keepAlive: false}
+                        meta: {title: '工单', keepAlive: false, icon: 'snippets'}
                     },
                     {
                         path: '/sheets/repairSheet',
                         name: 'repairSheet',
                         component: () => import('@/views/sheets/repairSheet'),
-                        meta: {title: '报修单', keepAlive: false}
+                        meta: {title: '报修单', keepAlive: false, icon: 'exception'}
                     },
                     {
                         path: '/sheets/checkSheet',
                         name: 'checksheet',
                         component: () => import('@/views/sheets/checkSheet'),
-                        meta: {title: '巡检单', keepAlive: false}
+                        meta: {title: '巡检单', keepAlive: false, icon: 'copy'}
                     },
                 ]
+            },
+
+            // 员工信息
+            {
+                path: '/staff:pageNo([1-9]\\d*)?',
+                name: 'staff',
+                meta: { title: '员工', keepAlive: true, icon: 'table', permission: ['table'] },
+                component: () => import('@/views/staff/Staff'),
             },
 
 
@@ -168,6 +192,12 @@ export const asyncRouterMap = [
                 redirect: '/list/table-list',
                 meta: { title: '列表页', icon: 'table', permission: ['table'] },
                 children: [
+                    {
+                        path: '/list/workorder-list',
+                        name: 'WorkorderList',
+                        component: () => import('@/views/list/WorkorderList'),
+                        meta: { title: '工单列表', keepAlive: true, permission: ['table'] }
+                    },
                     {
                         path: '/list/table-list/:pageNo([1-9]\\d*)?',
                         name: 'TableListWrapper',
