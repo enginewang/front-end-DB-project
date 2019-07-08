@@ -179,12 +179,9 @@ export const asyncRouterMap = [
                 ]
             },
 
-<<<<<<< HEAD
-=======
   
 
 
->>>>>>> 18cd1a82ec8d522e8a4902e249634fd6a8a18ad1
             // forms
             {
                 path: '/form',
