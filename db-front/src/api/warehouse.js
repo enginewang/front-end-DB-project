@@ -5,7 +5,8 @@ const api = {
   detail: '/warehouse/detail',
   allWarehouse: '/warehouse/allWarehouse',
   allAddress: '/warehouse/allAddress',
-  goods: '/warehouse/goods'
+  goods: '/warehouse/goods',
+  schedule: '/warehouse/schedule'
 }
 
 export default api
@@ -45,5 +46,13 @@ export function getAllAddress () {
   return axios({
     url: api.allAddress,
     method: 'get'
+  })
+}
+
+export function postSchedule (data) {
+  return axios({
+    url: api.schedule,
+    method: 'post',
+    data: data[0]
   })
 }

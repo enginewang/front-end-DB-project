@@ -46,7 +46,7 @@
         </template>
         <template slot="operation" slot-scope="text, record">
           <div class="editable-row-operations">
-            <router-link :to="{ name: 'Detail', params:{ id: getID(record.key)} }">转到仓库详情页</router-link>
+            <router-link :to="{ name: 'Detail', params:{ id: getID(record.id)} }">转到仓库详情页</router-link>
           </div>
         </template>
       </a-table>
@@ -133,9 +133,9 @@ export default {
       this.onClickClearSelect()
       this.reload()
     },
-    getID (key) {
+    getID (id) {
       const newData = [...this.previewDataShow]
-      const target = newData.filter(item => key === item.key)[0]
+      const target = newData.filter(item => id === item.id)[0]
       return target.id
     },
   },

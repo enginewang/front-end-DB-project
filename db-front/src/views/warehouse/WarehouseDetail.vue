@@ -40,7 +40,7 @@
         </template>
         <template slot="operation" slot-scope="text, record">
           <div class="editable-row-operations">
-            <a-button @click="() => schedule(record.key)">调度</a-button>
+            <a-button @click="() => scheduleEquipment(record.id)">调度</a-button>
             <!-- modal -->
             <a-modal
               title="调度"
@@ -51,6 +51,7 @@
                 调出到
                 <a-select
                   style="width: 200px"
+                  v-model="to"
                 >
                   <a-select-option v-for="(item, index) in allWarehouse" :key="index">
                     {{ item.name }}
@@ -64,6 +65,7 @@
                   :max="max"
                   :min="min"
                   class="input"
+                  v-model="schedule.num"
                 />
               </div>
             </a-modal>
@@ -97,7 +99,7 @@
         </template>
         <template slot="operation" slot-scope="text, record">
           <div class="editable-row-operations">
-            <a-button @click="() => schedule(record.key)">调度</a-button>
+            <a-button @click="() => scheduleAccessory(record.model)">调度</a-button>
             <!-- modal -->
             <a-modal
               title="调度"
@@ -108,8 +110,11 @@
                 调出到
                 <a-select
                   style="width: 200px"
+                  v-model="to"
                 >
-                  <a-select-option v-for="(item, index) in allWarehouse" :key="index">
+                  <a-select-option 
+                   v-for="(item, index) in allWarehouse" 
+                   :key="index">
                     {{ item.name }}
                   </a-select-option>
                 </a-select>
@@ -121,6 +126,7 @@
                   :max="max"
                   :min="min"
                   class="input"
+                  v-model="schedule.num"
                 />
               </div>
             </a-modal>
@@ -134,7 +140,7 @@
 </template>
 
 <script>
-import { postWarehouseDetail, getAllWarehouse , postGoods } from '@/api/warehouse'
+import { postWarehouseDetail, getAllWarehouse , postGoods, postSchedule } from '@/api/warehouse'
 import Fuse from 'fuse.js'
 
 export default {
@@ -142,7 +148,7 @@ export default {
   name: 'Detail',
   data () {
     return {
-      // form
+      // form and columns names
       form: this.$form.createForm(this),
       acol : [{
         title: '型号',
@@ -186,22 +192,40 @@ export default {
       }],
 
       // data
+      // origin data
       accessory: [],
-      accessoryShow: [],
-      accessoryInput: '',
       equipment: [],
+      // show data
+      accessoryShow: [],
       equipmentShow: [],
+      // input data, search by key
+      accessoryInput: '',
       equipmentInput: '',
+      // the ID of this warehouse
       warehouseID: this.$route.params.id,
+      // detail data of this warehouse
       warehouseDetail: {
         name: '',
         address: '',
         detailAddress: ''
       },
+      // show modal
       visible: false,
+      // max and min of number to be scheduled
       max: 0,
-      min: 0,
-      allWarehouse: []
+      min: 1,
+      // the data of all warehouse
+      allWarehouse: [],
+      // the index of "to" warehouse
+      to: 0,
+      schedule: {
+        type: '',
+        key: '',
+        from: '',
+        // the name of "to" warehouse
+        to: '',
+        num: 1
+      }
     }
   },
   // watch for fuzzy search
@@ -234,17 +258,45 @@ export default {
     }
   },
   methods: {
-    schedule (key) {
+    // schedule for equipment
+    scheduleEquipment (id) {
       const newData = [...this.equipment]
-      const target = newData.filter(item => key === item.key)[0]
-      console.log(target)
+      const target = newData.filter(item => id === item.id)[0]
+      this.max = target.number
+      this.visible = true
+
+      getAllWarehouse().then((response) => {
+        this.allWarehouse = [...response.data]
+      })
+
+      this.schedule.type = 'equipment'
+      this.schedule.key = target.id
+      this.schedule.from = this.warehouseDetail.name
+    },
+    // schedule for accessory
+    scheduleAccessory (model) {
+      const newData = [...this.accessory]
+      const target = newData.filter(item => model === item.model)[0]
       this.max = target.number
       this.visible = true
       getAllWarehouse().then((response) => {
         this.allWarehouse = [...response.data]
       })
+
+      this.schedule.type = 'accessory'
+      this.schedule.key = target.model
+      this.schedule.from = this.warehouseDetail.name
     },
+    // event after click ok
     handleOk (e) {
+      // the "to" in json schedule need to be changed from index to string
+      this.schedule.to = this.allWarehouse[this.to].name
+      postSchedule([this.schedule]).then((response) => {
+       // this.equipment = [...response.data.equipment]
+       // this.equipmentShow = this.equipment
+       // this.accessory = [...response.data.accessory]
+       // this.accessoryShow = this.accessory
+      })
       // to be completed
       this.visible = false
     }

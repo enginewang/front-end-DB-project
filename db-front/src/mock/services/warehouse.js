@@ -213,6 +213,12 @@ const preview = () => {
   }
 }
 
+const schedule = (data) => {
+  console.log(data.body)
+  return {
+
+  }
+}
 
 
 
@@ -221,3 +227,4 @@ Mock.mock(/\/warehouse\/allWarehouse/, 'get', allWarehouse)
 Mock.mock(/\/warehouse\/detail/, 'post', detail)
 Mock.mock(/\/warehouse\/goods/, 'post', goods)
 Mock.mock(/\/warehouse\/preview/, 'get', preview)
+Mock.mock(/\warehouse\/schedule/, 'post', schedule)
