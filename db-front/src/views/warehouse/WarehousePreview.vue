@@ -148,8 +148,8 @@ export default {
       this.allAddress = [...response.data]
       for(let val of this.allAddress){
         let temp = {
-          text: val.name,
-          value: val.name
+          text: val,
+          value: val
         }
         this.columns[2].filters.push(temp)
       }

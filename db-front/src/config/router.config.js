@@ -40,6 +40,21 @@ export const asyncRouterMap = [
                     }
                 ]
             },
+            {
+                path: '/server',
+                name: 'server',
+                redirect: '/server/KibanaMonitor',
+                component: RouteView,
+                meta: { title: '服务器', keepAlive: true, icon: bxAnaalyse, permission: ['dashboard'] },
+                children: [
+                    {
+                        path: '/server/KibanaMonitor',
+                        name: 'KibanaMonitor',
+                        component: () => import('@/views/server/KibanaMonitor'),
+                        meta: { title: '监控', keepAlive: false, permission: ['dashboard'] }
+                    },
+                ]
+            },
 
             // warehouse
             {
@@ -147,13 +162,24 @@ export const asyncRouterMap = [
                 ]
             },
 
-            // 员工信息
+            // staff
             {
-                path: '/staff:pageNo([1-9]\\d*)?',
+                path: '/staff',
                 name: 'staff',
-                meta: { title: '员工', keepAlive: true, icon: 'table', permission: ['table'] },
-                component: () => import('@/views/staff/Staff'),
+                redirect: '/staff/staffManage',
+                component: RouteView,
+                meta: { title: '员工', keepAlive: true, icon: "tool" },
+                children: [
+                    {
+                        path: '/staff/staffManage',
+                        name: 'staffManage',
+                        component: () => import('@/views/staff/staffManage'),
+                        meta: {title: '员工管理', keepAlive: false, icon: 'slack'}
+                    }
+                ]
             },
+
+  
 
 
             // forms
