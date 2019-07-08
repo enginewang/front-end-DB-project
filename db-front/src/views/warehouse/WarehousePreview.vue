@@ -151,7 +151,7 @@ export default {
           text: val.name,
           value: val.name
         }
-        this.columns[3].filters.push(temp)
+        this.columns[2].filters.push(temp)
       }
     })
   }
