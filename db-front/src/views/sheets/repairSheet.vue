@@ -73,7 +73,7 @@
             </a-card-meta>
             <div class="cardItemContent">
               <span>{{ item.updatedAt | fromNow }}</span>
-              <a-button type='primary' @click="$modal.show('detail')">查看详情</a-button>
+              <a-button type='primary' @click="showDynamicModal(item)">查看详情</a-button>
               <!-- <div class="avatarList">
                 <avatar-list size="mini">
                   <avatar-list-item
@@ -99,9 +99,7 @@
       
     </div>
 
-    <modal name="detail">
-      hello, world!
-    </modal>
+    
   </div>
 </template>
 
@@ -109,6 +107,7 @@
 import moment from 'moment'
 import { TagSelect, StandardFormRow, Ellipsis, AvatarList } from '@/components'
 import Fuse from 'fuse.js'
+import repairSheetDetail from './components/repairSheetDetail'
 
 var pageData = null
 const TagSelectOption = TagSelect.Option
@@ -197,13 +196,19 @@ export default {
       }
     },
 
-    show () {
-      this.$modal.show('hello-world');
+    showDynamicModal (item) {
+      console.log(typeof(item))
+      this.$modal.show(repairSheetDetail,
+       {details: item},
+    {
+        adaptive: true,
+        draggable: true,
+        scrollable: true,
+        height: "auto",
+        width: "60%"})
     },
-    hide () {
-      this.$modal.hide('hello-world');
-    }
   }
+  
 }
 </script>
 

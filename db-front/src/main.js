@@ -23,7 +23,7 @@ Vue.config.productionTip = false
 Vue.use(VueAxios)
 
 //vue-js-modal
-Vue.use(VModal)
+Vue.use(VModal, { dynamic: true, dynamicDefaults: { clickToClose: false }, injectModalsContainer: true })
 
 new Vue({
   router,
