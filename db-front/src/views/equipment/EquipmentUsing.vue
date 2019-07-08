@@ -1,41 +1,43 @@
 <template>
-  <a-card :bordered="false">
-    <br>
-    <a-table :columns="columns" :dataSource="eData" rowKey="id" bordered>
-      <template
-              v-for="col in ['id', 'type', 'status', 'damage', 'address']"
-              :slot="col"
-              slot-scope="text, record"
-      >
-        <div :key="col">
-          <a-input
-                  v-if="record.editable"
-                  style="margin: -5px 0"
-                  :value="text"
-                  @change="e => handleChange(e.target.value, record.key, col)"
-          />
-          <template v-else>{{ text }}</template>
-        </div>
-      </template>
-      <template slot="operation" slot-scope="text, record">
-        <div class="editable-row-operations">
+  <page-view>
+    <a-card :bordered="false">
+      <br>
+      <a-table :columns="columns" :dataSource="eData" rowKey="id" bordered>
+        <template
+          v-for="col in ['id', 'type', 'status', 'damage', 'address']"
+          :slot="col"
+          slot-scope="text, record"
+        >
+          <div :key="col">
+            <a-input
+              v-if="record.editable"
+              style="margin: -5px 0"
+              :value="text"
+              @change="e => handleChange(e.target.value, record.key, col)"
+            />
+            <template v-else>{{ text }}</template>
+          </div>
+        </template>
+        <template slot="operation" slot-scope="text, record">
+          <div class="editable-row-operations">
           <span v-if="record.editable">
             <a @click="() => save(record.key)">确认</a>
             <a-popconfirm title="Sure to cancel?" @confirm="() => cancel(record.key)">
               &nbsp;&nbsp;&nbsp;&nbsp;<a>取消</a>
             </a-popconfirm>
           </span>
-          <span v-else>
+            <span v-else>
             <a @click="() => edit(record.key)">Edit</a>
           </span>
-        </div>
-      </template>
-    </a-table>
-  </a-card>
+          </div>
+        </template>
+      </a-table>
+    </a-card>
+  </page-view>
 </template>
 
 <script>
-
+  import PageView from "../../layouts/PageView"
   import {getEquipmentUsingList} from '@/api/equipment'
 
   const statusMap = {
@@ -107,6 +109,7 @@
 
   export default {
     name: 'EquipUsing',
+    components: {PageView},
     data() {
       return {
         attribute: [

@@ -1,62 +1,65 @@
 <template>
-  <a-card :bordered="false">
-    <div>
-      <!--
-      <a-form class="ant-advanced-search-form" :form="form" layout="inline">
-        <a-row :gutter="24">
-          <a-col :md="4" :sm="30" v-for="( item,index ) in attribute" :key="index">
-            <a-form-item :label="item.cnType">
-              <a-input :placeholder="item.guide" v-model="equipmentData[item.type]"/>
-            </a-form-item>
-          </a-col>
-        </a-row>
-        <a-row>
-          <a-col :md="5" :sm="25">
-            <span class="table-page-search-submitButtons" :style="advanced && { float: 'right', overflow: 'hidden' } || {} ">
-              <a-button type="primary" @click="onClickSubmit" :disabled="emptyInput" >查询</a-button>
-              <a-button style="margin-left: 8px" type="danger" @click="onClickClearSelect" :disabled="emptyInput" ghost>重置</a-button>
-            </span>
-          </a-col>
-        </a-row>
-      </a-form>
-      -->
-    </div>
-    <br>
-    <a-table :columns="columns" :dataSource="eData" rowKey="id" bordered>
-      <template
-              v-for="col in ['id','name', 'address','area']"
-              :slot="col"
-              slot-scope="text, record"
-      >
-        <div :key="col">
-          <a-input
-                  v-if="record.editable"
-                  style="margin: -5px 0"
-                  :value="text"
-                  @change="e => handleChange(e.target.value, record.key, col)"
-          />
-          <template v-else>{{ text }}</template>
-        </div>
-      </template>
-      <template slot="operation" slot-scope="text, record">
-        <div class="editable-row-operations">
+  <page-view>
+    <a-card :bordered="false">
+      <div>
+        <!--
+        <a-form class="ant-advanced-search-form" :form="form" layout="inline">
+          <a-row :gutter="24">
+            <a-col :md="4" :sm="30" v-for="( item,index ) in attribute" :key="index">
+              <a-form-item :label="item.cnType">
+                <a-input :placeholder="item.guide" v-model="equipmentData[item.type]"/>
+              </a-form-item>
+            </a-col>
+          </a-row>
+          <a-row>
+            <a-col :md="5" :sm="25">
+              <span class="table-page-search-submitButtons" :style="advanced && { float: 'right', overflow: 'hidden' } || {} ">
+                <a-button type="primary" @click="onClickSubmit" :disabled="emptyInput" >查询</a-button>
+                <a-button style="margin-left: 8px" type="danger" @click="onClickClearSelect" :disabled="emptyInput" ghost>重置</a-button>
+              </span>
+            </a-col>
+          </a-row>
+        </a-form>
+        -->
+      </div>
+      <br>
+      <a-table :columns="columns" :dataSource="eData" rowKey="id" bordered>
+        <template
+          v-for="col in ['id','name', 'address','area']"
+          :slot="col"
+          slot-scope="text, record"
+        >
+          <div :key="col">
+            <a-input
+              v-if="record.editable"
+              style="margin: -5px 0"
+              :value="text"
+              @change="e => handleChange(e.target.value, record.key, col)"
+            />
+            <template v-else>{{ text }}</template>
+          </div>
+        </template>
+        <template slot="operation" slot-scope="text, record">
+          <div class="editable-row-operations">
           <span v-if="record.editable">
             <a @click="() => save(record.key)">确认</a>
             <a-popconfirm title="Sure to cancel?" @confirm="() => cancel(record.key)">
               &nbsp;&nbsp;&nbsp;&nbsp;<a>取消</a>
             </a-popconfirm>
           </span>
-          <span v-else>
+            <span v-else>
             <a @click="() => edit(record.key)">Edit</a>
           </span>
-        </div>
-      </template>
-    </a-table>
-  </a-card>
+          </div>
+        </template>
+      </a-table>
+    </a-card>
+  </page-view>
 </template>
 
 <script>
   import {getEquipmentAllList} from '@/api/equipment'
+  import PageView from "../../layouts/PageView";
 
   const columns = [{
     title: '器材id',
@@ -118,6 +121,7 @@
   const eData = []
   export default {
     name: 'EquipPreview',
+    components: {PageView},
     data() {
       this.cacheData = eData.map(item => ({...item}))
       return {

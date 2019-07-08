@@ -43,7 +43,21 @@ const equipmentUsing = () => {
       address: 'Tongji University, Shanghai'
     },
   ]
-}
+};
+
+const equipmentInfo = () => {
+  return [
+    {
+      factory_time: '2019.07.01',
+      install_time: '2019.07.07',
+      using_time: '6 days',
+      unit: '同济大学',
+      address: '上海市嘉定区曹安公路4800号',
+      if_damage: '已损坏',
+      order: '20190707',
+    },
+  ]
+};
 
 const equipmentAll = () => {
   return [
@@ -93,7 +107,8 @@ const equipmentAll = () => {
       warehouseID: 'wh2'
     },
   ]
-}
+};
 
-Mock.mock(/\/equipment\/using/, 'get', equipmentUsing)
-Mock.mock(/\/equipment\/all/, 'get', equipmentAll)
+Mock.mock(/\/equipment\/using/, 'get', equipmentUsing);
+Mock.mock(/\/equipment\/information/, 'get', equipmentInfo);
+Mock.mock(/\/equipment\/all/, 'get', equipmentAll);
