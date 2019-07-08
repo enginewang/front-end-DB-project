@@ -3,7 +3,7 @@ import Mock from 'mockjs2'
 const equipmentUsing = () => {
   return [
     {
-      id: "eq10001",
+      id: "EQ10001",
       type: '哑铃',
       status: '1',
       damage: '0.9',
@@ -11,7 +11,7 @@ const equipmentUsing = () => {
       address: 'Tongji University, Shanghai'
     },
     {
-      id: "eq10002",
+      id: "EQ10002",
       type: '跑步机',
       status: '2',
       damage: '0.8',
@@ -19,7 +19,7 @@ const equipmentUsing = () => {
       address: 'Huangdu Institute Of Technology, Jiangsu'
     },
     {
-      id: "eq10003",
+      id: "EQ10003",
       type: '篮球',
       status: '0',
       damage: '0.5',
@@ -27,7 +27,7 @@ const equipmentUsing = () => {
       address: 'Tongji University, Shanghai'
     },
     {
-      id: "eq10004",
+      id: "EQ10004",
       type: '足球',
       status: '3',
       damage: '0.9',
@@ -35,7 +35,7 @@ const equipmentUsing = () => {
       address: 'Huangdu Institute Of Technology, Jiangsu'
     },
     {
-      id: "eq10005",
+      id: "EQ10005",
       type: '羽毛球',
       status: '1',
       damage: '0.4',
@@ -47,7 +47,7 @@ const equipmentUsing = () => {
 
 const equipmentDetail = (data) => {
   let equipdetail = {
-    'eq10001':
+    'EQ10001':
       {
         name: '哑铃',
         factory_time: '2019.07.01',
@@ -58,7 +58,7 @@ const equipmentDetail = (data) => {
         if_damage: '已损坏',
         order: '20190707',
       },
-    'eq10002':
+    'EQ10002':
       {
         name: '跑步机',
         factory_time: '2019.07.01',
@@ -69,7 +69,7 @@ const equipmentDetail = (data) => {
         if_damage: '已损坏',
         order: '20190707',
       },
-    'eq10003':
+    'EQ10003':
       {
         name: '篮球',
         factory_time: '2019.07.01',
@@ -80,7 +80,7 @@ const equipmentDetail = (data) => {
         if_damage: '已损坏',
         order: '20190707',
       },
-    'eq10004':
+    'EQ10004':
       {
         name: '足球',
         factory_time: '2019.07.01',
@@ -91,7 +91,7 @@ const equipmentDetail = (data) => {
         if_damage: '已损坏',
         order: '20190707',
       },
-    'eq10005':
+    'EQ10005':
       {
         name: '羽毛球',
         factory_time: '2019.07.01',
@@ -112,7 +112,7 @@ const equipmentDetail = (data) => {
 const equipmentAll = () => {
   return [
     {
-      id: "eq10001",
+      id: "EQ10001",
       name: '哑铃',
       icon: 'XX',
       modelID: '1001',
@@ -121,7 +121,7 @@ const equipmentAll = () => {
       warehouseID: 'wh1'
     },
     {
-      id: "eq10002",
+      id: "EQ10002",
       name: '篮球',
       icon: 'XX',
       modelID: '1002',
@@ -130,7 +130,7 @@ const equipmentAll = () => {
       warehouseID: 'wh3'
     },
     {
-      id: "eq10003",
+      id: "EQ10003",
       name: '足球',
       icon: 'XX',
       modelID: '1003',
@@ -139,7 +139,7 @@ const equipmentAll = () => {
       warehouseID: 'wh2'
     },
     {
-      id: "eq10004",
+      id: "EQ10004",
       name: '羽毛球',
       icon: 'XX',
       modelID: '1004',
@@ -148,7 +148,7 @@ const equipmentAll = () => {
       warehouseID: 'wh1'
     },
     {
-      id: "eq10005",
+      id: "EQ10005",
       name: '跑步机',
       icon: 'XX',
       modelID: '1005',

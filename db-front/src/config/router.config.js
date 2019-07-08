@@ -3,15 +3,19 @@ import { UserLayout, BasicLayout, RouteView, BlankLayout, PageView } from '@/lay
 import { bxAnaalyse } from '@/core/icons'
 
 export const asyncRouterMap = [
-
-
     {
         path: '/',
         name: 'index',
         component: BasicLayout,
         meta: { title: '首页' },
-        redirect: '/dashboard/workplace',
+        redirect: '/homepage',
         children: [
+          {
+            path: '/homepage',
+            name: 'homepage',
+            meta: { title: '个人中心', keepAlive: true, icon: 'user' },
+            component: () => import('@/views/user/Homepage'),
+          },
             // dashboard
             {
                 path: '/dashboard',

@@ -1,5 +1,16 @@
 <template>
   <a-card :bordered="false">
+    <a-form class="ant-advanced-search-form" :form="form" inline>
+      <a-row :gutter="24">
+        <a-col :md="6" :sm="24">
+          <a-form-item>
+            <label>器材编号：</label>
+            <a-input placeholder="请输入器材编号" v-model="inputID"/>
+          </a-form-item>
+        </a-col>
+      </a-row>
+    </a-form>
+    <br>
     <a-table :columns="columns" :dataSource="eDataShow" rowKey="id" bordered>
       <template
               v-for="col in ['id','name', 'modelID', 'price', 'count', 'warehouseID']"
