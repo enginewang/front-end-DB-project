@@ -97,12 +97,13 @@ export const asyncRouterMap = [
                     name: 'EquipUsing',
                     component: () => import('@/views/equipment/EquipmentUsing'),
                     meta: {
-                      title: '使用中器材', keepAlive: false, icon: 'api'
+                      title: '在用器材', keepAlive: false, icon: 'api'
                     }
                   },
                   {
-                    path: '/equipment/information',
-                    name: 'Information',
+                    path: '/equipment/detail/:id',
+                    name: 'EquipDetail',
+                    hidden: true,
                     component: () => import('@/views/equipment/EquipInfo'),
                     meta: {
                       title: '器材详情', keepAlive: false, icon: 'bars'
@@ -110,13 +111,7 @@ export const asyncRouterMap = [
                   },
                 ]
             },
-            // accessory
-            {
-                path: '/accessory',
-                name:'accessory',
-                component: () => import('@/views/accessory/Accessory'),
-                meta: { title:'配件', keepAlive: true, icon: 'database'}
-            },
+
             // sheets
             {
                 path: '/sheets',

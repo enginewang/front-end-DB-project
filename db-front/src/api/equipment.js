@@ -2,7 +2,7 @@ import { axios } from '@/utils/request'
 
 const api = {
   equipmentUsing: '/equipment/using',
-  equipmentInfo: '/equipment/information',
+  equipmentDetail: '/equipment/detail',
   equipmentAll: '/equipment/all'
 };
 
@@ -15,13 +15,14 @@ export function getEquipmentAllList () {
   })
 }
 
-export function getEquipmentInfo() {
+export function postEquipmentDetail (data) {
   return axios({
-    url: api.equipmentInfo,
-    method: 'get',
+    url: api.equipmentDetail,
+    method: 'post',
+    data: data
   })
-
 }
+
 export function getEquipmentUsingList () {
   return axios({
     url: api.equipmentUsing,

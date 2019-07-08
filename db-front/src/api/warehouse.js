@@ -25,7 +25,6 @@ export function postWarehouseDetail (data) {
   })
 }
 
-
 export function postGoods (data) {
   return axios({
     url: api.goods,

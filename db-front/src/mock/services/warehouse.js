@@ -196,16 +196,19 @@ const preview = () => {
     'data': [
       {
         'id': 'a0001',
+        'icon': 0,
         'name': '嘉定仓库',
         'address': '嘉定区'
       },
       {
         'id': 'b0002',
+        'icon': 1,
         'name': '四平仓库',
         'address': '杨浦区'
       },
       {
         'id': 'c0003',
+        'icon': 2,
         'name': '五角场仓库',
         'address': '杨浦区'
       }

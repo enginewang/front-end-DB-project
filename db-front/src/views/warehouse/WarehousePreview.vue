@@ -36,7 +36,7 @@
       <!-- table -->
       <a-table :columns="columns" :dataSource="previewDataShow" rowKey="id" bordered>
         <template
-          v-for="col in ['id', 'name', 'address']"
+          v-for="col in ['id','icon', 'name', 'address']"
           slot="col"
           slot-scope="text"
         >
@@ -72,6 +72,11 @@ export default {
         width: '15%',
         scopedSlots: { customRender: 'id' },
         sorter: (a, b) => a.id > b.id
+      }, {
+        title: '图标',
+        dataIndex: 'icon',
+        width: '8%',
+        scopedSlots: { customRender: 'icon' }
       }, {
         title: '名称',
         dataIndex: 'name',

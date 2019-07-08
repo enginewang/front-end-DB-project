@@ -1,5 +1,14 @@
 <template>
   <page-view title="器材编号：SSE-20508" logo="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png">
+    <div class="return-button">
+      <router-link :to="{name: 'EquipUsing'}">
+        <a-button type="primary">
+          <a-icon type="left"/>返回
+        </a-button>
+      </router-link>
+    </div>
+
+
     <a-row :gutter="24">
       <a-col :md="24" :lg="7">
         <a-card style="margin-top: 0px" :bordered="true">
@@ -8,7 +17,7 @@
               <div class="avatar">
                 <img :src="equipIMG">
               </div>
-              <div class="username">拉力器</div>
+              <div class="username">{{equipName}}</div>
               <div class="bio">每天锻炼，身体棒棒</div>
             </div>
             <a-divider/>
@@ -140,7 +149,7 @@
   import {PageView} from '@/layouts'
   import DetailList from '@/components/tools/DetailList'
   import ACol from "ant-design-vue/es/grid/Col"
-  import {getEquipmentInfo} from "@/api/equipment";
+  import {postEquipmentDetail} from "@/api/equipment";
 
   const DetailListItem = DetailList.Item
 
@@ -157,7 +166,7 @@
       return {
         equipIMG:require("@/assets/equip.jpg"),
         QRcode:require("@/assets/QRcode.png"),
-
+        equipName: '',
         factory_time: '',
         install_time: '',
         using_time: '',
@@ -166,6 +175,9 @@
         if_damage: '',
         order: '',
         infoData: [],
+
+        equipmentID: this.$route.params.id,
+
 
         tabList: [
           {
@@ -316,17 +328,21 @@
       }
     },
     mounted() {
-      getEquipmentInfo().then((response) => {
-        this.infoData = [...response];
-        this.factory_time = this.infoData[0].factory_time;
-        this.install_time = this.infoData[0].install_time;
-        this.using_time = this.infoData[0].using_time;
-        this.unit = this.infoData[0].unit;
-        this.address = this.infoData[0].address;
-        this.if_damage = this.infoData[0].if_damage;
-        this.order = this.infoData[0].order;
-
+      postEquipmentDetail(this.equipmentID).then((response) => {
+        console.log(response)
+        console.log(this.equipmentID)
+        this.DetailData = response.data;
+        this.equipName = this.DetailData.name;
+        this.factory_time = this.DetailData.factory_time;
+        this.install_time = this.DetailData.install_time;
+        this.using_time = this.DetailData.using_time;
+        this.unit = this.DetailData.unit;
+        this.address = this.DetailData.address;
+        this.if_damage = this.DetailData.if_damage;
+        this.order = this.DetailData.order;
       })
+
+
     },
   }
 </script>
@@ -476,6 +492,13 @@
     .status-list {
       text-align: left;
     }
+  }
+
+  .return-button{
+    position: absolute;
+    z-index: 999;
+    right:1em;
+    top:8.5em;
   }
 
 </style>

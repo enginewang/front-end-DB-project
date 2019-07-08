@@ -147,6 +147,7 @@ export default {
       acol : [{
         title: '型号',
         dataIndex: 'model',
+        width: '30%',
         sorter: (a, b) => a.model > b.model,
         scopedSlots: { customRender: 'model' }
       }, {
@@ -158,18 +159,18 @@ export default {
       }, {
         title: '操作',
         dataIndex: 'operation',
-        width: '20%',
         scopedSlots: { customRender: 'operation' }
       }],
       ecol : [{
         title: '编号',
         dataIndex: 'id',
-        width: '30%',
+        width: '20%',
         sorter: (a, b) => a.id > b.id,
         scopedSlots: { customRender: 'id' }
       }, {
         title: '型号',
         dataIndex: 'model',
+        width: '20%',
         sorter: (a, b) => a.model > b.model,
         scopedSlots: { customRender: 'model' }
       }, {
@@ -181,7 +182,6 @@ export default {
       }, {
         title: '操作',
         dataIndex: 'operation',
-        width: '20%',
         scopedSlots: { customRender: 'operation' }
       }],
 
