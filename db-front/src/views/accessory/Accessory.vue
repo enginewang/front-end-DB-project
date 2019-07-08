@@ -71,13 +71,53 @@
           </a-col>
         </a-form>
       </div>
+      <!-- input bar end -->
+      <!-- refresh button -->
       <!-- table -->
-      <a-table :columns="columns" :dataSource="data" @change="onChange"/>
-      <!-- table end -->
+      <a-card>
+        <a-table :columns="columns" :dataSource="Data" @change="onChange">
+          <div slot="filterDropdown" slot-scope="{ setSelectedKeys, selectedKeys, confirm, clearFilters, column }" class='custom-filter-dropdown'>      <!-- table end -->
+            <a-input
+              v-ant-ref="c => searchInput = c"
+              placeholder="请输入型号"
+              :value="selectedKeys[0]"
+              @change="e => setSelectedKeys(e.target.value ? [e.target.value] : [])"
+              @pressEnter="() => handleSearch(selectedKeys, confirm)"
+              style="width: 188px; margin-bottom: 8px; display: block;"
+            />
+            <a-button
+              type='primary'
+              @click="() => handleSearch(selectedKeys, confirm)"
+              icon="search"
+              size="small"
+              style="width: 90px; margin-right: 8px"
+            >搜索</a-button>
+            <a-button
+              @click="() => handleReset(clearFilters)"
+              size="small"
+              style="width: 90px"
+            >Reset</a-button>
+          </div>
+           <a-icon slot="filterIcon" slot-scope="filtered" type='search' :style="{ color: filtered ? '#108ee9' : undefined }" />
+    <template slot="customRender" slot-scope="text">
+      <span v-if="searchText">
+        <template v-for="(fragment, i) in text.toString().split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i'))">
+          <mark v-if="fragment.toLowerCase() === searchText.toLowerCase()" :key="i" class="highlight">{{fragment}}</mark>
+          <template v-else>{{fragment}}</template>
+        </template>
+      </span>
+      <template v-else>{{text}}</template>
+    </template>
+  </a-table>
+        </a-table>
+
+      </a-card>
     </a-layout>
+
   </div>
 </template>
 <script>
+import { getAccessoryInWarehouse } from '@/api/accessory' 
 //types selection
 const types = [{
   text: "履带",
@@ -98,11 +138,26 @@ const warehouses = [{
 const columns = [{
   title: '型号编号',
   dataIndex: 'modelID',
-  sorter: (a, b) => a.modelID - b.modelID,
+  align:'center',
+  key:'modelID',
+  scopedSlots: {
+    filterDropdown: 'filterDropdown',
+    filterIcon: 'filterIcon',
+    customRender: 'customRender',
+  },
+  onFilter: (value, record) => record.name.toLowerCase().includes(value.toLowerCase()),
+  onFilterDropdownVisibleChange: (visible) => {
+    if (visible) {
+      setTimeout(() => {
+        this.searchInput.focus()
+      },0)
+    }
+  }
 }, {
   title: '配件类型',
   dataIndex: 'type',
   filters: types,
+  align:'center',
   onFilter: (value, record) => record.type.indexOf(value) === 0
 },{
   title: '价格',
@@ -111,24 +166,26 @@ const columns = [{
 }, {
    title: '库存数量',
    dataIndex: 'num',
+   align:'center',
    sorter: (a, b) => a.num - b.num
 },{
   title: '所在仓库',
   dataIndex: 'warehouseID',
   filters: warehouses,
+  align:'center',
   onFilter: (value, record) => record.warehouseID.indexOf(value) === 0
 }];
 
-const data = []
-for (let i = 0; i < 100; i++) {
-    data.push({
-        modelID: i.toString(),
-        type: `type${i % 2}`,
-        price: `$ ${100 - i}`,
-        num: `${i * 10}`,
-        warehouseID: `wh_${i % 2 + 1}`
-    })
-}
+// const data = []
+// for (let i = 0; i < 100; i++) {
+//     data.push({
+//         modelID: i.toString(),
+//         type: `type${i % 2}`,
+//         price: `$ ${100 - i}`,
+//         num: `${i * 10}`,
+//         warehouseID: `wh_${i % 2 + 1}`
+//     })
+// }
 function onChange(pagination, filters, sorter) {
   console.log('params', pagination, filters, sorter);
 }
@@ -137,6 +194,9 @@ function onChange(pagination, filters, sorter) {
 export default {
   data() {
     return {
+      searchText: '',
+      searchInput: null,
+
       attributeModelID: {
         type: 'modelID', 
         cnType: '型号编号', 
@@ -164,8 +224,6 @@ export default {
         {id: '9', name: '第九仓库'},
         {id: '10', name: '第十仓库'},
       ],
-      data,
-      columns,
       // information of add
       addData: {
         modelID: ``,
@@ -173,7 +231,14 @@ export default {
         warehouse: ''
       },
       columns,
-      data,
+      Data: [{
+        'modelID': 'model_001',
+        'type': '履带',
+        'price': 12,
+        'num': 10,
+        'warehouse':'嘉定仓库',
+        'warehouseID':'1234567890'
+      }],
       form: this.$form.createForm(this),
      
     }
@@ -184,18 +249,39 @@ export default {
   //   }
   // },
   methods: {
+    handleSearch (selectedKeys, confirm) {
+      confirm()
+      this.searchText = selectedKeys[0]
+    },
+
+    handleReset (clearFilters) {
+      clearFilters()
+      this.searchText = ''
+    },
     //select
     onChange,
-    onChange(value) {
-        console.log('changed', value);
-      },
+    // refreshTable
+    refreshTable(){
+      getAccessoryInWarehouse().then((response) => {
+        this.data = [...response.data]
+      })
+    },
+    // onChange(value) {
+    //     console.log('changed', value);
+    //   },
     // clear all input
     onClickClearSelect () {
       this.addData.modelID=''
       this.addData.num=''
       this.addData.warehouse=''
+      getAccessoryInWarehouse().then((response) => {
+        this.Data = [ 
+          ...response.data ]
+      })
+      console.log(this.Data)
     },
     // submit
+
     onClickSubmit () {
       console.log(this.addData)
       this.onClickClearSelect()
