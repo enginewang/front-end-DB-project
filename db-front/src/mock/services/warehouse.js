@@ -121,65 +121,55 @@ const goods = (data) => {
         'id': '10001',
         'model': 'GTX1080',
         'type': 'Equipment',
-        'number': 1000
       },
       {
         'id': '10002',
         'model': 'GTX2080',
-        'type': 'Equipment',
-        'number': 2000
+        'type': 'Equipment'
       },
     ],
     'b0002': [
       {
         'id': '10003',
         'model': 'GTX3080',
-        'type': 'Equipment',
-        'number': 1000
+        'type': 'Equipment'
       },
       {
         'id': '10004',
         'model': 'GTX1080',
-        'type': 'Equipment',
-        'number': 1000
+        'type': 'Equipment'
       },
       {
         'id': '10005',
         'model': 'GTX980',
-        'type': 'Equipment',
-        'number': 1000
+        'type': 'Equipment'
       }
     ],
     'c0003': [
       {
         'id': '10006',
         'model': 'GTX3080',
-        'type': 'Equipment',
-        'number': 1000
+        'type': 'Equipment'
       },
       {
         'id': '10007',
         'model': 'GTX2080',
-        'type': 'Equipment',
-        'number': 1000
+        'type': 'Equipment'
       },
       {
         'id': '10008',
         'model': 'GTX1080',
-        'type': 'Equipment',
-        'number': 1000
+        'type': 'Equipment'
       },
       {
         'id': '10009',
         'model': 'i7-8700k',
-        'type': 'Accessory',
-        'number': 1000
+        'type': 'Equipment'
       },
       {
         'id': '10010',
         'model': 'i7-8700k',
-        'type': 'Accessory',
-        'number': 1000
+        'type': 'Equipment'
       }
     ]
   }
@@ -216,7 +206,7 @@ const preview = () => {
 const schedule = (data) => {
   console.log(data.body)
   return {
-
+    // return differs according type
   }
 }
 

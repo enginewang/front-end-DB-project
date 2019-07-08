@@ -30,7 +30,7 @@
       </div>
       <a-table :columns="ecol" :dataSource="equipmentShow" rowKey="id" bordered>
         <template
-          v-for="col in ['id','model', 'type', 'number']"
+          v-for="col in ['id','model', 'type']"
           :slot="col"
           slot-scope="text"
         >
@@ -44,8 +44,8 @@
             <!-- modal -->
             <a-modal
               title="调度"
-              v-model="visible"
-              @ok="handleOk"
+              v-model="visibleE"
+              @ok="handleOKE"
             >
               <div class="modal">
                 调出到
@@ -58,15 +58,6 @@
                   </a-select-option>
                 </a-select>
                 仓库
-              </div>
-              <div class="modal">
-                数量:
-                <a-input-number
-                  :max="max"
-                  :min="min"
-                  class="input"
-                  v-model="schedule.num"
-                />
               </div>
             </a-modal>
             <!-- modal end -->
@@ -103,8 +94,8 @@
             <!-- modal -->
             <a-modal
               title="调度"
-              v-model="visible"
-              @ok="handleOk"
+              v-model="visibleA"
+              @ok="handleOKA"
             >
               <div class="modal">
                 调出到
@@ -126,7 +117,7 @@
                   :max="max"
                   :min="min"
                   class="input"
-                  v-model="schedule.num"
+                  v-model="scheduleA.num"
                 />
               </div>
             </a-modal>
@@ -179,12 +170,6 @@ export default {
         sorter: (a, b) => a.model > b.model,
         scopedSlots: { customRender: 'model' }
       }, {
-        title: '数量',
-        dataIndex: 'number',
-        width: '20%',
-        sorter: (a, b) => a.number - b.number,
-        scopedSlots: { customRender: 'number' }
-      }, {
         title: '操作',
         dataIndex: 'operation',
         width: '20%',
@@ -210,7 +195,8 @@ export default {
         detailAddress: ''
       },
       // show modal
-      visible: false,
+      visibleA: false,
+      visibleE: false,
       // max and min of number to be scheduled
       max: 0,
       min: 1,
@@ -218,13 +204,21 @@ export default {
       allWarehouse: [],
       // the index of "to" warehouse
       to: 0,
-      schedule: {
-        type: '',
-        key: '',
+      // 2 schedules
+      scheduleA: {
+        type: 'Accessory',
+        model: '',
         from: '',
         // the name of "to" warehouse
         to: '',
         num: 1
+      },
+      scheduleE: {
+        type: 'Equipment',
+        id: '',
+        from: '',
+        // the name of "to" warehouse
+        to: ''
       }
     }
   },
@@ -263,42 +257,46 @@ export default {
       const newData = [...this.equipment]
       const target = newData.filter(item => id === item.id)[0]
       this.max = target.number
-      this.visible = true
+      this.visibleE = true
 
       getAllWarehouse().then((response) => {
         this.allWarehouse = [...response.data]
       })
 
-      this.schedule.type = 'equipment'
-      this.schedule.key = target.id
-      this.schedule.from = this.warehouseDetail.name
+      this.scheduleE.id = target.id
+      this.scheduleE.from = this.warehouseDetail.name
     },
     // schedule for accessory
     scheduleAccessory (model) {
       const newData = [...this.accessory]
       const target = newData.filter(item => model === item.model)[0]
       this.max = target.number
-      this.visible = true
+      this.visibleA = true
       getAllWarehouse().then((response) => {
         this.allWarehouse = [...response.data]
       })
 
-      this.schedule.type = 'accessory'
-      this.schedule.key = target.model
-      this.schedule.from = this.warehouseDetail.name
+      this.scheduleA.model = target.model
+      this.scheduleA.from = this.warehouseDetail.name
     },
     // event after click ok
-    handleOk (e) {
+    handleOKE (e) {
       // the "to" in json schedule need to be changed from index to string
-      this.schedule.to = this.allWarehouse[this.to].name
-      postSchedule([this.schedule]).then((response) => {
-       // this.equipment = [...response.data.equipment]
+      this.scheduleE.to = this.allWarehouse[this.to].name
+      postSchedule([this.scheduleE]).then((response) => {
+       // this.equipment = [...response.data]
        // this.equipmentShow = this.equipment
-       // this.accessory = [...response.data.accessory]
+      })
+      this.visibleE = false
+    },
+    handleOKA (e) {
+      // the "to" in json schedule need to be changed from index to string
+      this.scheduleA.to = this.allWarehouse[this.to].name
+      postSchedule([this.scheduleA]).then((response) => {
+       // this.accessory = [...response.data]
        // this.accessoryShow = this.accessory
       })
-      // to be completed
-      this.visible = false
+      this.visibleA = false
     }
   },
   created () {

@@ -106,15 +106,42 @@ return: {// 请求的返回值是两个数组,一个名为 accessory, 一个名�
         'id': '10001', // key string
         'model': 'GTX1080', // string
         'type': 'Equipment', // string
-        'number': 1000 // int
       },
       {
         'id': '10002',
         'model': 'GTX2080',
         'type': 'Equipment',
-        'number': 2000
       }
     ]
   }
+}
+```
+
+```
+name: postSchedule
+url: api/warehouse/schedule
+method: 'post'
+
+// 传给后端的data有两种
+// 一种的type属性是'Equipment'
+// 一种的type属性是'Accessory'
+// 在请求的body中
+data: {
+    type: 'Accessory', // string
+    model: 'GTX2080', // string
+    from: '嘉定仓库', // string
+    to: '四平仓库', //string
+    num: 1 // number
+}
+data: {
+    type: 'Equipment', // string
+    id: 'A000001', // string 
+    from: '五角场仓库', // string 
+    to: '嘉定仓库' // string
+}
+
+return: {
+    // 返回修改后的仓库数据
+    // 参见postGoods
 }
 ```
