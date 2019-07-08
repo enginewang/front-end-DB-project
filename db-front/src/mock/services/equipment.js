@@ -48,7 +48,7 @@ const equipmentUsing = () => {
 const equipmentAll = () => {
   return [
     {
-      id: 1,
+      id: "eq10001",
       name: '哑铃',
       icon: 'XX',
       modelID: '1001',
@@ -57,7 +57,7 @@ const equipmentAll = () => {
       warehouseID: 'wh1'
     },
     {
-      id: 2,
+      id: "eq10002",
       name: '篮球',
       icon: 'XX',
       modelID: '1002',
@@ -66,7 +66,7 @@ const equipmentAll = () => {
       warehouseID: 'wh3'
     },
     {
-      id: 3,
+      id: "eq10003",
       name: '足球',
       icon: 'XX',
       modelID: '1003',
@@ -75,7 +75,7 @@ const equipmentAll = () => {
       warehouseID: 'wh2'
     },
     {
-      id: 4,
+      id: "eq10004",
       name: '羽毛球',
       icon: 'XX',
       modelID: '1004',
@@ -84,7 +84,7 @@ const equipmentAll = () => {
       warehouseID: 'wh1'
     },
     {
-      id: 5,
+      id: "eq10005",
       name: '跑步机',
       icon: 'XX',
       modelID: '1005',

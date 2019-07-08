@@ -1,7 +1,30 @@
 <template>
   <a-card :bordered="false">
     <br>
-    <a-table :columns="columns" :dataSource="eData" bordered>
+    <a-form class="ant-advanced-search-form" :form="form" inline>
+      <a-row :gutter="24">
+        <a-col :md="6" :sm="24">
+          <a-form-item>
+            <label>器材编号：</label>
+            <a-input placeholder="请输入器材编号" v-model="inputID"/>
+          </a-form-item>
+        </a-col>
+        <a-col :md="6" :sm="24">
+          <a-form-item>
+            <label>地址：</label>
+            <a-input placeholder="请输入地址" v-model="inputAddress"/>
+          </a-form-item>
+        </a-col>
+        <a-col :md="6" :sm="24">
+          <a-form-item>
+            <label>型号：</label>
+            <a-input placeholder="请输入型号" v-model="inputModelID"/>
+          </a-form-item>
+        </a-col>
+      </a-row>
+    </a-form>
+    <br>
+    <a-table :columns="columns" :dataSource="eDataShow" rowKey="id" bordered>
       <template
               v-for="col in ['id', 'type', 'status', 'damage', 'address']"
               :slot="col"
@@ -37,7 +60,7 @@
 <script>
 
   import {getEquipmentUsingList} from '@/api/equipment'
-
+  import Fuse from 'fuse.js'
   const statusMap = {
     0: {
       status: 'store',
@@ -58,7 +81,7 @@
   }
 
   const columns = [{
-    title: '器材id',
+    title: '器材编号',
     dataIndex: 'id',
     width: '15%',
     scopedSlots: {customRender: 'id'},
@@ -102,8 +125,11 @@
     width: '30%',
     scopedSlots: {customRender: 'address'}
   }]
-  let eData = []
-  let preData = []
+  let inputID = ''
+  let inputAddress = ''
+  let inputModelID = ''
+  const eData = []
+  const eDataShow = []
 
   export default {
     name: 'EquipUsing',
@@ -115,8 +141,11 @@
         equipmentData: {
           type: '',
         },
-        preData,
         eData,
+        eDataShow,
+        inputID: '',
+        inputAddress: '',
+        inputModelID: '',
         columns,
         advanced: false,
         form: this.$form.createForm(this),
@@ -183,10 +212,56 @@
         }
       }
     },
+    watch: {
+      inputID(pattern){
+        if ( pattern == '' ){
+          this.eDataShow = this.eData
+        }
+        else{
+          const option = {
+            keys: ['id'],
+            threshold: 0.1
+          }
+          var fuse = new Fuse(this.eData, option)
+          this.eDataShow = fuse.search(pattern)
+          console.log(this.eDataShow)
+        }
+      },
+      inputAddress(pattern){
+        if ( pattern == '' ){
+          this.eDataShow = this.eData
+        }
+        else{
+          const option = {
+            keys: ['address'],
+            threshold: 0.1
+          }
+          var fuse = new Fuse(this.eData, option)
+          this.eDataShow = fuse.search(pattern)
+          console.log(this.eDataShow)
+        }
+      },
+      inputModelID(pattern){
+        if ( pattern == '' ){
+          this.eDataShow = this.eData
+        }
+        else{
+          const option = {
+            keys: ['model'],
+            threshold: 0.1
+          }
+          var fuse = new Fuse(this.eData, option)
+          this.eDataShow = fuse.search(pattern)
+          console.log(this.eDataShow)
+        }
+      }
+
+    },
     mounted() {
       getEquipmentUsingList().then((response) => {
         console.log(...response)
         this.eData = [...response]
+        this.eDataShow = this.eData
       })
     }
   }
