@@ -8,69 +8,67 @@
           class="ant-advanced-search-form" 
           :form="form" 
         >
-            <a-col :md="8" :sm="24">
-              <a-form-item :label="attributeModelID.cnType">
-                <a-select 
-                  showSearch
-                  allowClear="true"
-                  placeholder="请填写型号"
-                  optionFilterProp="children"
-                  v-model="addData[attributeModelID.type]">
-                  <a-select-option value="1">model_1</a-select-option>
-                  <a-select-option value="2">model_2</a-select-option>
-                  <a-select-option value="3">model_3</a-select-option>
-                </a-select>
-              </a-form-item>
-            </a-col>
-            <a-col :md="3" :sm="24" offset="1">
-              <a-form-item :label="attributeNum.cnType">
-                <a-input-number
-                  v-model="addData[attributeNum.type]"
-                  :defaultValue="1"
-                  :min="1"
-                  :formatter="value => ` ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
-                  :parser="value => value.replace(/\$\s?|(,*)/g, '')"
-                  @change="onChangeNum"
-                />
-              </a-form-item>
-            </a-col>
-            <a-col :md="8" :sm="24">
-              <a-form-item :label="attributeWarehouse.cnType">
-                <a-select 
-                  label="attributeWarehouse.cnType"
-                  showSearch
-                  allowClear="true"
-                  placeholder="请选择仓库"
-                  optionFilterProp="children"
-                  v-model="addData[attributeWarehouse.type]">
-                  <a-select-option value="1">第一仓库</a-select-option>
-                  <a-select-option value="2">第二仓库</a-select-option>
-                  <a-select-option value="3">第三仓库</a-select-option>
-                </a-select>
-              </a-form-item>
-            </a-col>
-            <a-col :span="4" :style="{ textAlign: 'right' }">
-              <a-form-item span="4">
-                <div class="button-group">
-                  <a-button
-                    size="middle"
-                    class="button"
-                    type="primary"
-                    @click="onClickSubmit"
-                    :disabled="emptyInput"
-                  >添加</a-button>
-                  <a-button
-                    size="middle"
-                    class="button"
-                    type="danger"
-                    @click="onClickClearSelect"
-                    :disabled="emptyInput"
-                  >重置</a-button>
-                </div>
-              </a-form-item>
-              
-            </a-col>
-
+          <a-col :md="8" :sm="24">
+            <a-form-item :label="attributeModelID.cnType">
+              <a-select 
+                showSearch
+                allowClear="true"
+                placeholder="请填写型号"
+                optionFilterProp="children"
+                v-model="addData[attributeModelID.type]">
+                <a-select-option value="1">model_1</a-select-option>
+                <a-select-option value="2">model_2</a-select-option>
+                <a-select-option value="3">model_3</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :md="3" :sm="24" offset="1">
+            <a-form-item :label="attributeNum.cnType">
+              <a-input-number
+                v-model="addData[attributeNum.type]"
+                :defaultValue="1"
+                :min="1"
+                :formatter="value => ` ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
+                :parser="value => value.replace(/\$\s?|(,*)/g, '')"
+                @change="onChangeNum"
+              />
+            </a-form-item>
+          </a-col>
+          <a-col :md="8" :sm="24">
+            <a-form-item :label="attributeWarehouse.cnType">
+              <a-select 
+                label="attributeWarehouse.cnType"
+                placeholder="请选择仓库"
+                showSearch
+                allowClear="true"
+                optionFilterProp="children"
+                v-model="addData[attributeWarehouse.type]">
+                <a-select-option value="1">第一仓库</a-select-option>
+                <a-select-option value="2">第二仓库</a-select-option>
+                <a-select-option value="3">第三仓库</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :span="4" :style="{ textAlign: 'right' }">
+            <a-form-item span="4">
+              <div class="button-group">
+                <a-button
+                  size="middle"
+                  class="button"
+                  type="primary"
+                  @click="onClickSubmit"
+                  :disabled="emptyInput"
+                >添加</a-button>
+                <a-button
+                  size="middle"
+                  class="button"
+                  type="danger"
+                  @click="onClickClearSelect"
+                  :disabled="emptyInput"
+                >重置</a-button>
+              </div>
+            </a-form-item>    
+          </a-col>
         </a-form>
       </div>
       <!-- table -->
@@ -170,7 +168,7 @@ export default {
       columns,
       // information of add
       addData: {
-        modelID: '',
+        modelID: ``,
         num: '',
         warehouse: ''
       },
