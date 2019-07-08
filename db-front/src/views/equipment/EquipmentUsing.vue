@@ -1,115 +1,147 @@
 <template>
-  <page-view>
+  <div>
     <a-card :bordered="false">
       <br>
-      <a-table :columns="columns" :dataSource="eData" rowKey="id" bordered>
-        <template
-          v-for="col in ['id', 'type', 'status', 'damage', 'address']"
-          :slot="col"
-          slot-scope="text, record"
-        >
-          <div :key="col">
-            <a-input
-              v-if="record.editable"
-              style="margin: -5px 0"
-              :value="text"
-              @change="e => handleChange(e.target.value, record.key, col)"
-            />
-            <template v-else>{{ text }}</template>
-          </div>
-        </template>
-        <template slot="operation" slot-scope="text, record">
-          <div class="editable-row-operations">
-          <span v-if="record.editable">
-            <a @click="() => save(record.key)">确认</a>
-            <a-popconfirm title="Sure to cancel?" @confirm="() => cancel(record.key)">
-              &nbsp;&nbsp;&nbsp;&nbsp;<a>取消</a>
-            </a-popconfirm>
-          </span>
-            <span v-else>
-            <a @click="() => edit(record.key)">Edit</a>
-          </span>
-          </div>
-        </template>
-      </a-table>
+      <a-form class="ant-advanced-search-form" :form="form" inline>
+        <a-row :gutter="24">
+          <a-col :md="6" :sm="24">
+            <a-form-item>
+              <label>器材编号：</label>
+              <a-input placeholder="请输入器材编号" v-model="inputID"/>
+            </a-form-item>
+          </a-col>
+          <a-col :md="6" :sm="24">
+            <a-form-item>
+              <label>型号：</label>
+              <a-input placeholder="请输入型号" v-model="inputModelID"/>
+            </a-form-item>
+          </a-col>
+          <a-col :md="6" :sm="24">
+            <a-form-item>
+              <label>地址：</label>
+              <a-input placeholder="请输入地址" v-model="inputAddress"/>
+            </a-form-item>
+          </a-col>
+        </a-row>
+      </a-form>
+      <br>
+      <div>
+        <a-table :columns="columns" :dataSource="eDataShow" rowKey="id" bordered>
+          <template
+            v-for="col in ['id', 'type', 'damage', 'address', 'status']"
+            :slot="col"
+            slot-scope="text"
+          >
+            <div :key="col">
+              {{ text }}
+            </div>
+          </template>
+          <template slot="status" slot-scope="text">
+            <a-badge :status="text | statusTypeFilter" :text="text | statusFilter" />
+          </template>
+          <template slot="toDetail" slot-scope="text, record">
+            <div>
+              <router-link :to="{ name: 'EquipDetail', params:{ id: getID(record.id)} }">器材详情</router-link>
+            </div>
+          </template>
+        </a-table>
+      </div>
     </a-card>
-  </page-view>
+  </div>
+
 </template>
 
 <script>
-  import PageView from "../../layouts/PageView"
+
   import {getEquipmentUsingList} from '@/api/equipment'
+  import Fuse from 'fuse.js'
 
   const statusMap = {
     0: {
-      status: 'store',
-      show: '存储中'
+      status: 'processing',
+      text: '储存中'
     },
     1: {
-      status: 'using',
-      show: '使用中'
+      status: 'success',
+      text: '正常'
     },
     2: {
-      status: 'broken',
-      show: '已损坏'
+      status: 'error',
+      text: '已损坏'
     },
     3: {
-      status: 'repairing',
-      show: '维修中'
+      status: 'default',
+      text: '维修中'
     }
   }
 
   const columns = [{
-    title: '器材id',
+    title: '器材编号',
     dataIndex: 'id',
     width: '15%',
+    align: 'center',
     scopedSlots: {customRender: 'id'},
-    sorter: (a, b) => a.id - b.id
+    sorter: (a, b) => parseInt(a.id.toString().slice(2)) - parseInt(b.id.toString().slice(2))
   }, {
     title: '类别',
     dataIndex: 'type',
+    align: 'center',
     width: '10%',
     scopedSlots: {customRender: 'type'}
   }, {
     title: '使用状态',
     dataIndex: 'status',
-    width: '10%',
+    align: 'center',
+    width: '12%',
     filters: [{
+      text: '存储中',
+      value: '0'
+    }, {
       text: '正常',
-      value: '正常'
-    },
-      {
-        text: '损坏',
-        value: '损坏'
-      },
-      {
-        text: '维修中',
-        value: '维修中'
-      }],
-    onFilter: (value, record) => record.status.indexOf(value) === 0
+      value: '1'
+    }, {
+      text: '已损坏',
+      value: '2'
+    }, {
+      text: '维修中',
+      value: '3'
+    }],
+    onFilter: (value, record) => record.status.indexOf(value) === 0,
+    scopedSlots: {customRender: 'status'}
   }, {
     title: '损坏程度',
     dataIndex: 'damage',
-    width: '10%',
+    align: 'center',
+    width: '12%',
     scopedSlots: {customRender: 'damage'},
-    sorter: (a, b) => a.damage - b.damage
+    sorter: (a, b) => a.damage > b.damage
   }, {
     title: '型号',
     dataIndex: 'model',
+    align: 'center',
     width: '15%',
     scopedSlots: {customRender: 'model'}
   }, {
     title: '地址',
     dataIndex: 'address',
-    width: '30%',
+    align: 'center',
+    width: '25%',
     scopedSlots: {customRender: 'address'}
+  },{
+    title: ' ',
+    dataIndex: 'toDetail',
+    align: 'center',
+    width: '15%',
+    scopedSlots: {customRender: 'toDetail'}
   }]
-  let eData = []
-  let preData = []
+  let inputID = ''
+  let inputAddress = ''
+  let inputModelID = ''
+  const eData = []
+  const eDataShow = []
 
   export default {
     name: 'EquipUsing',
-    components: {PageView},
     data() {
       return {
         attribute: [
@@ -118,8 +150,11 @@
         equipmentData: {
           type: '',
         },
-        preData,
         eData,
+        eDataShow,
+        inputID: '',
+        inputAddress: '',
+        inputModelID: '',
         columns,
         advanced: false,
         form: this.$form.createForm(this),
@@ -135,7 +170,18 @@
         }
       }
     },
+    filters: {
+      statusFilter (type) {
+        return statusMap[type].text
+      },
+      statusTypeFilter (type) {
+        return statusMap[type].status
+      }
+    },
     methods: {
+      clickJump(record){
+        console.log(record);
+      },
       onClickClearSelect() {
         this.equipmentData.type = ''
       },
@@ -184,12 +230,61 @@
         this.queryParam = {
           date: moment(new Date())
         }
+      },
+      getID(id) {
+        const newData = [...this.eDataShow]
+        const target = newData.filter(item => id === item.id)[0]
+        console.log(target.id)
+        return target.id
       }
+    },
+    watch: {
+      inputID(pattern) {
+        if (pattern == '') {
+          this.eDataShow = this.eData
+        } else {
+          const option = {
+            keys: ['id'],
+            threshold: 0.1
+          }
+          var fuse = new Fuse(this.eData, option)
+          this.eDataShow = fuse.search(pattern)
+          console.log(this.eDataShow)
+        }
+      },
+      inputAddress(pattern) {
+        if (pattern == '') {
+          this.eDataShow = this.eData
+        } else {
+          const option = {
+            keys: ['address'],
+            threshold: 0.1
+          }
+          var fuse = new Fuse(this.eData, option)
+          this.eDataShow = fuse.search(pattern)
+          console.log(this.eDataShow)
+        }
+      },
+      inputModelID(pattern) {
+        if (pattern == '') {
+          this.eDataShow = this.eData
+        } else {
+          const option = {
+            keys: ['model'],
+            threshold: 0.1
+          }
+          var fuse = new Fuse(this.eData, option)
+          this.eDataShow = fuse.search(pattern)
+          console.log(this.eDataShow)
+        }
+      }
+
     },
     mounted() {
       getEquipmentUsingList().then((response) => {
         console.log(...response)
         this.eData = [...response]
+        this.eDataShow = this.eData
       })
     }
   }
