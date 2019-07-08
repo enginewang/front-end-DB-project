@@ -54,7 +54,7 @@
                   v-model="to"
                 >
                   <a-select-option v-for="(item, index) in allWarehouse" :key="index">
-                    {{ item.name }}
+                    {{ item }}
                   </a-select-option>
                 </a-select>
                 仓库
@@ -106,7 +106,7 @@
                   <a-select-option 
                    v-for="(item, index) in allWarehouse" 
                    :key="index">
-                    {{ item.name }}
+                    {{ item }}
                   </a-select-option>
                 </a-select>
                 仓库
@@ -142,6 +142,12 @@ export default {
       // form and columns names
       form: this.$form.createForm(this),
       acol : [{
+        title: '编号',
+        dataIndex: 'id',
+        width: '30%',
+        sorter: (a, b) => a.model > b.model,
+        scopedSlots: { customRender: 'model' }
+      }, {
         title: '型号',
         dataIndex: 'model',
         sorter: (a, b) => a.model > b.model,
@@ -259,9 +265,6 @@ export default {
       this.max = target.number
       this.visibleE = true
 
-      getAllWarehouse().then((response) => {
-        this.allWarehouse = [...response.data]
-      })
 
       this.scheduleE.id = target.id
       this.scheduleE.from = this.warehouseDetail.name
@@ -282,7 +285,7 @@ export default {
     // event after click ok
     handleOKE (e) {
       // the "to" in json schedule need to be changed from index to string
-      this.scheduleE.to = this.allWarehouse[this.to].name
+      this.scheduleE.to = this.allWarehouse[this.to]
       postSchedule([this.scheduleE]).then((response) => {
        // this.equipment = [...response.data]
        // this.equipmentShow = this.equipment
@@ -291,7 +294,7 @@ export default {
     },
     handleOKA (e) {
       // the "to" in json schedule need to be changed from index to string
-      this.scheduleA.to = this.allWarehouse[this.to].name
+      this.scheduleA.to = this.allWarehouse[this.to]
       postSchedule([this.scheduleA]).then((response) => {
        // this.accessory = [...response.data]
        // this.accessoryShow = this.accessory
@@ -312,6 +315,10 @@ export default {
       this.equipmentShow = this.equipment
       this.accessory = [...response.data.accessory]
       this.accessoryShow = this.accessory
+    })
+    getAllWarehouse().then((response) => {
+      this.allWarehouse = [...response.data]
+      this.allWarehouse.splice(this.allWarehouse.indexOf(this.warehouseDetail.name), 1)
     })
   }
 

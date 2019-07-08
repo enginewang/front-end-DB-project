@@ -4,7 +4,8 @@ const api = {
   workSheet: '/sheets/workSheet',
   checkSheet: '/sheets/checkSheet',
   repairSheet: '/sheets/repairSheet',
-  workSheetRow: '/sheets/workSheetRow'
+  workSheetRow: '/sheets/workSheetRow',
+  checkSheetRow: '/sheets/checkSheetRow'
 }
 
 export default api
@@ -25,6 +26,14 @@ export function getCheckSheet () {
 export function deleteWorkSheetRow (data) {
   return axios({
     url: api.workSheetRow,
+    method: 'delete',
+    data: data
+  })
+}
+
+export function deleteCheckSheetRow (data) {
+  return axios({
+    url: api.checkSheetRow,
     method: 'delete',
     data: data
   })

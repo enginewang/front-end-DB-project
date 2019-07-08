@@ -162,14 +162,29 @@ export const asyncRouterMap = [
                 ]
             },
 
-            // 员工信息
+            // staff
             {
-                path: '/staff:pageNo([1-9]\\d*)?',
+                path: '/staff',
                 name: 'staff',
-                meta: { title: '员工', keepAlive: true, icon: 'table', permission: ['table'] },
-                component: () => import('@/views/staff/Staff'),
+                redirect: '/staff/staffManage',
+                component: RouteView,
+                meta: { title: '员工', keepAlive: true, icon: "tool" },
+                children: [
+                    {
+                        path: '/staff/staffManage',
+                        name: 'staffManage',
+                        component: () => import('@/views/staff/staffManage'),
+                        meta: {title: '员工管理', keepAlive: false, icon: 'slack'}
+                    }
+                ]
             },
 
+<<<<<<< HEAD
+=======
+  
+
+
+>>>>>>> 18cd1a82ec8d522e8a4902e249634fd6a8a18ad1
             // forms
             {
                 path: '/form',

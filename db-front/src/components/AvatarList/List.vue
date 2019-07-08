@@ -5,7 +5,7 @@
       <slot></slot>
       <template v-for="item in filterEmpty($slots.default).slice(0, 3)"></template>
 
-      <template v-if="maxLength > 0 && filterEmpty($slots.default).length > maxLength">
+      <template   ="maxLength > 0 && filterEmpty($slots.default).length > maxLength">
         <avatar-item :size="size">
           <avatar :size="size !== 'mini' && size || 20" :style="excessItemsStyle">{{ `+${maxLength}` }}</avatar>
         </avatar-item>
