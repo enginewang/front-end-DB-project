@@ -110,7 +110,13 @@ export const asyncRouterMap = [
                   },
                 ]
             },
-
+            // accessory
+            {
+                path: '/accessory',
+                name:'accessory',
+                component: () => import('@/views/accessory/Accessory'),
+                meta: { title:'配件', keepAlive: true, icon: 'database'}
+            },
             // sheets
             {
                 path: '/sheets',
