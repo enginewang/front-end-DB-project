@@ -8,9 +8,17 @@
               <a-input placeholder="请输入巡检单单号" v-model="input"/>
             </a-form-item>
             </a-col>
-            <a-col :md="8" :sm="24">
-            <a-form-item label="巡检员编号">
+        </a-row>
+        <a-row :gutter = '24'>
+            <a-col :md="8" :sm="24" :lg = '10'>
+            <a-form-item label="根据编号查找巡检员">
               <a-input placeholder="请输入巡检员编号" v-model="input2"/>
+            </a-form-item>
+            </a-col>
+
+             <a-col :md="8" :sm="24" :lg = '10'>
+            <a-form-item label="根据姓名查找巡检员">
+              <a-input placeholder="请输入巡检员姓名" v-model="input3"/>
             </a-form-item>
             </a-col>
 
@@ -28,9 +36,10 @@
       </a-form>
     </div>
     <!-- table -->
+    <a-card>
     <a-table :columns="columns" :dataSource="DataShow" rowKey = 'id' bordered>
         <template
-        v-for="col in ['id','potrolID', 'eqID','checkTime','checkArea']"
+        v-for="col in ['id','potrolID', '','eqID','checkTime','checkArea']"
         :slot="col"
         slot-scope="text"
         >
@@ -38,18 +47,38 @@
           {{ text }}
         </div>
       </template>
-      <template slot="operation" >
+      <template slot="checkPic" slot-scope="text">
+        <!--<div>
+          <a-avatar slot="avatar" size="large" shape="square" :src="text"/>
+        </div>-->
+        <div id="app">
+          <div class="">
+          <div
+            class="pic"
+            @click="() => showImg(text)"
+          >
+          <a-avatar :src="text"/>
+          </div>
+        </div>
+        <vue-easy-lightbox
+          :visible="visible"
+          :imgs="src"
+          @hide="handleHide"
+        ></vue-easy-lightbox>
+        </div>
+      </template>
+      <template slot="operation" slot-scope="text, record">
           <div class="button">
               <a-button
                 size="small"
                 style="background:red"
                 type ="primary"
-                @click="onClickDelete"
+                @click="onClickDelete(record.id)"
               >删除</a-button>
               <a-modal
                 title="确认删除"
                 v-model = "visible2"
-                @ok = "handleOK"
+                @ok = "onClickDeleteRow"
                 >
                 <div class = "modal">
                     是否删除本条记录
@@ -57,48 +86,64 @@
             </div>
         </template>
     </a-table>
+    </a-card>
     <!-- table end -->
     <!-- add bar -->
     <!-- add bar end -->
   </div>
 </template>
 <script>
-import { getCheckSheet } from '@/api/sheets'
+import { getCheckSheet, deleteCheckSheetRow } from '@/api/sheets'
+import Vue from 'vue'
 import Fuse from 'fuse.js'
+import Lightbox from 'vue-easy-lightbox'
+
+Vue.use(Lightbox)
 
 const columns = [{
   title: '巡检单单号',
   dataIndex: 'id',
+  align: 'center',
   sorter: (a, b) => a.id > b.id,
 }, {
   title: '巡检员编号',
   dataIndex: 'potrolID',
+  align: 'center',
+  sorter: (a, b) => a.potrolID > b.potrolID,
+}, {
+  title: '巡检员姓名',
+  dataIndex: 'potrolName',
+  align: 'center',
   sorter: (a, b) => a.potrolID > b.potrolID,
 },{
   title: '巡检器材编号',
   dataIndex: 'eqID',
+  align: 'center',
   sorter: (a, b) => a.eqID > b.eqID,
 }, {
   title: '巡检时间',
   dataIndex: 'checkTime',
+  align: 'center',
   sorter: (a, b) => a.checkTime > b.checkTime
 },{
   title: '巡检地区',
+  align: 'center',
   dataIndex: 'checkArea',
 },{
   title: '巡检结果图片',
+  align: 'center',
   dataIndex: 'checkPic',
+  scopedSlots: { customRender: 'checkPic' }
 },{
   titile: '操作',
+  align: 'center',
   dataIndex: 'operation',
   scopedSlots: { customRender: 'operation' }
 }];
 
 const Data = []
 const DataShow = []
-function onChange(pagination, filters, sorter) {
-  console.log('params', pagination, filters, sorter);
-}
+
 export default {
   inject: ['reload'],
   data() {
@@ -108,12 +153,13 @@ export default {
       DataShow,
       input: '',
       input2: '',
-      fuseOption:{
-        key: ['id'],
-      },
+      input3: '',
       columns,
+      visible: false,
       visible2: false,
+      src: "",
       isRouterAlive: true,
+      todelete:'',
       form: this.$form.createForm(this)
     }
   },
@@ -143,49 +189,69 @@ export default {
               var fuse = new Fuse(this.Data,option)
               this.DataShow = fuse.search(pattern)
           }
+      },
+      input3(pattern){
+          if(pattern == ''){
+              this.DataShow = this.Data
+          }
+          else{
+              const option = {
+                  keys: ['potrolName'],
+                  threshold: 0.1
+              }
+              var fuse = new Fuse(this.Data,option)
+              this.DataShow = fuse.search(pattern)
+          }
       }
   },
   computed:{
       
   },
   methods: {
+    showImg (text) {
+        this.visible = true
+        this.src = text
+      },
     //select
-    onChange,
+    handleHide () {
+      this.visible = false
+    },
     
     onClickRefresh(){
       this.reload()
     },
     //delete
-    onClickDelete () {
+    onClickDelete (id) {
+      this.todelete = id
       this.visible2 = true;
     },
     handleOK(e){
         this.visible2 = false;
         //to be completed
     },
-    onClickDeleteRow (key) {
+    onClickDeleteRow () {
       this.visible2 = false;
-      const newData = [...this.wData]
+      const newData = [...this.DataShow]
       console.log(newData)
-      const target = newData.filter(item => key === item.key)[0]
+      const target = newData.filter(item => this.todelete === item.id)[0]
       console.log(target)
-      deleteWorkSheetRow(target.id).then((response) => {
+      deleteCheckSheetRow(target.id).then((response) => {
         this.deleteInfo = response.data.deleteInfo
         if(this.deleteInfo !== 'fail'){
-          this.wData = [...response.data.wData]
-          this.wDataShow = this.wData
+          this.Data = [...response.data.Data]
+          this.DataShow = this.Data
         }
         if(this.deleteInfo === 'ok'){
           this.$notification.open({
           message: '删除成功',
-          description: '本条工单记录删除成功',
+          description: '本条巡检单记录删除成功',
           icon: <a-icon type="check" style="color: #108ee9" />,
         });
         }
         else{
           this.$notification.open({
           message: '删除失败',
-          description: '本条工单记录删除失败',
+          description: '本条巡检单记录删除失败',
           icon: <a-icon type="warning" style="color: #108ee9" />,
         });
         }

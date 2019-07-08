@@ -5,13 +5,32 @@
       <a-form class="ant-advanced-search-form" :form="form">
         <a-row :gutter="24">
           <a-col :md="8" :sm="24">
-            <a-form-item label="工单单号">
+            <a-form-item label="查找工单">
               <a-input placeholder="请输入工单单号" v-model="input"/>
             </a-form-item>
           </a-col>
-          <a-col :md="8" :sm="24">
-            <a-form-item label="维修员编号">
+        </a-row>
+        <a-row :gutter='24'>
+          <a-col :md="8" :sm="24" :lg='10'>
+            <a-form-item label="根据编号查找维修员">
               <a-input placeholder="请输入维修员编号" v-model="input2"/>
+            </a-form-item>
+          </a-col>
+          <a-col :md="8" :sm="24" :lg='10'>
+            <a-form-item label="根据姓名查找维修员">
+              <a-input placeholder="请输入维修员姓名" v-model="input3"/>
+            </a-form-item>
+          </a-col>
+        </a-row>
+        <a-row :gutter='24'>
+          <a-col :md="8" :sm="24" :lg='10'>
+            <a-form-item label="根据编号查找调度员">
+              <a-input placeholder="请输入调度员编号" v-model="input4"/>
+            </a-form-item>
+          </a-col>
+          <a-col :md="8" :sm="24" :lg='10'>
+            <a-form-item label="根据姓名查找调度员">
+              <a-input placeholder="请输入调度员姓名" v-model="input5"/>
             </a-form-item>
           </a-col>
           </a-row>
@@ -29,9 +48,10 @@
     </div>
     <!-- input bar end -->
     <!-- table -->
+    <a-card>
     <a-table :columns="columns" :dataSource="wDataShow" rowKey='id' bordered>
       <template
-        v-for="col in ['id','equipID', 'repairerID','repairArea','dispatcherID','statue']"
+        v-for="col in ['id','equipID', 'repairerID','repairerName','repairArea','dispatcherID','dispatcherName','statue']"
         :slot="col"
         slot-scope="text"
       >
@@ -81,6 +101,7 @@
                 </div></a-modal>
         </template>
     </a-table>
+    </a-card>
     <!-- table end -->
   </div>
 </template>
@@ -111,37 +132,54 @@ const statusMap = {
 const columns = [{
   title: '工单单号',
   dataIndex: 'id',
-  width: '10%',
+  //width: '10%',
+  align: 'center',
   scopedSlots: { customRender: 'id' },
   sorter: (a, b) => a.id > b.id,
 }, {
   title: '被维修器件编号',
   dataIndex: 'equipID',
-  width: '15%',
+ // width: '15%',
+  align: 'center',
   scopedSlots: { customRender: 'equipID' },
   sorter: (a, b) => a.equipID > b.equipID,
 }, {
   title: '指定维修员编号',
   dataIndex: 'repairerID',
-  width: '15%',
+  //width: '15%',
+  align: 'center',
   scopedSlots: { customRender: 'repairerID' },
   sorter: (a, b) => a.repairerID > b.repairerID,
 },{
+  title: '维修员姓名',
+  dataIndex: 'repairerName',
+  //width: '15%',
+  align: 'center',
+  scopedSlots: { customRender: 'repairerName' },
+},{
   title: '维修区域',
   dataIndex: 'repairArea',
-  width: '12%',
+  //width: '12%',
+  align: 'center',
   scopedSlots: { customRender: 'repairArea' }
 },{
   title: '调度员编号',
   dataIndex: 'dispatcherID',
-  width: '13%',
+  //width: '13%',
+  align: 'center',
   scopedSlots: { customRender: 'dispatcherID' },
   sorter: (a, b) => a.dispatcherID > b.dispatcherID,
+},{
+  title: '调度员姓名',
+  dataIndex: 'dispatcherName',
+  //width: '13%',
+  align: 'center',
+  scopedSlots: { customRender: 'dispatcherName' },
 }, {
   title: '工单状态',
   dataIndex: 'statue',
-  width: '12%',
-  
+  align: 'center',
+  //width: '12%',
   filters: [{
     text: '进行',
     value: '0'
@@ -153,10 +191,12 @@ const columns = [{
   scopedSlots: { customRender: 'statue' },
 },{
   title: '维修结果图片',
+  align: 'center',
   dataIndex: 'work_picture',
   scopedSlots: { customRender: 'work_picture' }
 },{
   titile: '操作',
+  align: 'center',
   dataIndex: 'operation',
   scopedSlots: { customRender: 'operation' }
 }]
@@ -184,15 +224,14 @@ export default {
       },
       input: '',
       input2: '',
+      input3: '',
+      input4:'',
+      input5:'',
       wData,
       wDataShow,
       deleteInfo: '',
       columns,
       // information of add
-      workSheetsData: {
-        id: '',
-        repairerID: ''
-      },
       isRouterAlive: true,
       visible: false,
       visible2: false,
@@ -216,13 +255,52 @@ export default {
               this.wDataShow = fuse.search(pattern)
           }
       },
-      input2(pattern){
+    input2(pattern){
+        if(pattern == ''){
+            this.wDataShow = this.wData
+        }
+        else{
+            const option = {
+                keys: ['repairerID'],
+                threshold: 0.1
+            }
+            var fuse = new Fuse(this.wData,option)
+            this.wDataShow = fuse.search(pattern)
+          }
+      },
+    input3(pattern){
           if(pattern == ''){
               this.wDataShow = this.wData
           }
           else{
               const option = {
-                  keys: ['repairerID'],
+                  keys: ['repairerName'],
+                  threshold: 0.1
+              }
+              var fuse = new Fuse(this.wData,option)
+              this.wDataShow = fuse.search(pattern)
+          }
+      },
+    input4(pattern){
+          if(pattern == ''){
+              this.wDataShow = this.wData
+          }
+          else{
+              const option = {
+                  keys: ['dispatcherID'],
+                  threshold: 0.1
+              }
+              var fuse = new Fuse(this.wData,option)
+              this.wDataShow = fuse.search(pattern)
+          }
+      },
+    input5(pattern){
+          if(pattern == ''){
+              this.wDataShow = this.wData
+          }
+          else{
+              const option = {
+                  keys: ['dispatcherName'],
                   threshold: 0.1
               }
               var fuse = new Fuse(this.wData,option)
@@ -248,17 +326,6 @@ export default {
       },
     handleHide () {
       this.visible = false
-    },
-    // clear all input
-    onClickClearSelect () {
-      this.workSheetsData.id = ''
-      this.workSheetsData.statue = '请选择状态'
-    },
-    // submit
-    onClickSubmit () {
-      console.log(this.workSheetsData)
-      this.onClickClearSelect()
-      // to be complete
     },
     //delete row
     onClickDeleteRow () {
