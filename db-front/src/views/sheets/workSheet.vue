@@ -5,50 +5,33 @@
       <a-form class="ant-advanced-search-form" :form="form">
         <a-row :gutter="24">
           <a-col :md="8" :sm="24">
-            <a-form-item :label="attributeID.cnType">
-              <a-input :placeholder="attributeID.guide" v-model="workSheetsData[attributeID.type]"/>
+            <a-form-item label="工单单号">
+              <a-input placeholder="请输入工单单号" v-model="input"/>
             </a-form-item>
           </a-col>
           <a-col :md="8" :sm="24">
-            <a-form-item :label="attributeRepairer.cnType">
-              <a-input :placeholder="attributeRepairer.guide" v-model="workSheetsData[attributeRepairer.type]"/>
+            <a-form-item label="维修员编号">
+              <a-input placeholder="请输入维修员编号" v-model="input2"/>
             </a-form-item>
           </a-col>
-          <a-col :md="8" :sm="24">
-            <a-form-item :label="attributeStatue.cnType">
-              <a-select v-model="workSheetsData[attributeStatue.type]">
-                <a-select-option value="0">进行</a-select-option>
-                <a-select-option value="1">完成</a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col :span="24" :style="{ textAlign: 'right' }">
-            <div class="button-group">
+          </a-row>
+          <a-row>
+          <a-col :span="4" style=" textAlign: 'left';margin-bottom: 24px">
               <a-button
                 size="large"
                 class="button"
                 type="primary"
-                @click="onClickSubmit"
-                :disabled="emptyInput"
-              >查询</a-button>
-              <a-button
-                size="large"
-                class="button"
-                type="danger"
-                @click="onClickClearSelect"
-                :disabled="emptyInput"
-                ghost
-              >重置</a-button>
-            </div>
+                @click="onClickRefresh"
+              >刷新表单</a-button><br>
           </a-col>
         </a-row>
       </a-form>
     </div>
     <!-- input bar end -->
     <!-- table -->
-    <a-table :columns="columns" :dataSource="wData" @change="onChange" bordered>
+    <a-table :columns="columns" :dataSource="wDataShow"  bordered>
       <template
-        v-for="col in ['id','equipID', 'repairerID','dispatcherID','statue']"
+        v-for="col in ['id','equipID', 'repairerID','repairArea','dispatcherID','statue']"
         :slot="col"
         slot-scope="text"
       >
@@ -56,20 +39,59 @@
           {{ text }}
         </div>
       </template>
+      
       <template slot = 'statue' slot-scope="text">
         <a-badge :status="text | statusTypeFilter" :text="text | statusFilter" />
       </template>
       <template slot="work_picture" slot-scope="text">
-        <div>
+        <!--<div>
           <a-avatar slot="avatar" size="large" shape="square" :src="text"/>
+        </div>-->
+        <div id="app">
+          <div class="">
+          <div
+            class="pic"
+            @click="() => showImg(text)"
+          >
+          <a-avatar :src="text"/>
+          </div>
+        </div>
+        <vue-easy-lightbox
+          :visible="visible"
+          :imgs="src"
+          @hide="handleHide"
+        ></vue-easy-lightbox>
         </div>
       </template>
+      <template slot="operation" >
+          <a-button
+                size="small"
+                style="background:red"
+                type ="primary"
+                @click="onClickDelete"
+              >删除</a-button>
+              <a-modal
+                title="确认删除"
+                v-model = "visible2"
+                @ok = "handleOK"
+                >
+                <div class = "modal">
+                    是否删除本条记录
+                </div></a-modal>
+        </template>
     </a-table>
     <!-- table end -->
   </div>
 </template>
 
+<script src="path/to/vue.js"></script>
+<script src="path/to/vue-easy-lightbox.umd.min.js"></script>
 <script>
+import Fuse from 'fuse.js'
+import Vue from 'vue'
+import Lightbox from 'vue-easy-lightbox'
+
+Vue.use(Lightbox)
 import { getWorkSheet } from '@/api/sheets'
 
 
@@ -89,46 +111,65 @@ const statusMap = {
 const columns = [{
   title: '工单单号',
   dataIndex: 'id',
-  width: '20%',
-  scopedSlots: { customRender: 'id' }
+  width: '10%',
+  scopedSlots: { customRender: 'id' },
+  sorter: (a, b) => a.id > b.id,
 }, {
   title: '被维修器件编号',
   dataIndex: 'equipID',
   width: '17%',
-  scopedSlots: { customRender: 'equipID' }
+  scopedSlots: { customRender: 'equipID' },
+  sorter: (a, b) => a.equipID > b.equipID,
 }, {
   title: '指定维修员编号',
   dataIndex: 'repairerID',
   width: '17%',
-  scopedSlots: { customRender: 'repairerID' }
+  scopedSlots: { customRender: 'repairerID' },
+  sorter: (a, b) => a.repairerID > b.repairerID,
+},{
+  title: '维修区域',
+  dataIndex: 'repairArea',
+  width: '12%',
+  scopedSlots: { customRender: 'repairArea' }
 },{
   title: '调度员编号',
   dataIndex: 'dispatcherID',
   width: '13%',
-  scopedSlots: { customRender: 'dispatcherID' }
+  scopedSlots: { customRender: 'dispatcherID' },
+  sorter: (a, b) => a.dispatcherID > b.dispatcherID,
 }, {
   title: '工单状态',
   dataIndex: 'statue',
-  key: 'statue',
   width: '12%',
-  scopedSlots: { customRender: 'statue' }
+  
+  filters: [{
+    text: '进行',
+    value: '0'
+  },{
+    text: '完成',
+    value: '1'
+  }],
+  onFilter: (value, record) => record.statue.indexOf(value) === 0,
+  scopedSlots: { customRender: 'statue' },
 },{
   title: '维修结果图片',
   dataIndex: 'work_picture',
   scopedSlots: { customRender: 'work_picture' }
+},{
+  titile: '操作',
+  dataIndex: 'operation',
+  scopedSlots: { customRender: 'operation' }
 }]
 
 
-function onChange(pagination, filters, sorter) {
-  console.log('params', pagination, filters, sorter);
-}
-
 // sheets data
 const wData = []
+const wDataShow = []
 export default {
   name: 'workSheet',
-  
-  data () {
+  inject: ['reload'],
+   
+  data() {
     this.cacheData = wData.map(item => ({ ...item }))
     return {
       attributeID: {
@@ -136,43 +177,57 @@ export default {
         cnType: '工单单号',
         guide: '请输入单号'
       },
-      attributeStatue: {
-        type: 'statue',
-        cnType: '显示指定状态工单',
-        //guide: '请输入地址'
-      },
       attributeRepairer: {
         type: 'repairerID',
         cnType: '查询特定维修员的工单',
         guide: '请输入维修员编号'
       },
+      input: '',
+      input2: '',
+      wData,
+      wDataShow,
+      columns,
+      // information of add
       workSheetsData: {
         id: '',
-        repairerID: '',
-        statue: '请选择状态'
+        repairerID: ''
       },
-      wData,
-      columns,
+      isRouterAlive: true,
+      visible: false,
+      visible2: false,
+      src: "",
       form: this.$form.createForm(this)
     }
   },
-  filters: {
-    statusFilter (type) {
-      return statusMap[type].text
-    },
-    statusTypeFilter (type) {
-      return statusMap[type].status
-    }
-  },
-  computed: {
-    emptyInput () {
-      if (this.workSheetsData.id !== '' || this.workSheetsData.statue !== '请选择状态') {
-        return false
-      } else {
-        return true
+  watch:{
+    input(pattern){
+          if(pattern == ''){
+              this.wDataShow = this.wData
+          }
+          else{
+              const option = {
+                  keys: ['id'],
+                  threshold: 0.1
+              }
+              var fuse = new Fuse(this.wData,option)
+              this.wDataShow = fuse.search(pattern)
+          }
+      },
+      input2(pattern){
+          if(pattern == ''){
+              this.wDataShow = this.wData
+          }
+          else{
+              const option = {
+                  keys: ['repairerID'],
+                  threshold: 0.1
+              }
+              var fuse = new Fuse(this.wData,option)
+              this.wDataShow = fuse.search(pattern)
+          }
       }
-    }
   },
+  
   filters: {
     statusFilter (type) {
       return statusMap[type].text
@@ -181,8 +236,15 @@ export default {
       return statusMap[type].status
     }
   },
+  
   methods: {
-    onChange,
+    showImg (text) {
+        this.visible = true
+        this.src = text
+      },
+    handleHide () {
+      this.visible = false
+    },
     // clear all input
     onClickClearSelect () {
       this.workSheetsData.id = ''
@@ -194,17 +256,28 @@ export default {
       this.onClickClearSelect()
       // to be complete
     },
-    // functions in table
-    goto (key) {
-      const newData = [...this.wData]
-      const target = newData.filter(item => key === item.key)[0]
-      console.log(target.id)
+    //delete
+    onClickDelete () {
+      console.log('delete')
+      // to be complete
+    },
+    onClickRefresh(){
+      this.reload()
+    },
+    onClickDelete () {
+      this.visible2 = true;
+    },
+    handleOK(e){
+        this.visible2 = false;
+        //to be completed
     }
   },
   mounted () {
+    console.log(columns[5])
     getWorkSheet().then((response) => {
       console.log(...response)
       this.wData = [...response]
+      this.wDataShow = this.wData
     })
   }
 
@@ -221,3 +294,4 @@ export default {
   }
 }
 </style>
+

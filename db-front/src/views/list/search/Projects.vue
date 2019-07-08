@@ -116,7 +116,7 @@ export default {
       console.log(`selected ${value}`)
     },
     getList () {
-      this.$http.get('/list/article', { params: { count: 8 } }).then(res => {
+      this.$http.get('/list/article', { params: { count: 12 } }).then(res => {
         console.log('res', res)
         this.data = res.result
         this.loading = false
