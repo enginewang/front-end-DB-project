@@ -1,82 +1,72 @@
 <template>
-  <a-card :bordered="false">
-    <br>
-    <a-form class="ant-advanced-search-form" :form="form" inline>
-      <a-row :gutter="24">
-        <a-col :md="6" :sm="24">
-          <a-form-item>
-            <label>器材编号：</label>
-            <a-input placeholder="请输入器材编号" v-model="inputID"/>
-          </a-form-item>
-        </a-col>
-        <a-col :md="6" :sm="24">
-          <a-form-item>
-            <label>地址：</label>
-            <a-input placeholder="请输入地址" v-model="inputAddress"/>
-          </a-form-item>
-        </a-col>
-        <a-col :md="6" :sm="24">
-          <a-form-item>
-            <label>型号：</label>
-            <a-input placeholder="请输入型号" v-model="inputModelID"/>
-          </a-form-item>
-        </a-col>
-      </a-row>
-    </a-form>
-    <br>
-    <a-table :columns="columns" :dataSource="eDataShow" rowKey="id" bordered>
-      <template
-              v-for="col in ['id', 'type', 'status', 'damage', 'address']"
-              :slot="col"
-              slot-scope="text, record"
-      >
-        <div :key="col">
-          <a-input
-                  v-if="record.editable"
-                  style="margin: -5px 0"
-                  :value="text"
-                  @change="e => handleChange(e.target.value, record.key, col)"
-          />
-          <template v-else>{{ text }}</template>
-        </div>
-      </template>
-      <template slot="operation" slot-scope="text, record">
-        <div class="editable-row-operations">
-          <span v-if="record.editable">
-            <a @click="() => save(record.key)">确认</a>
-            <a-popconfirm title="Sure to cancel?" @confirm="() => cancel(record.key)">
-              &nbsp;&nbsp;&nbsp;&nbsp;<a>取消</a>
-            </a-popconfirm>
-          </span>
-          <span v-else>
-            <a @click="() => edit(record.key)">Edit</a>
-          </span>
-        </div>
-      </template>
-    </a-table>
-  </a-card>
+  <div>
+    <a-card :bordered="false">
+      <br>
+      <a-form class="ant-advanced-search-form" :form="form" inline>
+        <a-row :gutter="24">
+          <a-col :md="6" :sm="24">
+            <a-form-item>
+              <label>器材编号：</label>
+              <a-input placeholder="请输入器材编号" v-model="inputID"/>
+            </a-form-item>
+          </a-col>
+          <a-col :md="6" :sm="24">
+            <a-form-item>
+              <label>型号：</label>
+              <a-input placeholder="请输入型号" v-model="inputModelID"/>
+            </a-form-item>
+          </a-col>
+          <a-col :md="6" :sm="24">
+            <a-form-item>
+              <label>地址：</label>
+              <a-input placeholder="请输入地址" v-model="inputAddress"/>
+            </a-form-item>
+          </a-col>
+        </a-row>
+      </a-form>
+      <br>
+      <div>
+        <a-table :columns="columns" :dataSource="eDataShow" rowKey="id" bordered>
+          <template
+                  v-for="col in ['id', 'type', 'damage', 'address', 'status']"
+                  :slot="col"
+                  slot-scope="text"
+          >
+            <div :key="col">
+              {{ text }}
+            </div>
+          </template>
+          <template slot="status" slot-scope="text">
+            <a-badge :status="text | statusTypeFilter" :text="text | statusFilter" />
+          </template>
+        </a-table>
+      </div>
+    </a-card>
+  </div>
+
 </template>
 
 <script>
 
   import {getEquipmentUsingList} from '@/api/equipment'
   import Fuse from 'fuse.js'
+
   const statusMap = {
     0: {
-      status: 'store',
-      show: '存储中'
+      status: 'processing',
+      text: '储存中'
     },
     1: {
-      status: 'using',
-      show: '使用中'
+      status: 'success',
+      text: '正常'
     },
     2: {
-      status: 'broken',
-      show: '已损坏'
+      status: 'error',
+      text: '已损坏'
     },
     3: {
-      status: 'repairing',
-      show: '维修中'
+      status: 'default',
+      text: '维修中'
     }
   }
 
@@ -91,23 +81,6 @@
     dataIndex: 'type',
     width: '10%',
     scopedSlots: {customRender: 'type'}
-  }, {
-    title: '使用状态',
-    dataIndex: 'status',
-    width: '10%',
-    filters: [{
-      text: '正常',
-      value: '正常'
-    },
-      {
-        text: '损坏',
-        value: '损坏'
-      },
-      {
-        text: '维修中',
-        value: '维修中'
-      }],
-    onFilter: (value, record) => record.status.indexOf(value) === 0
   }, {
     title: '损坏程度',
     dataIndex: 'damage',
@@ -124,6 +97,25 @@
     dataIndex: 'address',
     width: '30%',
     scopedSlots: {customRender: 'address'}
+  }, {
+    title: '使用状态',
+    dataIndex: 'status',
+    width: '10%',
+    filters: [{
+      text: '存储中',
+      value: '0'
+    }, {
+      text: '正常',
+      value: '1'
+    }, {
+      text: '已损坏',
+      value: '2'
+    }, {
+      text: '维修中',
+      value: '3'
+    }],
+    onFilter: (value, record) => record.status.indexOf(value) === 0,
+    scopedSlots: {customRender: 'status'}
   }]
   let inputID = ''
   let inputAddress = ''
@@ -159,6 +151,14 @@
         } else {
           return true
         }
+      }
+    },
+    filters: {
+      statusFilter (type) {
+        return statusMap[type].text
+      },
+      statusTypeFilter (type) {
+        return statusMap[type].status
       }
     },
     methods: {
@@ -213,11 +213,10 @@
       }
     },
     watch: {
-      inputID(pattern){
-        if ( pattern == '' ){
+      inputID(pattern) {
+        if (pattern == '') {
           this.eDataShow = this.eData
-        }
-        else{
+        } else {
           const option = {
             keys: ['id'],
             threshold: 0.1
@@ -227,11 +226,10 @@
           console.log(this.eDataShow)
         }
       },
-      inputAddress(pattern){
-        if ( pattern == '' ){
+      inputAddress(pattern) {
+        if (pattern == '') {
           this.eDataShow = this.eData
-        }
-        else{
+        } else {
           const option = {
             keys: ['address'],
             threshold: 0.1
@@ -241,11 +239,10 @@
           console.log(this.eDataShow)
         }
       },
-      inputModelID(pattern){
-        if ( pattern == '' ){
+      inputModelID(pattern) {
+        if (pattern == '') {
           this.eDataShow = this.eData
-        }
-        else{
+        } else {
           const option = {
             keys: ['model'],
             threshold: 0.1

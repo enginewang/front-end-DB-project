@@ -3,41 +3,41 @@ import Mock from 'mockjs2'
 const equipmentUsing = () => {
   return [
     {
-      id: 1,
+      id: "eq10001",
       type: '哑铃',
-      status: '正常',
+      status: '1',
       damage: '0.9',
       model: 'GTX1080',
       address: 'Tongji University, Shanghai'
     },
     {
-      id: 2,
+      id: "eq10002",
       type: '跑步机',
-      status: '损坏',
+      status: '2',
       damage: '0.8',
       model: '32GB',
       address: 'Huangdu Institute Of Technology, Jiangsu'
     },
     {
-      id: 3,
+      id: "eq10003",
       type: '篮球',
-      status: '正常',
+      status: '0',
       damage: '0.5',
       model: 'i9-9900k',
       address: 'Tongji University, Shanghai'
     },
     {
-      id: 4,
+      id: "eq10004",
       type: '足球',
-      status: '维修中',
+      status: '3',
       damage: '0.9',
       model: 'i7-8700k',
       address: 'Huangdu Institute Of Technology, Jiangsu'
     },
     {
-      id: 5,
+      id: "eq10005",
       type: '羽毛球',
-      status: '正常',
+      status: '1',
       damage: '0.4',
       model: 'i7-6820hq',
       address: 'Tongji University, Shanghai'
