@@ -126,6 +126,7 @@ method: 'post'
 // 一种的type属性是'Equipment'
 // 一种的type属性是'Accessory'
 // 在请求的body中
+// 应为json格式,但是在我本地模拟后端的时候数据是string的格式,可能需要toJSON
 data: {
     type: 'Accessory', // string
     model: 'GTX2080', // string
@@ -143,5 +144,6 @@ data: {
 return: {
     // 返回修改后的仓库数据
     // 参见postGoods
+    // 但是只需要一个数组, 如果post的是Accessory,只需返回Accessory数组
 }
 ```
