@@ -6,7 +6,16 @@
         您现在位于 {{ warehouseDetail.address }} {{ warehouseDetail.detailAddress }}的 {{ warehouseDetail.name }}
       </a-layout-header>
       <!-- warehouse message end -->
-      <br>
+      <!-- refresh button -->
+      <div class="button-group">
+        <a-button
+          size="large"
+          class="button"
+          type="primary"
+          @click="reload()"
+          >刷新</a-button>
+      </div>
+      <!-- refresh end -->
       <!-- equipment table -->
       <div>
         <a-form class="ant-advanced-search-form" :form="form">
@@ -129,6 +138,7 @@ import { postWarehouseDetail, getAllWarehouse , postGoods } from '@/api/warehous
 import Fuse from 'fuse.js'
 
 export default {
+  inject: ['reload'],
   name: 'Detail',
   data () {
     return {

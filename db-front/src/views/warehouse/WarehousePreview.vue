@@ -17,8 +17,7 @@
                   size="large"
                   class="button"
                   type="primary"
-                  @click="onClickSubmit"
-                  :disabled="emptyInput"
+                  @click="onClickRefresh"
                 >刷新</a-button>
                 <a-button
                   size="large"
@@ -61,6 +60,7 @@ import { getWarehousePreview, getAllAddress } from '@/api/warehouse'
 import Fuse from 'fuse.js'
 
 export default {
+  inject: ['reload'],
   name: 'Preview',
   data () {
     return {
@@ -134,9 +134,9 @@ export default {
       this.input = ''
     },
     // submit
-    onClickSubmit () {
+    onClickRefresh () {
       this.onClickClearSelect()
-      // to be complete
+      this.reload()
     },
     getID (key) {
       const newData = [...this.previewDataShow]
