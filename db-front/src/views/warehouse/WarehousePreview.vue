@@ -35,7 +35,7 @@
       </div>
       <!-- input bar end -->
       <!-- table -->
-      <a-table :columns="columns" :dataSource="previewDataShow" bordered>
+      <a-table :columns="columns" :dataSource="previewDataShow" rowKey="id" bordered>
         <template
           v-for="col in ['id','icon', 'name', 'address']"
           slot="col"
@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import { getWarehousePreview, getAddress } from '@/api/warehouse'
+import { getWarehousePreview, getAllAddress } from '@/api/warehouse'
 import Fuse from 'fuse.js'
 
 export default {
@@ -71,7 +71,7 @@ export default {
         dataIndex: 'id',
         width: '15%',
         scopedSlots: { customRender: 'id' },
-        sorter: (a, b) => a.id - b.id
+        sorter: (a, b) => a.id > b.id
       }, {
         title: '图标',
         dataIndex: 'icon',
@@ -82,7 +82,7 @@ export default {
         dataIndex: 'name',
         width: '15%',
         scopedSlots: { customRender: 'name' },
-        sorter: (a, b) => a.id - b.id
+        sorter: (a, b) => a.id > b.id
       }, {
         title: '地址',
         dataIndex: 'address',
@@ -100,7 +100,7 @@ export default {
       input: '',
       previewData: [],
       previewDataShow: [],
-      address: [],
+      allAddress: [],
     }
   },
   // watch for fuzzy search
@@ -149,12 +149,12 @@ export default {
       this.previewData = [...response.data]
       this.previewDataShow = this.previewData
     })
-    getAddress().then((response) => {
-      this.address = [...response.data]
-      for(let val of this.address){
+    getAllAddress().then((response) => {
+      this.allAddress = [...response.data]
+      for(let val of this.allAddress){
         let temp = {
-          text: val,
-          value: val
+          text: val.name,
+          value: val.name
         }
         this.columns[3].filters.push(temp)
       }
