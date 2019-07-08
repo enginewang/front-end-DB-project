@@ -73,6 +73,7 @@
             </a-card-meta>
             <div class="cardItemContent">
               <span>{{ item.updatedAt | fromNow }}</span>
+              <a-button type='primary' @click="$modal.show('detail')">查看详情</a-button>
               <!-- <div class="avatarList">
                 <avatar-list size="mini">
                   <avatar-list-item
@@ -97,6 +98,10 @@
       </div> -->
       
     </div>
+
+    <modal name="detail">
+      hello, world!
+    </modal>
   </div>
 </template>
 
@@ -104,6 +109,7 @@
 import moment from 'moment'
 import { TagSelect, StandardFormRow, Ellipsis, AvatarList } from '@/components'
 import Fuse from 'fuse.js'
+
 var pageData = null
 const TagSelectOption = TagSelect.Option
 const AvatarListItem = AvatarList.AvatarItem
@@ -189,6 +195,13 @@ export default {
         console.log("updated null")
         this.data = pageData
       }
+    },
+
+    show () {
+      this.$modal.show('hello-world');
+    },
+    hide () {
+      this.$modal.hide('hello-world');
     }
   }
 }

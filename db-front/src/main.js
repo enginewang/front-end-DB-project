@@ -15,10 +15,15 @@ import './core/use'
 import './permission' // permission control
 import './utils/filter' // global filter
 
+import VModal from 'vue-js-modal'
+
 Vue.config.productionTip = false
 
 // mount axios Vue.$http and this.$http
 Vue.use(VueAxios)
+
+//vue-js-modal
+Vue.use(VModal)
 
 new Vue({
   router,
