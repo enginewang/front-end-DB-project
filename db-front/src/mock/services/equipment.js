@@ -3,66 +3,116 @@ import Mock from 'mockjs2'
 const equipmentUsing = () => {
   return [
     {
-      id: 1,
+      id: "eq10001",
       type: '哑铃',
-      status: '正常',
+      status: '1',
       damage: '0.9',
       model: 'GTX1080',
       address: 'Tongji University, Shanghai'
     },
     {
-      id: 2,
+      id: "eq10002",
       type: '跑步机',
-      status: '损坏',
+      status: '2',
       damage: '0.8',
       model: '32GB',
       address: 'Huangdu Institute Of Technology, Jiangsu'
     },
     {
-      id: 3,
+      id: "eq10003",
       type: '篮球',
-      status: '正常',
+      status: '0',
       damage: '0.5',
       model: 'i9-9900k',
       address: 'Tongji University, Shanghai'
     },
     {
-      id: 4,
+      id: "eq10004",
       type: '足球',
-      status: '维修中',
+      status: '3',
       damage: '0.9',
       model: 'i7-8700k',
       address: 'Huangdu Institute Of Technology, Jiangsu'
     },
     {
-      id: 5,
+      id: "eq10005",
       type: '羽毛球',
-      status: '正常',
+      status: '1',
       damage: '0.4',
       model: 'i7-6820hq',
       address: 'Tongji University, Shanghai'
     },
   ]
+}
+
+const equipmentDetail = (data) => {
+  let equipdetail = {
+    'eq10001':
+      {
+        name: '哑铃',
+        factory_time: '2019.07.01',
+        install_time: '2019.07.07',
+        using_time: '6 days',
+        unit: '同济大学',
+        address: '上海市嘉定区曹安公路4800号',
+        if_damage: '已损坏',
+        order: '20190707',
+      },
+    'eq10002':
+      {
+        name: '跑步机',
+        factory_time: '2019.07.01',
+        install_time: '2019.07.07',
+        using_time: '6 days',
+        unit: '清华大学',
+        address: '上海市嘉定区曹安公路4800号',
+        if_damage: '已损坏',
+        order: '20190707',
+      },
+    'eq10003':
+      {
+        name: '篮球',
+        factory_time: '2019.07.01',
+        install_time: '2019.07.07',
+        using_time: '6 days',
+        unit: '复旦大学',
+        address: '上海市嘉定区曹安公路4800号',
+        if_damage: '已损坏',
+        order: '20190707',
+      },
+    'eq10004':
+      {
+        name: '足球',
+        factory_time: '2019.07.01',
+        install_time: '2019.07.07',
+        using_time: '6 days',
+        unit: '脚痛大学',
+        address: '上海市嘉定区曹安公路4800号',
+        if_damage: '已损坏',
+        order: '20190707',
+      },
+    'eq10005':
+      {
+        name: '羽毛球',
+        factory_time: '2019.07.01',
+        install_time: '2019.07.07',
+        using_time: '6 days',
+        unit: '上海大学',
+        address: '上海市嘉定区曹安公路4800号',
+        if_damage: '已损坏',
+        order: '20190707',
+      },
+  }
+  return {
+    'data': equipdetail[data.body]
+  }
 };
 
-const equipmentInfo = () => {
-  return [
-    {
-      factory_time: '2019.07.01',
-      install_time: '2019.07.07',
-      using_time: '6 days',
-      unit: '同济大学',
-      address: '上海市嘉定区曹安公路4800号',
-      if_damage: '已损坏',
-      order: '20190707',
-    },
-  ]
-};
 
 const equipmentAll = () => {
   return [
     {
-      id: 1,
+      id: "eq10001",
       name: '哑铃',
       icon: 'XX',
       modelID: '1001',
@@ -71,7 +121,7 @@ const equipmentAll = () => {
       warehouseID: 'wh1'
     },
     {
-      id: 2,
+      id: "eq10002",
       name: '篮球',
       icon: 'XX',
       modelID: '1002',
@@ -80,7 +130,7 @@ const equipmentAll = () => {
       warehouseID: 'wh3'
     },
     {
-      id: 3,
+      id: "eq10003",
       name: '足球',
       icon: 'XX',
       modelID: '1003',
@@ -89,7 +139,7 @@ const equipmentAll = () => {
       warehouseID: 'wh2'
     },
     {
-      id: 4,
+      id: "eq10004",
       name: '羽毛球',
       icon: 'XX',
       modelID: '1004',
@@ -98,7 +148,7 @@ const equipmentAll = () => {
       warehouseID: 'wh1'
     },
     {
-      id: 5,
+      id: "eq10005",
       name: '跑步机',
       icon: 'XX',
       modelID: '1005',
@@ -107,8 +157,8 @@ const equipmentAll = () => {
       warehouseID: 'wh2'
     },
   ]
-};
+}
 
 Mock.mock(/\/equipment\/using/, 'get', equipmentUsing);
-Mock.mock(/\/equipment\/information/, 'get', equipmentInfo);
+Mock.mock(/\/equipment\/detail/, 'post', equipmentDetail);
 Mock.mock(/\/equipment\/all/, 'get', equipmentAll);
