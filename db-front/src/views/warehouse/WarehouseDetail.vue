@@ -6,7 +6,16 @@
         您现在位于 {{ warehouseDetail.address }} {{ warehouseDetail.detailAddress }}的 {{ warehouseDetail.name }}
       </a-layout-header>
       <!-- warehouse message end -->
-      <br>
+      <!-- refresh button -->
+      <div class="button-group">
+        <a-button
+          size="large"
+          class="button"
+          type="primary"
+          @click="reload()"
+          >刷新</a-button>
+      </div>
+      <!-- refresh end -->
       <!-- equipment table -->
       <div>
         <a-form class="ant-advanced-search-form" :form="form">
@@ -19,7 +28,7 @@
           </a-row>
         </a-form>
       </div>
-      <a-table :columns="ecol" :dataSource="equipmentShow" bordered>
+      <a-table :columns="ecol" :dataSource="equipmentShow" rowKey="id" bordered>
         <template
           v-for="col in ['id','model', 'type', 'number']"
           :slot="col"
@@ -76,9 +85,9 @@
           </a-row>
         </a-form>
       </div>
-      <a-table :columns="acol" :dataSource="accessoryShow" bordered>
+      <a-table :columns="acol" :dataSource="accessoryShow" rowKey="model" bordered>
         <template
-          v-for="col in ['id','model', 'type', 'number']"
+          v-for="col in ['model', 'type', 'number']"
           :slot="col"
           slot-scope="text"
         >
@@ -129,6 +138,7 @@ import { postWarehouseDetail, getAllWarehouse , postGoods } from '@/api/warehous
 import Fuse from 'fuse.js'
 
 export default {
+  inject: ['reload'],
   name: 'Detail',
   data () {
     return {
@@ -138,13 +148,13 @@ export default {
         title: '型号',
         dataIndex: 'model',
         width: '30%',
-        sorter: (a, b) => a.model < b.model,
+        sorter: (a, b) => a.model > b.model,
         scopedSlots: { customRender: 'model' }
       }, {
         title: '数量',
         dataIndex: 'number',
         width: '20%',
-        sorter: (a, b) => a.number < b.number,
+        sorter: (a, b) => a.number - b.number,
         scopedSlots: { customRender: 'number' }
       }, {
         title: '操作',
@@ -155,19 +165,19 @@ export default {
         title: '编号',
         dataIndex: 'id',
         width: '20%',
-        sorter: (a, b) => a.id < b.id,
+        sorter: (a, b) => a.id > b.id,
         scopedSlots: { customRender: 'id' }
       }, {
         title: '型号',
         dataIndex: 'model',
         width: '20%',
-        sorter: (a, b) => a.model < b.model,
+        sorter: (a, b) => a.model > b.model,
         scopedSlots: { customRender: 'model' }
       }, {
         title: '数量',
         dataIndex: 'number',
         width: '20%',
-        sorter: (a, b) => a.number < b.number,
+        sorter: (a, b) => a.number - b.number,
         scopedSlots: { customRender: 'number' }
       }, {
         title: '操作',
