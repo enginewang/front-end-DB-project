@@ -28,7 +28,7 @@
       </a-form>
     </div>
     <!-- table -->
-    <a-table :columns="columns" :dataSource="DataShow" bordered>
+    <a-table :columns="columns" :dataSource="DataShow" rowKey = 'id' bordered>
         <template
         v-for="col in ['id','potrolID', 'eqID','checkTime','checkArea']"
         :slot="col"
@@ -85,6 +85,9 @@ const columns = [{
 },{
   title: '巡检地区',
   dataIndex: 'checkArea',
+},{
+  title: '巡检结果图片',
+  dataIndex: 'checkPic',
 },{
   titile: '操作',
   dataIndex: 'operation',
@@ -159,7 +162,36 @@ export default {
     handleOK(e){
         this.visible2 = false;
         //to be completed
-    }
+    },
+    onClickDeleteRow (key) {
+      this.visible2 = false;
+      const newData = [...this.wData]
+      console.log(newData)
+      const target = newData.filter(item => key === item.key)[0]
+      console.log(target)
+      deleteWorkSheetRow(target.id).then((response) => {
+        this.deleteInfo = response.data.deleteInfo
+        if(this.deleteInfo !== 'fail'){
+          this.wData = [...response.data.wData]
+          this.wDataShow = this.wData
+        }
+        if(this.deleteInfo === 'ok'){
+          this.$notification.open({
+          message: '删除成功',
+          description: '本条工单记录删除成功',
+          icon: <a-icon type="check" style="color: #108ee9" />,
+        });
+        }
+        else{
+          this.$notification.open({
+          message: '删除失败',
+          description: '本条工单记录删除失败',
+          icon: <a-icon type="warning" style="color: #108ee9" />,
+        });
+        }
+      })
+      // to be complete
+    },
   },
   mounted () {
     getCheckSheet().then((response) => {

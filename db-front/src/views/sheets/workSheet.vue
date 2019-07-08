@@ -29,7 +29,7 @@
     </div>
     <!-- input bar end -->
     <!-- table -->
-    <a-table :columns="columns" :dataSource="wDataShow"  bordered>
+    <a-table :columns="columns" :dataSource="wDataShow" rowKey='id' bordered>
       <template
         v-for="col in ['id','equipID', 'repairerID','repairArea','dispatcherID','statue']"
         :slot="col"
@@ -63,17 +63,18 @@
         ></vue-easy-lightbox>
         </div>
       </template>
-      <template slot="operation" >
+      <template slot="operation" slot-scope="text, record" >
           <a-button
                 size="small"
                 style="background:red"
                 type ="primary"
-                @click="onClickDelete"
+                :hidden ='text'
+                @click="onClickDelete(record.id)"
               >删除</a-button>
               <a-modal
                 title="确认删除"
                 v-model = "visible2"
-                @ok = "handleOK"
+                @ok = "onClickDeleteRow"
                 >
                 <div class = "modal">
                     是否删除本条记录
@@ -84,15 +85,14 @@
   </div>
 </template>
 
-<script src="path/to/vue.js"></script>
-<script src="path/to/vue-easy-lightbox.umd.min.js"></script>
+
 <script>
 import Fuse from 'fuse.js'
 import Vue from 'vue'
 import Lightbox from 'vue-easy-lightbox'
 
 Vue.use(Lightbox)
-import { getWorkSheet } from '@/api/sheets'
+import { getWorkSheet, deleteWorkSheetRow } from '@/api/sheets'
 
 
 const statusMap = {
@@ -117,13 +117,13 @@ const columns = [{
 }, {
   title: '被维修器件编号',
   dataIndex: 'equipID',
-  width: '17%',
+  width: '15%',
   scopedSlots: { customRender: 'equipID' },
   sorter: (a, b) => a.equipID > b.equipID,
 }, {
   title: '指定维修员编号',
   dataIndex: 'repairerID',
-  width: '17%',
+  width: '15%',
   scopedSlots: { customRender: 'repairerID' },
   sorter: (a, b) => a.repairerID > b.repairerID,
 },{
@@ -186,6 +186,7 @@ export default {
       input2: '',
       wData,
       wDataShow,
+      deleteInfo: '',
       columns,
       // information of add
       workSheetsData: {
@@ -196,10 +197,12 @@ export default {
       visible: false,
       visible2: false,
       src: "",
+      todelete:'',
       form: this.$form.createForm(this)
     }
   },
   watch:{
+    
     input(pattern){
           if(pattern == ''){
               this.wDataShow = this.wData
@@ -225,7 +228,8 @@ export default {
               var fuse = new Fuse(this.wData,option)
               this.wDataShow = fuse.search(pattern)
           }
-      }
+      },
+      
   },
   
   filters: {
@@ -256,21 +260,55 @@ export default {
       this.onClickClearSelect()
       // to be complete
     },
-    //delete
-    onClickDelete () {
-      console.log('delete')
+    //delete row
+    onClickDeleteRow () {
+      this.visible2 = false;
+      const newData = [...this.wDataShow]
+      console.log(newData)
+      const target = newData.filter(item => this.todelete === item.id)[0]
+      console.log(target)
+      if(target.statue === '0'){
+          this.$notification.open({
+          message: '删除失败',
+          description: '未完成的工单不可删除',
+          icon: <a-icon type="warning" style="color: #108ee9" />,
+        });
+        return
+      }
+      
+      deleteWorkSheetRow(target.id).then((response) => {
+        this.deleteInfo = response.data.deleteInfo
+        if(this.deleteInfo !== 'fail'){
+          this.wData = [...response.data.wData]
+          this.wDataShow = this.wData
+        }
+        if(this.deleteInfo === 'ok'){
+          this.$notification.open({
+          message: '删除成功',
+          description: '本条工单记录删除成功',
+          icon: <a-icon type="check" style="color: #108ee9" />,
+        });
+        }
+        else{
+          this.$notification.open({
+          message: '删除失败',
+          description: '本条工单记录删除失败',
+          icon: <a-icon type="warning" style="color: #108ee9" />,
+        });
+        }
+      })
       // to be complete
     },
     onClickRefresh(){
       this.reload()
     },
-    onClickDelete () {
+    //modal dispear
+    onClickDelete (id) {
+      console.log(id)
+      this.todelete = id
       this.visible2 = true;
     },
-    handleOK(e){
-        this.visible2 = false;
-        //to be completed
-    }
+   
   },
   mounted () {
     console.log(columns[5])
@@ -279,6 +317,7 @@ export default {
       this.wData = [...response]
       this.wDataShow = this.wData
     })
+    
   }
 
 }
