@@ -6,6 +6,7 @@ data: {
     username: 'admin'
 }
 
+// 如果登陆失败,code 401, 返回一条"登陆错误"在message里面
 return: {
     result: { // 之所以叫result不是data, 是因为这个API不是我写的, 而是这个管理系统提供的
         avatar: "https://gw.alipayobjects.com/zos/rmsportal/jZUIxmJycoymBprLOUbT.png" // URL, 为头像
