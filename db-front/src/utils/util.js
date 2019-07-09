@@ -1,11 +1,17 @@
 export function timeFix () {
   const time = new Date()
   const hour = time.getHours()
-  return hour < 9 ? '早上好' : hour <= 11 ? '上午好' : hour <= 13 ? '中午好' : hour < 20 ? '下午好' : '晚上好'
+  return hour < 9 ? '早上好' : hour < 11 ? '上午好' : hour < 13 ? '中午好' : hour < 18 ? '下午好' : '晚上好'
 }
 
 export function welcome () {
-  const arr = ['休息一会儿吧', '准备吃什么呢?', '要不要打一把 DOTA', '我猜你可能累了']
+  const arr = [
+    '喝点可乐泡枸杞吧！',
+    '泡个脚有益身心健康',
+    '一贯知足，二目远眺，三餐有节，四季不懒',
+    '发常梳，目常运，齿常叩，漱玉津',
+    '苹果入心梨入肺，大枣入脾栗入肾',
+  ]
   const index = Math.floor(Math.random() * arr.length)
   return arr[index]
 }
