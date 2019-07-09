@@ -51,11 +51,11 @@
       </div>
     </a-card>
   </div>
-
 </template>
 
 <script>
   import {getEquipmentUsingList} from '@/api/equipment'
+  import {PageView} from '@/layouts'
   import Fuse from 'fuse.js'
   const statusMap = {
     0: {
@@ -120,6 +120,9 @@
   const eDataShow = []
   export default {
     name: 'EquipUsing',
+    components:{
+      PageView,
+    },
     data() {
       return {
         attribute: [

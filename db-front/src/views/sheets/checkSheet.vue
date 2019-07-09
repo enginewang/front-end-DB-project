@@ -71,8 +71,7 @@
           <div class="button">
               <a-button
                 size="small"
-                style="background:red"
-                type ="primary"
+                type ="danger"
                 @click="onClickDelete(record.id)"
               >删除</a-button>
               <a-modal

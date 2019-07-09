@@ -23,7 +23,7 @@ router.beforeEach( ( to, from, next ) => {
     } else {
       if ( store.getters.roles.length === 0 ) {
         store
-          .dispatch( 'GetInfo' )
+          .dispatch( 'PostInfo', store.getters.token )
           .then( res => {
             const roles = res.result && res.result.role
             store.dispatch( 'GenerateRoutes', {roles} ).then( () => {

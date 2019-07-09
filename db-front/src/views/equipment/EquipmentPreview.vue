@@ -1,57 +1,58 @@
 <template>
-  <div>
-    <a-card :bordered="false">
-      <a-form class="ant-advanced-search-form" :form="form" inline>
-        <a-row :gutter="24">
-          <a-col :md="6" :sm="24">
-            <a-form-item>
-              <label>器材编号：</label>
-              <a-input placeholder="请输入器材编号" v-model="inputID"/>
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="24">
-            <a-form-item>
-              <label>出厂时间：</label>
-              <a-input placeholder="请输入出厂时间" v-model="inputTime"/>
-            </a-form-item>
-          </a-col>
-        </a-row>
-      </a-form>
-      <br>
-      <a-table :columns="columns" :dataSource="eDataShow" rowKey="id" bordered>
-        <template
-                v-for="col in ['id']"
-                :slot="col"
-                slot-scope="text, record"
-        >
-          {{"EQ" + text}}
-        </template>
-        <template slot="status" slot-scope="text">
-          <a-badge :status="text | statusTypeFilter" :text="text | statusFilter" />
-        </template>
-        <template slot="price" slot-scope="text">
-          {{"￥" + text}}
-        </template>
-        <template slot="icon" slot-scope="text">
-          <!--<div>
-            <a-avatar slot="avatar" size="large" shape="square" :src="text"/>
-          </div>-->
-          <div id="app">
-            <div class="">
-              <div
-                      class="pic"
-                      @click="() => showImg(text)"
-              >
-                <a-avatar :src="text"/>
+  <page-view title="仓储器材">
+    <div>
+      <a-card :bordered="false">
+        <a-form class="ant-advanced-search-form" :form="form" inline>
+          <a-row :gutter="24">
+            <a-col :md="6" :sm="24">
+              <a-form-item>
+                <label>器材编号：</label>
+                <a-input placeholder="请输入器材编号" v-model="inputID"/>
+              </a-form-item>
+            </a-col>
+            <a-col :md="6" :sm="24">
+              <a-form-item>
+                <label>出厂时间：</label>
+                <a-input placeholder="请输入出厂时间" v-model="inputTime"/>
+              </a-form-item>
+            </a-col>
+          </a-row>
+        </a-form>
+        <br>
+        <a-table :columns="columns" :dataSource="eDataShow" rowKey="id" bordered>
+          <template
+            v-for="col in ['id']"
+            :slot="col"
+            slot-scope="text, record"
+          >
+            {{"EQ" + text}}
+          </template>
+          <template slot="status" slot-scope="text">
+            <a-badge :status="text | statusTypeFilter" :text="text | statusFilter" />
+          </template>
+          <template slot="price" slot-scope="text">
+            {{"￥" + text}}
+          </template>
+          <template slot="icon" slot-scope="text">
+            <!--<div>
+              <a-avatar slot="avatar" size="large" shape="square" :src="text"/>
+            </div>-->
+            <div id="app">
+              <div class="">
+                <div
+                  class="pic"
+                  @click="() => showImg(text)"
+                >
+                  <a-avatar :src="text"/>
+                </div>
               </div>
+              <vue-easy-lightbox
+                :visible="visible"
+                :imgs="src"
+                @hide="handleHide"
+              ></vue-easy-lightbox>
             </div>
-            <vue-easy-lightbox
-                    :visible="visible"
-                    :imgs="src"
-                    @hide="handleHide"
-            ></vue-easy-lightbox>
-          </div>
-        </template>
+          </template>
 
       </a-table>
       <a-button @click="addEquipment" type="primary" icon="plus">&nbsp;&nbsp;添加器材&nbsp;&nbsp;</a-button>
@@ -231,6 +232,9 @@
   const eDataShow = []
   export default {
     name: 'EquipPreview',
+    components:{
+      PageView,
+    },
     data() {
       this.cacheData = eData.map(item => ({...item}))
       return {
