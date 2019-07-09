@@ -57,7 +57,7 @@ export const asyncRouterMap = [
         path: '/equipment',
         name: 'equipment',
         redirect: '/equipment/preview',
-        meta: {title: '器材', keepAlive: true, icon: 'appstore', permission: ['table']},
+        meta: {title: '器材', keepAlive: true, icon: 'appstore'},
         component: RouteView,
         children: [
           {
