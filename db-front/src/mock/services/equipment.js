@@ -116,7 +116,7 @@ const equipmentStored = () => {
         status: '0',
         model: 'GTX 1080',
         price: '100',
-        warehouse: '四平仓库'
+        warehouse: '嘉定仓库'
       },
       {
         id: '10002',
@@ -126,7 +126,7 @@ const equipmentStored = () => {
         status: '1',
         model: 'GTX 2080',
         price: '110',
-        warehouse: '嘉定仓库'
+        warehouse: '杨浦仓库'
       },
       {
         id: '10003',
@@ -136,7 +136,7 @@ const equipmentStored = () => {
         status: '0',
         model: 'i7 8700k',
         price: '70',
-        warehouse: '五角场仓库'
+        warehouse: '徐汇仓库'
       },
       {
         id: '10004',
@@ -146,7 +146,7 @@ const equipmentStored = () => {
         status: '1',
         model: 'i9 9900k',
         price: '90',
-        warehouse: '四平仓库'
+        warehouse: '黄浦仓库'
       },
       {
         id: '10005',
