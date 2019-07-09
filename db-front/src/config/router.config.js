@@ -1,6 +1,6 @@
 /* eslint-disable */
 import { UserLayout, BasicLayout, RouteView, BlankLayout, PageView } from '@/layouts'
-import { bxAnaalyse } from '@/core/icons'
+import { bxAnaalyse, codeAPI } from '@/core/icons'
 
 export const asyncRouterMap = [
 
@@ -24,7 +24,7 @@ export const asyncRouterMap = [
                         path: '/dashboard/analysis',
                         name: 'Analysis',
                         component: () => import('@/views/dashboard/Analysis'),
-                        meta: { title: '分析页', keepAlive: false, permission: ['dashboard'] }
+                        meta: { title: '分析页', keepAlive: false, permission: ['dashboard']}
                     },
                     // 外部链接
                     {
@@ -51,7 +51,13 @@ export const asyncRouterMap = [
                         path: '/server/KibanaMonitor',
                         name: 'KibanaMonitor',
                         component: () => import('@/views/server/KibanaMonitor'),
-                        meta: { title: '监控', keepAlive: false, permission: ['dashboard'] }
+                        meta: { title: '监控', keepAlive: false, permission: ['dashboard'] ,icon: bxAnaalyse}
+                    },
+                    {
+                        path: '/server/Swagger',
+                        name: 'Swagger',
+                        component: () => import('@/views/server/Swagger'),
+                        meta: { title: 'API', keepAlive: false, permission: ['dashboard'] ,icon: codeAPI}
                     },
                 ]
             },
