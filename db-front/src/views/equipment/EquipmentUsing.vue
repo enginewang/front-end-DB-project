@@ -36,6 +36,9 @@
               {{ text }}
             </div>
           </template>
+          <template slot="id" slot-scope="text">
+            {{"EQ" + text }}
+          </template>
           <template slot="status" slot-scope="text">
             <a-badge :status="text | statusTypeFilter" :text="text | statusFilter" />
           </template>
@@ -58,20 +61,12 @@
 
   const statusMap = {
     0: {
-      status: 'processing',
-      text: '储存中'
-    },
-    1: {
       status: 'success',
       text: '正常'
     },
-    2: {
+    1: {
       status: 'error',
-      text: '已损坏'
-    },
-    3: {
-      status: 'default',
-      text: '维修中'
+      text: '损坏'
     }
   }
 
@@ -92,40 +87,27 @@
     title: '使用状态',
     dataIndex: 'status',
     align: 'center',
-    width: '12%',
+    width: '10%',
     filters: [{
-      text: '存储中',
+      text: '正常',
       value: '0'
     }, {
-      text: '正常',
+      text: '损坏',
       value: '1'
-    }, {
-      text: '已损坏',
-      value: '2'
-    }, {
-      text: '维修中',
-      value: '3'
     }],
     onFilter: (value, record) => record.status.indexOf(value) === 0,
     scopedSlots: {customRender: 'status'}
   }, {
-    title: '损坏程度',
-    dataIndex: 'damage',
-    align: 'center',
-    width: '12%',
-    scopedSlots: {customRender: 'damage'},
-    sorter: (a, b) => a.damage > b.damage
-  }, {
     title: '型号',
     dataIndex: 'model',
     align: 'center',
-    width: '15%',
+    width: '12%',
     scopedSlots: {customRender: 'model'}
   }, {
     title: '地址',
     dataIndex: 'address',
     align: 'center',
-    width: '25%',
+    width: '30%',
     scopedSlots: {customRender: 'address'}
   },{
     title: ' ',
@@ -282,8 +264,8 @@
     },
     mounted() {
       getEquipmentUsingList().then((response) => {
-        console.log(...response)
-        this.eData = [...response]
+        console.log(...response.data)
+        this.eData = [...response.data]
         this.eDataShow = this.eData
       })
     }
