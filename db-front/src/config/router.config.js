@@ -138,7 +138,7 @@ export const asyncRouterMap = [
                     },
                     {
                         path: '/sheets/checkSheet',
-                        name: 'checksheet',
+                        name: 'checkSheet',
                         component: () => import('@/views/sheets/checkSheet'),
                         meta: {title: '巡检单', keepAlive: false, icon: 'copy'}
                     },

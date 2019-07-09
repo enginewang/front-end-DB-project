@@ -1,11 +1,11 @@
 <template>
   <page-view :avatar="avatar" :title="false">
     <div slot="headerContent">
-      <div class="title">{{ timeFix }}，{{ user.name }}<span class="welcome-text">，{{ welcome() }}</span></div>
-      <div>前端工程师 | 蚂蚁金服 - 某某某事业群 - VUE平台</div>
+      <div class="title">{{ timeFix }}！{{ user.name }}<span class="welcome-text">，{{ welcome() }}</span></div>
+      <div>前端工程师 | Eport - 管理员 - VUE平台</div>
     </div>
     <div slot="extra">
-      <a-row class="more-info">
+      <a-row class="">
         <a-col :span="8">
           <head-info title="项目数" content="56" :center="false" :bordered="false"/>
         </a-col>
@@ -20,6 +20,7 @@
     <div>
       <a-row :gutter="24">
         <a-col :xl="16" :lg="24" :md="24" :sm="24" :xs="24">
+          <!--调度管理-->
           <a-card
             class="project-list"
             :loading="loading"
@@ -154,13 +155,7 @@
             </a-card>
           </a-card>
 
-
-
-
-
-
-
-
+          <!--动态-->
           <a-card :loading="loading" title="动态" :bordered="false">
             <a-list>
               <a-list-item :key="index" v-for="(item, index) in activities">
@@ -178,6 +173,8 @@
             </a-list>
           </a-card>
         </a-col>
+
+        <!--个人信息-->
         <a-col
           style="padding: 0 12px"
           :xl="8"
@@ -185,8 +182,23 @@
           :md="24"
           :sm="24"
           :xs="24">
-          <a-card>
-            <h3>个人信息</h3>
+          <a-card
+            class="project-list"
+            :loading="loading"
+            style="margin-bottom: 24px; margin-top: 0px"
+            :bordered="false"
+            title="个人信息"
+            :body-style="{ padding: 0 }">
+            <a-card>
+              <a-icon type="unlock" />
+              <detail-list>
+                <detail-list-item term="出厂时间">{{factory_time}}</detail-list-item>
+                <detail-list-item term="安装时间">{{install_time}}</detail-list-item>
+                <detail-list-item term="使用时长">{{using_time}}</detail-list-item>
+                <detail-list-item term="使用单位">{{unit}}</detail-list-item>
+                <detail-list-item term="联系地址">{{address}}</detail-list-item>
+              </detail-list>
+            </a-card>
           </a-card>
         </a-col>
       </a-row>
