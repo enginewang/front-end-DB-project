@@ -1,6 +1,7 @@
 # 仓库API(warehouseAPI)
 
 ```
+// 该API接收非空仓库,展示在预览页面
 name: getWarehousePreview
 url: api/warehouse/preview
 method: 'get'
@@ -30,6 +31,7 @@ return: {
 ```
 
 ```
+// 该API接收以ID为Key的仓库的详细信息,展示在detail页面的head处
 name: postWarehouseDetail
 url: api/warehouse/detail
 method: 'post'
@@ -45,6 +47,7 @@ return: {
 ```
 
 ```
+// 该API接收所有的仓库的地址(区号),以便前端以地址进行筛选
 name: getAllAddress
 url: api/warehouse/allAddress
 method: 'get'
@@ -58,6 +61,7 @@ return: { // 请求的返回值为一个数组,存放所有的有仓库的地址
 ```
 
 ```
+// 该API接收所有可以调度到的仓库(to), 用于调出到该仓库
 name: getAllWarehouse
 url: api/warehouse/allWarehouse
 method: 'get'
@@ -72,6 +76,7 @@ return: { // 请求的返回值是一个数组,存放所有的仓库名字而不
 ```
 
 ```
+// 该API接收所有以ID为Key的仓库的货物信息
 name: postGoods
 url: api/warehouse/goods
 method: 'post'
@@ -110,6 +115,7 @@ return: {// 请求的返回值是两个数组,一个名为 accessory, 一个名�
 ```
 
 ```
+// 该API用于进行货物调度
 name: postSchedule
 url: api/warehouse/schedule
 method: 'post'
