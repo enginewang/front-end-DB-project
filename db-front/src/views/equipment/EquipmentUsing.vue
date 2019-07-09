@@ -13,7 +13,7 @@
           <a-col :md="6" :sm="24">
             <a-form-item>
               <label>型号：</label>
-              <a-input placeholder="请输入型号" v-model="inputModelID"/>
+              <a-input placeholder="请输入型号" v-model="inputmodel"/>
             </a-form-item>
           </a-col>
           <a-col :md="6" :sm="24">
@@ -118,7 +118,7 @@
   }]
   let inputID = ''
   let inputAddress = ''
-  let inputModelID = ''
+  let inputmodel = ''
   const eData = []
   const eDataShow = []
 
@@ -136,7 +136,7 @@
         eDataShow,
         inputID: '',
         inputAddress: '',
-        inputModelID: '',
+        inputmodel: '',
         columns,
         advanced: false,
         form: this.$form.createForm(this),
@@ -247,7 +247,7 @@
           console.log(this.eDataShow)
         }
       },
-      inputModelID(pattern) {
+      inputmodel(pattern) {
         if (pattern == '') {
           this.eDataShow = this.eData
         } else {

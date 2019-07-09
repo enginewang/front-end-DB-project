@@ -3,7 +3,8 @@ import { axios } from '@/utils/request'
 const api = {
   equipmentUsing: '/equipment/using',
   equipmentDetail: '/equipment/detail',
-  equipmentStored: '/equipment/stored'
+  equipmentStored: '/equipment/stored',
+  equipmentAllType: '/equipment/allType',
 };
 
 export default api
@@ -35,6 +36,13 @@ export function addEquipmentStored (parameter) {
 export function getEquipmentUsingList () {
   return axios({
     url: api.equipmentUsing,
+    method: 'get',
+  })
+}
+
+export function getAllEquipmentType () {
+  return axios({
+    url: api.equipmentAllType,
     method: 'get',
   })
 }
