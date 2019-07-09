@@ -335,7 +335,7 @@
 
 <script>
 import { STable } from '@/components'
-import { getStaffSheet } from '@/api/staff'
+import { getStaffSheet, deleteStaffSheetRow, modifyStaffSheetRow, addStaffSheetRow } from '@/api/staff'
 import Fuse from 'fuse.js'
 
 const statusMap = {
@@ -404,6 +404,10 @@ export default {
       sfData:[],
       sfDataShow:[],
       statusMap,
+      todelete:'',
+      deleteInfo:'',
+      modifyInfo:'',
+      addInfo:'',
 
       // 高级搜索 展开/关闭
       advanced: false,
@@ -521,9 +525,31 @@ export default {
     handlenewOk(){
       this.visible =false
       this.visible2 = false
+      modifyStaffSheetRow(this.newmdl).then((response) => {
+        this.modifyInfo = response.data.modifyInfo
+        if(this.modifyInfo !== 'fail'){
+          this.sfData = [...response.data.msfData]
+          this.sfDataShow = this.sfData
+        }
+        if(this.modifyInfo === 'ok'){
+          this.$notification.open({
+          message: '修改成功',
+          description: '本条员工记录修改成功',
+          icon: <a-icon type="check" style="color: #108ee9" />,
+        });
+        }
+        else{
+          this.$notification.open({
+          message: '修改失败',
+          description: '本条员工记录修改失败',
+          icon: <a-icon type="warning" style="color: #108ee9" />,
+        });
+        }
+      })
     },
     handlenewnewOk(){
       this.visible5 = true
+     
     },
     onClickDelete (id) {
       console.log(id)
@@ -532,37 +558,29 @@ export default {
     },
     //delete row
     onClickDeleteRow () {
-      this.visible2 = false;
-      const newData = [...this.wDataShow]
+      this.visible2 = false
+      this.visible3 = false
+      const newData = [...this.sfDataShow]
       console.log(newData)
       const target = newData.filter(item => this.todelete === item.id)[0]
-      console.log(target)
-      if(target.statue === '0'){
-          this.$notification.open({
-          message: '删除失败',
-          description: '未完成的工单不可删除',
-          icon: <a-icon type="warning" style="color: #108ee9" />,
-        });
-        return
-      }
-      
-      deleteWorkSheetRow(target.id).then((response) => {
+      console.log(target) 
+      deleteStaffSheetRow(target.id).then((response) => {
         this.deleteInfo = response.data.deleteInfo
         if(this.deleteInfo !== 'fail'){
-          this.wData = [...response.data.wData]
-          this.wDataShow = this.wData
+          this.sfData = [...response.data.sfData]
+          this.sfDataShow = this.sfData
         }
         if(this.deleteInfo === 'ok'){
           this.$notification.open({
           message: '删除成功',
-          description: '本条工单记录删除成功',
+          description: '本条员工记录删除成功',
           icon: <a-icon type="check" style="color: #108ee9" />,
         });
         }
         else{
           this.$notification.open({
           message: '删除失败',
-          description: '本条工单记录删除失败',
+          description: '本条员工记录删除失败',
           icon: <a-icon type="warning" style="color: #108ee9" />,
         });
         }
@@ -585,7 +603,29 @@ export default {
     
     },
     onClickNewRow(){
+      this.visible4 = false
       this.visible5 = false
+       addStaffSheetRow(this.addmdl).then((response) => {
+        this.addInfo = response.data.addInfo
+        if(this.addInfo !== 'fail'){
+          this.sfData = [...response.data.asfData]
+          this.sfDataShow = this.sfData
+        }
+        if(this.addInfo === 'ok'){
+          this.$notification.open({
+          message: '添加成功',
+          description: '本条员工记录添加成功',
+          icon: <a-icon type="check" style="color: #108ee9" />,
+        });
+        }
+        else{
+          this.$notification.open({
+          message: '添加失败',
+          description: '本条员工记录添加失败',
+          icon: <a-icon type="warning" style="color: #108ee9" />,
+        });
+        }
+      })
     }
   }
 }

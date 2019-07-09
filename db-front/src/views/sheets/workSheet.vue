@@ -86,8 +86,7 @@
       <template slot="operation" slot-scope="text, record" >
           <a-button
                 size="small"
-                style="background:red"
-                type ="primary"
+                type ="danger"
                 :hidden ='text'
                 @click="onClickDelete(record.id)"
               >删除</a-button>
