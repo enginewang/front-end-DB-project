@@ -1,6 +1,6 @@
 /* eslint-disable */
 import {UserLayout, BasicLayout, RouteView, BlankLayout, PageView} from '@/layouts'
-import {bxAnaalyse, codeAPI} from '@/core/icons'
+import {bxAnaalyse, codeAPI, chat} from '@/core/icons'
 import {addAccessoryInWarehouse} from '@/api/accessory'
 
 export const asyncRouterMap = [
@@ -174,7 +174,7 @@ export const asyncRouterMap = [
         path: '/chat',
         name: 'chat',
         component: () => import( '@/views/chat/Rocket'),
-        meta: {title: '聊天', keepAlive: true, icon: bxAnaalyse},
+        meta: {title: '聊天', keepAlive: true, icon: chat},
       },
       // account
       {
