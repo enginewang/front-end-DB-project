@@ -26,7 +26,7 @@ export function getCheckSheet () {
 export function deleteWorkSheetRow (data) {
   return axios({
     url: api.workSheetRow,
-    method: 'delete',
+    method: 'post',
     data: data
   })
 }
@@ -34,7 +34,7 @@ export function deleteWorkSheetRow (data) {
 export function deleteCheckSheetRow (data) {
   return axios({
     url: api.checkSheetRow,
-    method: 'delete',
+    method: 'post',
     data: data
   })
 }
