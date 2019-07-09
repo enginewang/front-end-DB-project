@@ -1,11 +1,13 @@
 ```
 name: login
+url: 'api/auth/login'
 method: 'post'
 data: {
     password: '21232f297a57a5a743894a0e4a801fc3'， // string, 加密方式是md5
     username: 'admin'
 }
 
+// 如果登陆失败,code 401, 返回一条"登陆错误"在message里面
 return: {
     result: { // 之所以叫result不是data, 是因为这个API不是我写的, 而是这个管理系统提供的
         avatar: "https://gw.alipayobjects.com/zos/rmsportal/jZUIxmJycoymBprLOUbT.png" // URL, 为头像
@@ -21,6 +23,7 @@ return: {
 
 ```
 name: logout
+url: 'api/auth/logout'
 method: 'post'
 data: {
     token: "4291d7da9005377ec9aec4a71ea837f"
@@ -33,8 +36,10 @@ return: {
 ```
 
 ```
-name: getInfo
-method: 'get'
+name: postInfo
+url: '/api/user/info'
+method: 'post'
+data: token // 请求者的token
 
 return: {
     result: {
@@ -42,6 +47,7 @@ return: {
         'name': '王小明', 
         'username': 'admin',
         'password': '',
+        'telephone': '',
         'avatar': '/avatar.jpg',
         'status': 1, // 1代表在用
         'deleted': 0,

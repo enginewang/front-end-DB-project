@@ -28,10 +28,11 @@ export function getSmsCaptcha ( parameter ) {
   } )
 }
 
-export function getInfo () {
+export function postInfo ( data ) {
   return axios( {
     url: '/user/info',
-    method: 'get',
+    method: 'post',
+    data: data,
     headers: {
       'Content-Type': 'application/json;charset=UTF-8'
     }

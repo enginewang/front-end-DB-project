@@ -1,6 +1,6 @@
 /* eslint-disable */
 import {UserLayout, BasicLayout, RouteView, BlankLayout, PageView} from '@/layouts'
-import {bxAnaalyse} from '@/core/icons'
+import {bxAnaalyse, codeAPI} from '@/core/icons'
 import {addAccessoryInWarehouse} from '@/api/accessory'
 
 export const asyncRouterMap = [
@@ -96,7 +96,7 @@ export const asyncRouterMap = [
         children: [
           {
             path: '/accessory/Accessory',
-            name: addAccessoryInWarehouse,
+            name: 'AccessoryInWarehouse',
             component: () => import( '@/views/accessory/Accessory' ),
             meta: {
               title: '配件管理', keepAlive: false, icon: 'bars'
@@ -154,15 +154,27 @@ export const asyncRouterMap = [
         name: 'server',
         redirect: '/server/KibanaMonitor',
         component: RouteView,
-        meta: {title: '服务器', keepAlive: true, icon: bxAnaalyse, permission: ['super']},
+        meta: {title: '服务器', keepAlive: true, icon: bxAnaalyse},
         children: [
           {
             path: '/server/KibanaMonitor',
             name: 'KibanaMonitor',
             component: () => import( '@/views/server/KibanaMonitor' ),
-            meta: {title: '监控', keepAlive: false, icon: 'video-camera', permission: ['super']}
+            meta: {title: '监控', keepAlive: false, icon: bxAnaalyse}
+          },
+          {
+            path: '/server/Swagger',
+            name: 'Swagger',
+            component: () => import( '@/views/server/Swagger' ),
+            meta: {title: '监控', keepAlive: false, icon: codeAPI}
           },
         ]
+      },
+      {
+        path: '/chat',
+        name: 'chat',
+        component: () => import( '@/views/chat/Rocket'),
+        meta: {title: '聊天', keepAlive: true, icon: bxAnaalyse},
       },
       // account
       {

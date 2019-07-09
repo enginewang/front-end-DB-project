@@ -228,7 +228,7 @@
           label="员工姓名"
           hasFeedback
         >
-          <a-input placeholder="姓名" v-model="addmdl.name" id="role_name" />
+          <a-input placeholder="请输入新用户姓名" v-model="addmdl.name" id="role_name" />
         </a-form-item>
 
         <a-form-item
@@ -236,8 +236,9 @@
           :wrapperCol="wrapperCol"
           label="员工身份"
           hasFeedback
+          
         >
-          <a-select v-model="addmdl.status">
+          <a-select v-model="addmdl.status" >
             <a-select-option value="0">巡检员</a-select-option>
             <a-select-option value="1">维修员</a-select-option>
             <a-select-option value="2">调度员</a-select-option>
@@ -250,7 +251,7 @@
           label="员工账户名"
           hasFeedback
         >
-          <a-input placeholder="账户名" v-model="addmdl.accountID" id="role_name" />
+          <a-input placeholder="请输入新用户账户名" v-model="addmdl.accountID" id="role_name" />
         </a-form-item>
 
         <a-form-item
@@ -259,7 +260,7 @@
           label="密码"
           hasFeedback
         >
-           <a-input placeholder="密码" v-model="addmdl.password" id="role_password" />
+           <a-input placeholder="请输入新用户密码" v-model="addmdl.password" id="role_password" />
         </a-form-item>
 
         <a-form-item
@@ -268,7 +269,7 @@
           label="电话"
           hasFeedback
         >
-           <a-input placeholder="电话号码" v-model="addmdl.telNumber" id="role_telnumber" />
+           <a-input placeholder="请填写新用户电话" v-model="addmdl.telNumber" id="role_telnumber" />
         </a-form-item>
 
         <a-form-item
@@ -277,7 +278,7 @@
           label="身份证号码"
           hasFeedback
         >
-           <a-input placeholder="身份证号码" v-model="addmdl.idCardNumber" id="role_idCard" />
+           <a-input placeholder="请填写新用户身份证号码" v-model="addmdl.idCardNumber" id="role_idCard" />
         </a-form-item>
 
         <a-form-item
@@ -335,7 +336,7 @@
 
 <script>
 import { STable } from '@/components'
-import { getStaffSheet } from '@/api/staff'
+import { getStaffSheet, deleteStaffSheetRow, modifyStaffSheetRow, addStaffSheetRow } from '@/api/staff'
 import Fuse from 'fuse.js'
 
 const statusMap = {
@@ -361,7 +362,6 @@ export default {
   },
   data () {
     return {
-      description: '列表使用场景：后台管理中的权限管理以及角色管理，可用于基于 RBAC 设计的角色权限控制，颗粒度细到每一个操作类型。',
 
       visible: false,
       labelCol: {
@@ -390,20 +390,24 @@ export default {
         'endTime':''
       },
       addmdl:{
-        'name':'请输入新用户姓名',
-        'accountID':'请输入新用户账户名',
-        'password':'请输入新用户密码',
-        'status':'请选择新用户身份',
-        'telNumber':'请填写新用户电话',
-        'idCardNumber':'请填写新用户身份证号码',
-        'startTime':'请选择每周工作开始时间',
-        'endTime':'请选择每周工作结束时间'
+        'name':'',
+        'accountID':'',
+        'password':'',
+        'status':'0',
+        'telNumber':'',
+        'idCardNumber':'',
+        'startTime':'周一',
+        'endTime':'周五'
       },
       input:'',
       input2: '',
       sfData:[],
       sfDataShow:[],
       statusMap,
+      todelete:'',
+      deleteInfo:'',
+      modifyInfo:'',
+      addInfo:'',
 
       // 高级搜索 展开/关闭
       advanced: false,
@@ -521,9 +525,31 @@ export default {
     handlenewOk(){
       this.visible =false
       this.visible2 = false
+      modifyStaffSheetRow(this.newmdl).then((response) => {
+        this.modifyInfo = response.data.modifyInfo
+        if(this.modifyInfo !== 'fail'){
+          this.sfData = [...response.data.msfData]
+          this.sfDataShow = this.sfData
+        }
+        if(this.modifyInfo === 'ok'){
+          this.$notification.open({
+          message: '修改成功',
+          description: '本条员工记录修改成功',
+          icon: <a-icon type="check" style="color: #108ee9" />,
+        });
+        }
+        else{
+          this.$notification.open({
+          message: '修改失败',
+          description: '本条员工记录修改失败',
+          icon: <a-icon type="warning" style="color: #108ee9" />,
+        });
+        }
+      })
     },
     handlenewnewOk(){
       this.visible5 = true
+     
     },
     onClickDelete (id) {
       console.log(id)
@@ -532,37 +558,29 @@ export default {
     },
     //delete row
     onClickDeleteRow () {
-      this.visible2 = false;
-      const newData = [...this.wDataShow]
+      this.visible2 = false
+      this.visible3 = false
+      const newData = [...this.sfDataShow]
       console.log(newData)
       const target = newData.filter(item => this.todelete === item.id)[0]
-      console.log(target)
-      if(target.statue === '0'){
-          this.$notification.open({
-          message: '删除失败',
-          description: '未完成的工单不可删除',
-          icon: <a-icon type="warning" style="color: #108ee9" />,
-        });
-        return
-      }
-      
-      deleteWorkSheetRow(target.id).then((response) => {
+      console.log(target) 
+      deleteStaffSheetRow(target.id).then((response) => {
         this.deleteInfo = response.data.deleteInfo
         if(this.deleteInfo !== 'fail'){
-          this.wData = [...response.data.wData]
-          this.wDataShow = this.wData
+          this.sfData = [...response.data.sfData]
+          this.sfDataShow = this.sfData
         }
         if(this.deleteInfo === 'ok'){
           this.$notification.open({
           message: '删除成功',
-          description: '本条工单记录删除成功',
+          description: '本条员工记录删除成功',
           icon: <a-icon type="check" style="color: #108ee9" />,
         });
         }
         else{
           this.$notification.open({
           message: '删除失败',
-          description: '本条工单记录删除失败',
+          description: '本条员工记录删除失败',
           icon: <a-icon type="warning" style="color: #108ee9" />,
         });
         }
@@ -585,7 +603,29 @@ export default {
     
     },
     onClickNewRow(){
+      this.visible4 = false
       this.visible5 = false
+       addStaffSheetRow(this.addmdl).then((response) => {
+        this.addInfo = response.data.addInfo
+        if(this.addInfo !== 'fail'){
+          this.sfData = [...response.data.asfData]
+          this.sfDataShow = this.sfData
+        }
+        if(this.addInfo === 'ok'){
+          this.$notification.open({
+          message: '添加成功',
+          description: '本条员工记录添加成功',
+          icon: <a-icon type="check" style="color: #108ee9" />,
+        });
+        }
+        else{
+          this.$notification.open({
+          message: '添加失败',
+          description: '本条员工记录添加失败',
+          icon: <a-icon type="warning" style="color: #108ee9" />,
+        });
+        }
+      })
     }
   }
 }

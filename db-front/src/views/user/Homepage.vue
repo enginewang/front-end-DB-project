@@ -96,6 +96,21 @@
                 <a-col :md="24" :lg="6">
                   <a-card hoverable>
                     <img
+                      alt="更多"
+                      src="https://res.cloudinary.com/dbmkzs2ez/image/upload/v1562599516/more.png"
+                      slot="cover"
+                    />
+                    <router-link :to="{name: 'AccessoryInWarehouse'}" active-class="active">
+                      <a-card-meta
+                        title="配件管理"
+                        description="点击管理器材配件">
+                      </a-card-meta>
+                    </router-link>
+                  </a-card>
+                </a-col>
+                <a-col :md="24" :lg="6">
+                  <a-card hoverable>
+                    <img
                       alt="工单预览"
                       src="https://res.cloudinary.com/dbmkzs2ez/image/upload/v1562593143/gongdan.png"
                       slot="cover"
@@ -136,19 +151,6 @@
                         description="点击预览巡检单信息">
                       </a-card-meta>
                     </router-link>
-                  </a-card>
-                </a-col>
-                <a-col :md="24" :lg="6">
-                  <a-card hoverable>
-                    <img
-                      alt="更多"
-                      src="https://res.cloudinary.com/dbmkzs2ez/image/upload/v1562599516/more.png"
-                      slot="cover"
-                    />
-                      <a-card-meta
-                        title="配件管理"
-                        description="点击管理器材配件">
-                      </a-card-meta>
                   </a-card>
                 </a-col>
               </a-row>
