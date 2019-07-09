@@ -1,58 +1,57 @@
 <template>
-  <page-view title="仓储器材">
-    <div>
-      <a-card :bordered="false">
-        <a-form class="ant-advanced-search-form" :form="form" inline>
-          <a-row :gutter="24">
-            <a-col :md="6" :sm="24">
-              <a-form-item>
-                <label>器材编号：</label>
-                <a-input placeholder="请输入器材编号" v-model="inputID"/>
-              </a-form-item>
-            </a-col>
-            <a-col :md="6" :sm="24">
-              <a-form-item>
-                <label>出厂时间：</label>
-                <a-input placeholder="请输入出厂时间" v-model="inputTime"/>
-              </a-form-item>
-            </a-col>
-          </a-row>
-        </a-form>
-        <br>
-        <a-table :columns="columns" :dataSource="eDataShow" rowKey="id" bordered>
-          <template
-            v-for="col in ['id']"
-            :slot="col"
-            slot-scope="text, record"
-          >
-            {{"EQ" + text}}
-          </template>
-          <template slot="status" slot-scope="text">
-            <a-badge :status="text | statusTypeFilter" :text="text | statusFilter" />
-          </template>
-          <template slot="price" slot-scope="text">
-            {{"￥" + text}}
-          </template>
-          <template slot="icon" slot-scope="text">
-            <!--<div>
-              <a-avatar slot="avatar" size="large" shape="square" :src="text"/>
-            </div>-->
-            <div id="app">
-              <div class="">
-                <div
-                  class="pic"
-                  @click="() => showImg(text)"
-                >
-                  <a-avatar :src="text"/>
-                </div>
+  <div>
+    <a-card :bordered="false">
+      <a-form class="ant-advanced-search-form" :form="form" inline>
+        <a-row :gutter="24">
+          <a-col :md="6" :sm="24">
+            <a-form-item>
+              <label>器材编号：</label>
+              <a-input placeholder="请输入器材编号" v-model="inputID"/>
+            </a-form-item>
+          </a-col>
+          <a-col :md="6" :sm="24">
+            <a-form-item>
+              <label>出厂时间：</label>
+              <a-input placeholder="请输入出厂时间" v-model="inputTime"/>
+            </a-form-item>
+          </a-col>
+        </a-row>
+      </a-form>
+      <br>
+      <a-table :columns="columns" :dataSource="eDataShow" rowKey="id" bordered>
+        <template
+                v-for="col in ['id']"
+                :slot="col"
+                slot-scope="text, record"
+        >
+          {{"EQ" + text}}
+        </template>
+        <template slot="status" slot-scope="text">
+          <a-badge :status="text | statusTypeFilter" :text="text | statusFilter" />
+        </template>
+        <template slot="price" slot-scope="text">
+          {{"￥" + text}}
+        </template>
+        <template slot="icon" slot-scope="text">
+          <!--<div>
+            <a-avatar slot="avatar" size="large" shape="square" :src="text"/>
+          </div>-->
+          <div id="app">
+            <div class="">
+              <div
+                      class="pic"
+                      @click="() => showImg(text)"
+              >
+                <a-avatar :src="text"/>
               </div>
-              <vue-easy-lightbox
-                :visible="visible"
-                :imgs="src"
-                @hide="handleHide"
-              ></vue-easy-lightbox>
             </div>
-          </template>
+            <vue-easy-lightbox
+                    :visible="visible"
+                    :imgs="src"
+                    @hide="handleHide"
+            ></vue-easy-lightbox>
+          </div>
+        </template>
 
       </a-table>
       <a-button @click="addEquipment" type="primary" icon="plus">&nbsp;&nbsp;添加器材&nbsp;&nbsp;</a-button>
@@ -136,7 +135,7 @@
 </template>
 
 <script>
-  import { getEquipmentStoredList, getAllEquipmentType } from '@/api/equipment'
+  import { getEquipmentStoredList, getAllEquipmentType, addEquipmentStored } from '@/api/equipment'
   import { getAllWarehouse } from '@/api/warehouse'
   import Fuse from 'fuse.js'
   import Vue from 'vue'
@@ -212,18 +211,7 @@
     align: 'center',
     width: '14%',
     scopedSlots: {customRender: 'storehouse'},
-    filters: [{
-      text: '仓库1',
-      value: 'wh1'
-    },
-      {
-        text: '仓库2',
-        value: 'wh2'
-      },
-      {
-        text: '仓库3',
-        value: 'wh3'
-      }],
+    filters: [],
     onFilter: (value, record) => record.warehouse.indexOf(value) === 0
   }]
   // data
@@ -232,9 +220,6 @@
   const eDataShow = []
   export default {
     name: 'EquipPreview',
-    components:{
-      PageView,
-    },
     data() {
       this.cacheData = eData.map(item => ({...item}))
       return {
@@ -334,7 +319,9 @@
         this.form.validateFields((err, value) => {
           if (!err) {
             value['productTime'] = value['productTime'].format('YYYY-MM-DD HH:mm:ss');
-            console.log('formData:', value);
+            console.log('formData:', value)
+            // 发送post请求，之后需要调整
+            addEquipmentStored(value)
           }
         })
         this.showAddForm = false;
@@ -394,15 +381,20 @@
         this.eData = [...response.data]
         this.eDataShow = this.eData
       }),
-          getAllWarehouse().then((response) => {
-            this.allWarehouse = [...response.data]
-            console.log(this.allWarehouse)
-            //this.allWarehouse.splice(this.allWarehouse.indexOf(this.warehouseDetail.name), 1)
-          }),
-          getAllEquipmentType().then((response) => {
-            this.allEquipType = [...response.data]
-            console.log(this.allEquipType)
-          })
+      getAllWarehouse().then((response) => {
+        this.allWarehouse = [...response.data]
+        this.columns[7].filters = [];
+        for(let val of this.allWarehouse){
+          let temp = {
+            text: val,
+            value: val
+            }
+          this.columns[7].filters.push(temp)
+        }}),
+      getAllEquipmentType().then((response) => {
+        this.allEquipType = [...response.data]
+        console.log(this.allEquipType)
+        })
     }
   }
 </script>
