@@ -1,6 +1,6 @@
 <template>
-  <page-view title="仓储器材">
     <div>
+      <page-view title="仓储器材"></page-view>
       <a-card :bordered="false">
         <a-form class="ant-advanced-search-form" :form="form" inline>
           <a-row :gutter="24">
