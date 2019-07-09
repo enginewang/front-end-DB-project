@@ -61,28 +61,6 @@
                   alt="请扫描二维码" width="200" height="200">
               </a-col>
             </a-row>
-
-          <!--
-           <a-card type="inner" title="多层信息组">
-            <detail-list title="组名称" size="small">
-              <detail-list-item term="负责人">林东东</detail-list-item>
-              <detail-list-item term="角色码">1234567</detail-list-item>
-              <detail-list-item term="所属部门">XX公司-YY部</detail-list-item>
-              <detail-list-item term="过期时间">2018-08-08</detail-list-item>
-              <detail-list-item term="描述">这段描述很长很长很长很长很长很长很长很长很长很长很长很长很长很长...</detail-list-item>
-            </detail-list>
-            <a-divider style="margin: 16px 0" />
-            <detail-list title="组名称" size="small" :col="1">
-              <detail-list-item term="学名">	Citrullus lanatus (Thunb.) Matsum. et Nakai一年生蔓生藤本；茎、枝粗壮，具明显的棱。卷须较粗..</detail-list-item>
-            </detail-list>
-            <a-divider style="margin: 16px 0" />
-            <detail-list title="组名称" size="small" :col="2">
-              <detail-list-item term="负责人">付小小</detail-list-item>
-              <detail-list-item term="角色码">1234567</detail-list-item>
-            </detail-list>
-          </a-card>
-          -->
-
         </a-card>
       </a-col>
     </a-row>
@@ -120,7 +98,7 @@
         if_damage: '',
         order: '',
         infoData: [],
-        IDTitle: '器材编号：' + this.$route.params.id,
+        IDTitle: '器材编号：EQ' + this.$route.params.id,
 
         equipmentID: this.$route.params.id,
       }
