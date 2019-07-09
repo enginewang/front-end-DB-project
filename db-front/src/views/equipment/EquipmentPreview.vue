@@ -54,104 +54,95 @@
             </div>
           </template>
 
-        </a-table>
-        <a-button @click="addEquipment" type="primary" icon="plus">&nbsp;&nbsp;添加器材&nbsp;&nbsp;</a-button>
-        <a-modal v-model="showAddForm" footer="">
-          <a-form title="添加器件" @submit="handleSubmit" :form = "form">
-            <a-form-item
-              label="器材编号"
-              :labelCol="{lg: {span: 7}, sm: {span: 7}}"
-              :wrapperCol="{lg: {span: 10}, sm: {span: 17} }">
-              <a-input
-                v-decorator="[
-            'id',
-            {rules: [{ required: true, message: '请输入标题' }]}
-          ]"
-                name="id"
-                placeholder="输入器件id" />
-            </a-form-item>
-            <a-form-item
-              label="名称"
-              :labelCol="{lg: {span: 7}, sm: {span: 7}}"
-              :wrapperCol="{lg: {span: 10}, sm: {span: 17} }">
-              <a-input
-                v-decorator="[
-            'name',
-            {rules: [{ required: true, message: '请输入器材名称' }]}
-          ]"
-                name="name"
-                placeholder="请输入器材名称" />
-            </a-form-item>
-            <a-form-item
-              label="出厂日期"
-              :labelCol="{lg: {span: 7}, sm: {span: 7}}"
-              :wrapperCol="{lg: {span: 10}, sm: {span: 17} }">
-              <a-date-picker
-                name="productTime"
-                style="width: 100%"
-                format="YYYY-MM-DD HH:mm:ss"
-                :showTime="{ defaultValue: moment('00:00:00', 'HH:mm:ss') }"
-                v-decorator="[
+      </a-table>
+      <a-button @click="addEquipment" type="primary" icon="plus">&nbsp;&nbsp;添加器材&nbsp;&nbsp;</a-button>
+      <a-modal v-model="showAddForm" footer="">
+        <a-form title="添加器材" @submit="handleSubmit" :form = "form">
+          <a-form-item
+                  :wrapperCol="{ span: 24 }"
+                  style="text-align: center"
+          >
+            <h3>新建器材</h3>
+          </a-form-item>
+          <a-form-item
+                  label="名称"
+                  :labelCol="{lg: {span: 7}, sm: {span: 7}}"
+                  :wrapperCol="{lg: {span: 10}, sm: {span: 17} }"
+          >
+            <a-select
+                    v-decorator="[
+          'name',
+          {rules: [{ required: true, message: '请选择器材名称' }]}
+        ]"
+                    placeholder="请选择器材名称"
+            >
+              <a-select-option v-for="(item,index) in this.allEquipType" :key="index" :value="item">{{item}}</a-select-option>
+            </a-select>
+          </a-form-item>
+          <a-form-item
+                  label="出厂日期"
+                  :labelCol="{lg: {span: 7}, sm: {span: 7}}"
+                  :wrapperCol="{lg: {span: 10}, sm: {span: 17} }">
+            <a-date-picker
+                    name="productTime"
+                    style="width: 100%"
+                    format="YYYY-MM-DD HH:mm:ss"
+                    :showTime="{ defaultValue: moment('00:00:00', 'HH:mm:ss') }"
+                    v-decorator="[
             'productTime',
             {rules: [{ required: true, message: '请选择出厂日期' }]}
           ]" />
-            </a-form-item>
-            <a-form-item
-              label="型号编号"
-              :labelCol="{lg: {span: 7}, sm: {span: 7}}"
-              :wrapperCol="{lg: {span: 10}, sm: {span: 17} }">
-              <a-input
-                v-decorator="[
-            'modelID',
-            {rules: [{ required: true, message: '请输入型号编号' }]}
+          </a-form-item>
+          <a-form-item
+                  label="器材型号"
+                  :labelCol="{lg: {span: 7}, sm: {span: 7}}"
+                  :wrapperCol="{lg: {span: 10}, sm: {span: 17} }">
+            <a-input
+                    v-decorator="[
+            'model',
+            {rules: [{ required: true, message: '请输入器材型号' }]}
           ]"
-                name="modelID"
-                placeholder="输入型号编号" />
-            </a-form-item>
-            <a-form-item
-              label="价格"
-              :labelCol="{lg: {span: 7}, sm: {span: 7}}"
-              :wrapperCol="{lg: {span: 14}, sm: {span: 20} }"
-              :required="true"
+                    name="model"
+                    placeholder="输入器材型号" />
+          </a-form-item>
+          <a-form-item
+                  label="仓库"
+                  :labelCol="{lg: {span: 7}, sm: {span: 7}}"
+                  :wrapperCol="{lg: {span: 10}, sm: {span: 17} }"
+          >
+            <a-select
+                    v-decorator="[
+          'warehouse',
+          {rules: [{ required: true, message: '请选择所属仓库' }]}
+        ]"
+                    placeholder="请选择所属仓库"
             >
-              <a-input-number :min="0" :max="10000" v-decorator="['price']"/>
-            </a-form-item>
-            <a-form-item
-              label="所在仓库"
-              :labelCol="{lg: {span: 7}, sm: {span: 7}}"
-              :wrapperCol="{lg: {span: 10}, sm: {span: 17} }">
-              <a-input
-                v-decorator="[
-            'warehouseID',
-            {rules: [{ required: false, message: '请输入所在仓库' }]}
-          ]"
-                name="warehouseID"
-                placeholder="输入所在仓库" />
-            </a-form-item>
-            <a-form-item
-              :wrapperCol="{ span: 24 }"
-              style="text-align: center"
-            >
-              <a-button htmlType="submit" type="primary">提交</a-button>
-              <a-button style="margin-left: 8px" @click="cancelAddForm">取消</a-button>
-            </a-form-item>
-          </a-form>
-        </a-modal>
-      </a-card>
-    </div>
-  </page-view>
+              <a-select-option v-for="(item,index) in this.allWarehouse" :key="index" :value="item">{{item}}</a-select-option>
+            </a-select>
+          </a-form-item>
+
+
+          <a-form-item
+                  :wrapperCol="{ span: 24 }"
+                  style="text-align: center"
+          >
+            <a-button htmlType="submit" type="primary">提交</a-button>
+            <a-button style="margin-left: 8px" @click="cancelAddForm">取消</a-button>
+          </a-form-item>
+        </a-form>
+      </a-modal>
+    </a-card>
+  </div>
 </template>
 
 <script>
-  import {getEquipmentStoredList} from '@/api/equipment'
-  import {PageView} from '@/layouts'
+  import { getEquipmentStoredList, getAllEquipmentType } from '@/api/equipment'
+  import { getAllWarehouse } from '@/api/warehouse'
   import Fuse from 'fuse.js'
   import Vue from 'vue'
   import Lightbox from 'vue-easy-lightbox'
   import moment from 'moment';
-
   Vue.use(Lightbox)
-
   const statusMap = {
     0: {
       status: 'success',
@@ -162,7 +153,6 @@
       text: '报废'
     }
   }
-
   const columns = [{
     title: '器材编号',
     dataIndex: 'id',
@@ -205,10 +195,10 @@
     scopedSlots: {customRender: 'status'}
   },{
     title: '型号编号',
-    dataIndex: 'modelID',
+    dataIndex: 'model',
     align: 'center',
     width: '12%',
-    scopedSlots: {customRender: 'modelID'}
+    scopedSlots: {customRender: 'model'}
   }, {
     title: '价格',
     dataIndex: 'price',
@@ -218,7 +208,7 @@
     sorter: (a, b) => a.price - b.price
   },{
     title: '所在仓库',
-    dataIndex: 'warehouseID',
+    dataIndex: 'warehouse',
     align: 'center',
     width: '14%',
     scopedSlots: {customRender: 'storehouse'},
@@ -234,13 +224,12 @@
         text: '仓库3',
         value: 'wh3'
       }],
-    onFilter: (value, record) => record.warehouseID.indexOf(value) === 0
+    onFilter: (value, record) => record.warehouse.indexOf(value) === 0
   }]
   // data
   let inputID = ''
   const eData = []
   const eDataShow = []
-
   export default {
     name: 'EquipPreview',
     components:{
@@ -254,11 +243,13 @@
           name: '',
           productTime: '',
           status: '',
-          modelID: '',
+          model: '',
           price: '',
           count: '',
-          warehouseID: ''
+          warehouse: ''
         },
+        allWarehouse: [],
+        allEquipType: [],
         visible: false,
         visible2: false,
         src: "",
@@ -270,12 +261,13 @@
         advanced: false,
         form: this.$form.createForm(this),
         showAddForm: false,
-        newFormCount: 0
+        newFormCount: 0,
+        newFormWarehouse: '',
       }
     },
     computed: {
       emptyInput() {
-        if (this.equipmentData.id !== '' || this.equipmentData.name !== '' || this.equipmentData.modelID !== '' || this.equipmentData.price !== '' || this.equipmentData.count !== '' || this.equipmentData.warehouseID !== '') {
+        if (this.equipmentData.id !== '' || this.equipmentData.name !== '' || this.equipmentData.model !== '' || this.equipmentData.price !== '' || this.equipmentData.count !== '' || this.equipmentData.warehouse !== '') {
           return false
         } else {
           return true
@@ -283,16 +275,15 @@
       }
     },
     // watch for fuzzy search
-
     methods: {
       moment,
       onClickClearSelect() {
         this.equipmentData.id = ''
         this.equipmentData.name = ''
-        this.equipmentData.modelID = ''
+        this.equipmentData.model = ''
         this.equipmentData.price = ''
         this.equipmentData.count = ''
-        this.equipmentData.warehouseID = ''
+        this.equipmentData.warehouse = ''
       },
       onClickSubmit() {
         console.log(this.equipmentData)
@@ -340,10 +331,10 @@
       },
       handleSubmit (e) {
         e.preventDefault()
-        this.form.validateFields((err, values) => {
+        this.form.validateFields((err, value) => {
           if (!err) {
-            // eslint-disable-next-line no-console
-            console.log('Received values of form: ', values)
+            value['productTime'] = value['productTime'].format('YYYY-MM-DD HH:mm:ss');
+            console.log('formData:', value);
           }
         })
         this.showAddForm = false;
@@ -358,7 +349,6 @@
       handleHide () {
         this.visible = false
       }
-
     },
     filters: {
       statusFilter (type) {
@@ -403,23 +393,29 @@
         console.log(...response.data)
         this.eData = [...response.data]
         this.eDataShow = this.eData
-      })
+      }),
+          getAllWarehouse().then((response) => {
+            this.allWarehouse = [...response.data]
+            console.log(this.allWarehouse)
+            //this.allWarehouse.splice(this.allWarehouse.indexOf(this.warehouseDetail.name), 1)
+          }),
+          getAllEquipmentType().then((response) => {
+            this.allEquipType = [...response.data]
+            console.log(this.allEquipType)
+          })
     }
   }
 </script>
 
 <style lang="less" scoped>
   @import '~ant-design-vue/lib/style/themes/default.less';
-
   .button-group {
     margin-bottom: 1rem;
-
     .button {
       margin-left: 0.5rem;
       margin-left: 0.5rem;
     }
   }
-
   .ant-form-inline .ant-form-item {
     display: inline-block;
     margin-right: 0;

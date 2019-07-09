@@ -114,9 +114,9 @@ const equipmentStored = () => {
         icon: '/equipment/yl.png',
         productTime: '2019-01-01 00:00:00',
         status: '0',
-        modelID: 'GTX 1080',
+        model: 'GTX 1080',
         price: '100',
-        warehouseID: '嘉定仓库'
+        warehouse: '嘉定仓库'
       },
       {
         id: '10002',
@@ -124,9 +124,9 @@ const equipmentStored = () => {
         icon: '/equipment/gl.png',
         productTime: '2019-01-02 08:00:00',
         status: '1',
-        modelID: 'GTX 2080',
+        model: 'GTX 2080',
         price: '110',
-        warehouseID: '杨浦仓库'
+        warehouse: '杨浦仓库'
       },
       {
         id: '10003',
@@ -134,9 +134,9 @@ const equipmentStored = () => {
         icon: '/equipment/yj.png',
         productTime: '1926-08-17 00:00:00',
         status: '0',
-        modelID: 'i7 8700k',
+        model: 'i7 8700k',
         price: '70',
-        warehouseID: '徐汇仓库'
+        warehouse: '徐汇仓库'
       },
       {
         id: '10004',
@@ -144,9 +144,9 @@ const equipmentStored = () => {
         icon: '/equipment/ppq.png',
         productTime: '1234-05-06 07:08:09',
         status: '1',
-        modelID: 'i9 9900k',
+        model: 'i9 9900k',
         price: '90',
-        warehouseID: '黄浦仓库'
+        warehouse: '黄浦仓库'
       },
       {
         id: '10005',
@@ -154,10 +154,22 @@ const equipmentStored = () => {
         icon: '/equipment/pbj.png',
         productTime: '2019-07-09 09:00:00',
         status: '0',
-        modelID: 'GTX 690',
+        model: 'GTX 690',
         price: '200',
-        warehouseID: '嘉定仓库'
+        warehouse: '嘉定仓库'
       },
+    ]
+  }
+}
+
+const allEquipmentType = () => {
+  return {
+    'data': [
+      '跑步机',
+      '杠铃',
+      '篮球',
+      '羽毛球',
+      '乒乓球',
     ]
   }
 }
@@ -165,3 +177,4 @@ const equipmentStored = () => {
 Mock.mock(/\/equipment\/using/, 'get', equipmentUsing);
 Mock.mock(/\/equipment\/detail/, 'post', equipmentDetail);
 Mock.mock(/\/equipment\/stored/, 'get', equipmentStored);
+Mock.mock(/\/equipment\/allType/, 'get', allEquipmentType);
