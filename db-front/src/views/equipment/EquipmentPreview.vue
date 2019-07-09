@@ -135,7 +135,7 @@
 </template>
 
 <script>
-  import { getEquipmentStoredList, getAllEquipmentType } from '@/api/equipment'
+  import { getEquipmentStoredList, getAllEquipmentType, addEquipmentStored } from '@/api/equipment'
   import { getAllWarehouse } from '@/api/warehouse'
   import Fuse from 'fuse.js'
   import Vue from 'vue'
@@ -211,18 +211,7 @@
     align: 'center',
     width: '14%',
     scopedSlots: {customRender: 'storehouse'},
-    filters: [{
-      text: '仓库1',
-      value: 'wh1'
-    },
-      {
-        text: '仓库2',
-        value: 'wh2'
-      },
-      {
-        text: '仓库3',
-        value: 'wh3'
-      }],
+    filters: [],
     onFilter: (value, record) => record.warehouse.indexOf(value) === 0
   }]
   // data
@@ -330,7 +319,9 @@
         this.form.validateFields((err, value) => {
           if (!err) {
             value['productTime'] = value['productTime'].format('YYYY-MM-DD HH:mm:ss');
-            console.log('formData:', value);
+            console.log('formData:', value)
+            // 发送post请求，之后需要调整
+            addEquipmentStored(value)
           }
         })
         this.showAddForm = false;
@@ -390,15 +381,19 @@
         this.eData = [...response.data]
         this.eDataShow = this.eData
       }),
-          getAllWarehouse().then((response) => {
-            this.allWarehouse = [...response.data]
-            console.log(this.allWarehouse)
-            //this.allWarehouse.splice(this.allWarehouse.indexOf(this.warehouseDetail.name), 1)
-          }),
-          getAllEquipmentType().then((response) => {
-            this.allEquipType = [...response.data]
-            console.log(this.allEquipType)
-          })
+      getAllWarehouse().then((response) => {
+        this.allWarehouse = [...response.data]
+        for(let val of this.allWarehouse){
+          let temp = {
+            text: val,
+            value: val
+            }
+          this.columns[7].filters.push(temp)
+        }}),
+      getAllEquipmentType().then((response) => {
+        this.allEquipType = [...response.data]
+        console.log(this.allEquipType)
+        })
     }
   }
 </script>
