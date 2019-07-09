@@ -191,13 +191,6 @@
             :body-style="{ padding: 0 }">
             <a-card>
               <a-icon type="unlock" />
-              <detail-list>
-                <detail-list-item term="出厂时间">{{factory_time}}</detail-list-item>
-                <detail-list-item term="安装时间">{{install_time}}</detail-list-item>
-                <detail-list-item term="使用时长">{{using_time}}</detail-list-item>
-                <detail-list-item term="使用单位">{{unit}}</detail-list-item>
-                <detail-list-item term="联系地址">{{address}}</detail-list-item>
-              </detail-list>
             </a-card>
           </a-card>
         </a-col>
