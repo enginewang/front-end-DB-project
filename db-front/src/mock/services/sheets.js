@@ -208,5 +208,5 @@ const checkSheetRow = (data) => {
 
 Mock.mock(/\/sheets\/workSheet/, 'get', workSheet)
 Mock.mock(/\/sheets\/checkSheet/, 'get', checkSheet)
-Mock.mock(/\/sheets\/workSheetRow/, 'delete', workSheetRow)
-Mock.mock(/\/sheets\/checkSheetRow/, 'delete', checkSheetRow)
+Mock.mock(/\/sheets\/workSheetRow/, 'post', workSheetRow)
+Mock.mock(/\/sheets\/checkSheetRow/, 'post', checkSheetRow)

@@ -1,142 +1,152 @@
 <template>
-  <div id="layout">
-    <!-- warehouse message -->
-    <a-layout>
-      <a-layout-header>
-        您现在位于 {{ warehouseDetail.address }} {{ warehouseDetail.detailAddress }}的 {{ warehouseDetail.name }}
-      </a-layout-header>
-      <!-- warehouse message end -->
-      <!-- refresh button -->
-      <div class="button-group">
-        <a-button
-          size="large"
-          class="button"
-          type="primary"
-          @click="reload()"
-          >刷新</a-button>
-      </div>
-      <!-- refresh end -->
-      <!-- equipment table -->
-      <div>
-        <a-form class="ant-advanced-search-form" :form="form">
-          <a-row :gutter="24">
-            <a-col :md="8" :sm="24">
-              <a-form-item>
-                <a-input placeholder="请输入器材编号" v-model="equipmentInput"/>
-              </a-form-item>
-            </a-col>
-          </a-row>
-        </a-form>
-      </div>
-      <a-table :columns="ecol" :dataSource="equipmentShow" rowKey="id" bordered>
-        <template
-          v-for="col in ['id','model', 'type']"
-          :slot="col"
-          slot-scope="text"
-        >
-          <div :key="col">
-            <div>{{ text }}</div>
+  <page-view title="仓库详情">
+    <a-card>
+      <div id="layout">
+        <!-- warehouse message -->
+        <a-layout>
+          <a-layout-header>
+            您现在位于 {{ warehouseDetail.address }} {{ warehouseDetail.detailAddress }}的 {{ warehouseDetail.name }}
+          </a-layout-header>
+          <!-- warehouse message end -->
+          <a-card :bordered="false">
+          <!-- refresh button -->
+          <div class="button-group">
+            <a-button
+              size="large"
+              class="button"
+              type="primary"
+              @click="reload()"
+            >刷新</a-button>
           </div>
-        </template>
-        <template slot="operation" slot-scope="text, record">
-          <div class="editable-row-operations">
-            <a-button @click="() => scheduleEquipment(record.id)">调度</a-button>
-            <!-- modal -->
-            <a-modal
-              title="调度"
-              v-model="visibleE"
-              @ok="handleOKE"
-            >
-              <div class="modal">
-                调出到
-                <a-select
-                  style="width: 200px"
-                  v-model="to"
-                >
-                  <a-select-option v-for="(item, index) in allWarehouse" :key="index">
-                    {{ item }}
-                  </a-select-option>
-                </a-select>
-                仓库
-              </div>
-            </a-modal>
-            <!-- modal end -->
-          </div>
-        </template>
-      </a-table>
-    <!-- equipment table end -->
+          <!-- refresh end -->
+            <!-- equipment table -->
+            <div>
+              <a-form class="ant-advanced-search-form" :form="form">
+                <a-row :gutter="24">
+                  <a-col :md="8" :sm="24">
+                    <a-form-item>
+                      <a-input placeholder="请输入器材编号" v-model="equipmentInput"/>
+                    </a-form-item>
+                  </a-col>
+                </a-row>
+              </a-form>
+            </div>
+            <a-table :columns="ecol" :dataSource="equipmentShow" rowKey="id" bordered>
+              <template
+                v-for="col in ['id','model', 'type']"
+                :slot="col"
+                slot-scope="text"
+              >
+                <div :key="col">
+                  <div>{{ text }}</div>
+                </div>
+              </template>
+              <template slot="operation" slot-scope="text, record">
+                <div class="editable-row-operations">
+                  <a-button @click="() => scheduleEquipment(record.id)">调度</a-button>
+                  <!-- modal -->
+                  <a-modal
+                    title="调度"
+                    v-model="visibleE"
+                    @ok="handleOKE"
+                  >
+                    <div class="modal">
+                      调出到
+                      <a-select
+                        style="width: 200px"
+                        v-model="to"
+                      >
+                        <a-select-option v-for="(item, index) in allWarehouse" :key="index">
+                          {{ item }}
+                        </a-select-option>
+                      </a-select>
+                      仓库
+                    </div>
+                  </a-modal>
+                  <!-- modal end -->
+                </div>
+              </template>
+            </a-table>
+            <!-- equipment table end -->
 
-      <!-- accessory table -->
-      <div>
-        <a-form class="ant-advanced-search-form" :form="form">
-          <a-row :gutter="24">
-            <a-col :md="8" :sm="24">
-              <a-form-item>
-                <a-input placeholder="请输入配件型号" v-model="accessoryInput"/>
-              </a-form-item>
-            </a-col>
-          </a-row>
-        </a-form>
+            <!-- accessory table -->
+            <div>
+              <a-form class="ant-advanced-search-form" :form="form">
+                <a-row :gutter="24">
+                  <a-col :md="8" :sm="24">
+                    <a-form-item>
+                      <a-input placeholder="请输入配件型号" v-model="accessoryInput"/>
+                    </a-form-item>
+                  </a-col>
+                </a-row>
+              </a-form>
+            </div>
+            <a-table :columns="acol" :dataSource="accessoryShow" rowKey="model" bordered>
+              <template
+                v-for="col in ['model', 'type', 'number']"
+                :slot="col"
+                slot-scope="text"
+              >
+                <div :key="col">
+                  <div>{{ text }}</div>
+                </div>
+              </template>
+              <template slot="operation" slot-scope="text, record">
+                <div class="editable-row-operations">
+                  <a-button @click="() => scheduleAccessory(record.model)">调度</a-button>
+                  <!-- modal -->
+                  <a-modal
+                    title="调度"
+                    v-model="visibleA"
+                    @ok="handleOKA"
+                  >
+                    <div class="modal">
+                      调出到
+                      <a-select
+                        style="width: 200px"
+                        v-model="to"
+                      >
+                        <a-select-option
+                          v-for="(item, index) in allWarehouse"
+                          :key="index">
+                          {{ item }}
+                        </a-select-option>
+                      </a-select>
+                      仓库
+                    </div>
+                    <div class="modal">
+                      数量:
+                      <a-input-number
+                        :max="max"
+                        :min="min"
+                        class="input"
+                        v-model="scheduleA.num"
+                      />
+                    </div>
+                  </a-modal>
+                  <!-- modal end -->
+                </div>
+              </template>
+            </a-table>
+            <!-- accessory table end -->
+          </a-card>
+        </a-layout>
       </div>
-      <a-table :columns="acol" :dataSource="accessoryShow" rowKey="model" bordered>
-        <template
-          v-for="col in ['model', 'type', 'number']"
-          :slot="col"
-          slot-scope="text"
-        >
-          <div :key="col">
-            <div>{{ text }}</div>
-          </div>
-        </template>
-        <template slot="operation" slot-scope="text, record">
-          <div class="editable-row-operations">
-            <a-button @click="() => scheduleAccessory(record.model)">调度</a-button>
-            <!-- modal -->
-            <a-modal
-              title="调度"
-              v-model="visibleA"
-              @ok="handleOKA"
-            >
-              <div class="modal">
-                调出到
-                <a-select
-                  style="width: 200px"
-                  v-model="to"
-                >
-                  <a-select-option 
-                   v-for="(item, index) in allWarehouse" 
-                   :key="index">
-                    {{ item }}
-                  </a-select-option>
-                </a-select>
-                仓库
-              </div>
-              <div class="modal">
-                数量:
-                <a-input-number
-                  :max="max"
-                  :min="min"
-                  class="input"
-                  v-model="scheduleA.num"
-                />
-              </div>
-            </a-modal>
-            <!-- modal end -->
-          </div>
-        </template>
-      </a-table>
-    <!-- accessory table end -->
-    </a-layout>
-  </div>
+    </a-card>
+  </page-view>
 </template>
 
 <script>
 import { postWarehouseDetail, getAllWarehouse , postGoods, postSchedule } from '@/api/warehouse'
+import {PageView} from '@/layouts'
 import Fuse from 'fuse.js'
 
 export default {
   inject: ['reload'],
   name: 'Detail',
+  components: {
+    PageView,
+  },
   data () {
     return {
       // form and columns names
@@ -144,40 +154,47 @@ export default {
       acol : [{
         title: '编号',
         dataIndex: 'id',
+        align: 'center',
         width: '30%',
         sorter: (a, b) => a.model > b.model,
         scopedSlots: { customRender: 'model' }
       }, {
         title: '型号',
         dataIndex: 'model',
+        align: 'center',
         sorter: (a, b) => a.model > b.model,
         scopedSlots: { customRender: 'model' }
       }, {
         title: '数量',
         dataIndex: 'number',
+        align: 'center',
         width: '20%',
         sorter: (a, b) => a.number - b.number,
         scopedSlots: { customRender: 'number' }
       }, {
         title: '操作',
         dataIndex: 'operation',
+        align: 'center',
         width: '20%',
         scopedSlots: { customRender: 'operation' }
       }],
       ecol : [{
         title: '编号',
         dataIndex: 'id',
+        align: 'center',
         width: '30%',
         sorter: (a, b) => a.id > b.id,
         scopedSlots: { customRender: 'id' }
       }, {
         title: '型号',
         dataIndex: 'model',
+        align: 'center',
         sorter: (a, b) => a.model > b.model,
         scopedSlots: { customRender: 'model' }
       }, {
         title: '操作',
         dataIndex: 'operation',
+        align: 'center',
         width: '20%',
         scopedSlots: { customRender: 'operation' }
       }],
