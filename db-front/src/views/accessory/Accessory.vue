@@ -16,9 +16,9 @@
                 placeholder="请填写型号"
                 optionFilterProp="children"
                 v-model="addData[attributeModelID.type]">
-                <a-select-option value="1">model_1</a-select-option>
-                <a-select-option value="2">model_2</a-select-option>
-                <a-select-option value="3">model_3</a-select-option>
+                <a-select-option v-for="item in models" :key="item.modelID" :value="item.modelID">
+                  {{item.modelID}}
+                </a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
@@ -43,9 +43,7 @@
                 allowClear="true"
                 optionFilterProp="children"
                 v-model="addData[attributeWarehouse.type]">
-                <a-select-option value="1">第一仓库</a-select-option>
-                <a-select-option value="2">第二仓库</a-select-option>
-                <a-select-option value="3">第三仓库</a-select-option>
+                <a-select-option v-for="(item,index) in warehouses" :key="index" :value="item">{{item}}</a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
@@ -56,9 +54,18 @@
                   size="middle"
                   class="button"
                   type="primary"
-                  @click="onClickSubmit"
+                  @click="showModal"
                   :disabled="emptyInput"
                 >添加</a-button>
+                 <a-modal
+                   title="确认信息"
+                   :visible="visible"
+                   @ok="handleOk"
+                   :confirmLoading="confirmLoading"
+                   @cancel="handleCancel"
+                 >
+                  <p>{{`是否将 ${addData.num} 个配件(${addData.modelID})添加到 ${addData.warehouse}？`}}</p>
+                 </a-modal>
                 <a-button
                   size="middle"
                   class="button"
@@ -71,25 +78,49 @@
           </a-col>
         </a-form>
       </div>
+      <!-- input bar end -->
+      <!-- refresh button -->
+      <div>
+        <a-col :md="8" :sm="24">
+          <a-form-item label="编号">
+            <a-input placeholder="请输入查询编号" v-model="input"/>
+          </a-form-item>
+        </a-col>
+        <a-col :md="8" :sm="24">
+          <div class="button-group2">
+            <a-button
+              size="middle"
+              class="button"
+              type="primary"
+              @click="onClickReload"
+            >刷新表单</a-button>
+          </div>
+        </a-col>
+      </div>
       <!-- table -->
-      <a-table :columns="columns" :dataSource="data" @change="onChange"/>
+      <a-card>
+        <a-table :columns="columns" :dataSource="DataShow" @change="onChange"/>
+      </a-card>
       <!-- table end -->
     </a-layout>
+
   </div>
 </template>
 <script>
+import { getAccessoryInWarehouse, addAccessoryInWarehouse } from '@/api/accessory' 
+import Fuse from 'fuse.js'
 //types selection
 const types = [{
-  text: "履带",
-  value: 'type1',
+  value: '履带',
+  text: '履带'
   },{
-  text: '螺丝',
-  value: 'type0',
+  value: '螺丝',
+  text : '螺丝'
   }]
-//warehouses selection
+// warehouses selection
 const warehouses = [{
-  value: "wh_1",
-  text: "第一仓库"
+  value: "嘉定仓库",
+  text: "嘉定仓库"
 },{
   value: "wh_2",
   text: "第二仓库"
@@ -98,11 +129,13 @@ const warehouses = [{
 const columns = [{
   title: '型号编号',
   dataIndex: 'modelID',
-  sorter: (a, b) => a.modelID - b.modelID,
+  align:'center',
+  key:'modelID',
 }, {
   title: '配件类型',
   dataIndex: 'type',
   filters: types,
+  align:'center',
   onFilter: (value, record) => record.type.indexOf(value) === 0
 },{
   title: '价格',
@@ -111,24 +144,15 @@ const columns = [{
 }, {
    title: '库存数量',
    dataIndex: 'num',
+   align:'center',
    sorter: (a, b) => a.num - b.num
 },{
   title: '所在仓库',
-  dataIndex: 'warehouseID',
+  dataIndex: 'warehouse',
   filters: warehouses,
-  onFilter: (value, record) => record.warehouseID.indexOf(value) === 0
+  align:'center',
+  onFilter: (value, record) => record.warehouse.indexOf(value) === 0
 }];
-
-const data = []
-for (let i = 0; i < 100; i++) {
-    data.push({
-        modelID: i.toString(),
-        type: `type${i % 2}`,
-        price: `$ ${100 - i}`,
-        num: `${i * 10}`,
-        warehouseID: `wh_${i % 2 + 1}`
-    })
-}
 function onChange(pagination, filters, sorter) {
   console.log('params', pagination, filters, sorter);
 }
@@ -137,6 +161,12 @@ function onChange(pagination, filters, sorter) {
 export default {
   data() {
     return {
+      searchText: '',
+      searchInput: null,
+      input:'',
+      visible: false,
+      confirmLoading: false,
+      ModalText:'',
       attributeModelID: {
         type: 'modelID', 
         cnType: '型号编号', 
@@ -153,53 +183,116 @@ export default {
         guide: '请输入仓库名称'
       },
       warehouses: [
-        {id: '1', name: '第一仓库'},
-        {id: '2', name: '第二仓库'},
-        {id: '3', name: '第三仓库'},
-        {id: '4', name: '第四仓库'},
-        {id: '5', name: '第五仓库'},
-        {id: '6', name: '第六仓库'},
-        {id: '7', name: '第七仓库'},
-        {id: '8', name: '第八仓库'},
-        {id: '9', name: '第九仓库'},
-        {id: '10', name: '第十仓库'},
+        "第一仓库",
+        "第二仓库",
+        "第三仓库",
+        "第四仓库",
+        "第五仓库",
+        "第六仓库",
+        "第七仓库",
+        "第八仓库"
       ],
-      data,
-      columns,
+      models: [{
+        modelID: 'model_1'
+      },{
+        modelID: 'model_2'
+      } 
+      ],
       // information of add
       addData: {
-        modelID: ``,
+        modelID: '',
         num: '',
         warehouse: ''
       },
       columns,
-      data,
+      Data: [],
       form: this.$form.createForm(this),
-     
+      DataShow: []
     }
   },
-  // computed: {
-  //   emptyInput () {
-  //     if (this.addData.type == '' || this.addData.price == )
-  //   }
-  // },
+  watch: {
+    // // watch route
+    // "$route": {
+    //   handler(route){
+    //     const that = this
+    //     if(route.name ==='Report')
+    //   }
+    // }
+    input(pattern){
+      if( pattern == ''){
+       this.DataShow = this.Data
+      }
+      else{
+        const option = {
+          keys: ['modelID'],
+          threshold: 0.1
+        }
+        var fuse = new Fuse(this.Data, option)
+        this.DataShow = fuse.search(pattern)
+      }
+    }
+  },
+  computed: {
+    emptyInput () {
+      if (this.addData.modelID == '' || this.addData.num == '' || this.addData.warehouse == '')
+      return true
+      else return false
+    }
+  },
   methods: {
     //select
     onChange,
-    onChange(value) {
-        console.log('changed', value);
-      },
+    //show modal
+    showModal() {
+      this.visible = true
+    },
+    handleOk(e) {
+      this.ModalText = '您已成功添加！';
+      this.confirmLoading = true;
+      setTimeout(() => {
+        this.visible = false;
+        this.confirmLoading = false;
+        this.onClickReload();
+        this.onClickSubmit();},1000)
+    },
+    handleCancel(e) {
+      console.log('Clicked cancel button');
+      this.visible = false
+    },
+  
+    // refreshTable
+    onClickReload () {
+      getAccessoryInWarehouse().then((response) => {
+        this.Data = [...response.data]
+        this.DataShow = this.Data
+        this.input = ''
+      })
+    },
+    // onChange(value) {
+    //     console.log('changed', value);
+    //   },
     // clear all input
     onClickClearSelect () {
       this.addData.modelID=''
       this.addData.num=''
       this.addData.warehouse=''
+      console.log(this.Data)
     },
     // submit
+
     onClickSubmit () {
       console.log(this.addData)
+      addAccessoryInWarehouse(this.addData).then(() => {
+        
+      })
       this.onClickClearSelect()
     }
+  },
+  created () {
+    getAccessoryInWarehouse().then((response) => {
+      this.Data = [...response.data]
+      this.DataShow = this.Data
+    })
   }
 }
 </script>
@@ -217,5 +310,10 @@ export default {
     margin-left: 0.5rem;
     margin-top: 2.7rem;
   }
+}
+.button-group2 {
+  margin-top: 3em;
+  margin-bottom: 1rem;
+  margin-left: 39rem
 }
 </style>
