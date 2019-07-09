@@ -1,6 +1,6 @@
 /* eslint-disable */
 import {UserLayout, BasicLayout, RouteView, BlankLayout, PageView} from '@/layouts'
-import {bxAnaalyse, codeAPI } from '@/core/icons'
+import {bxAnaalyse} from '@/core/icons'
 import {addAccessoryInWarehouse} from '@/api/accessory'
 
 export const asyncRouterMap = [
@@ -27,125 +27,13 @@ export const asyncRouterMap = [
           title: '仓库', keepAlive: true, icon: 'bank'
         },
         children: [
-            // dashboard
-            {
-                path: '/dashboard',
-                name: 'dashboard',
-                redirect: '/dashboard/workplace',
-                component: RouteView,
-                meta: { title: '仪表盘', keepAlive: true, icon: bxAnaalyse, permission: ['dashboard'] },
-                children: [
-                    {
-                        path: '/dashboard/analysis',
-                        name: 'Analysis',
-                        component: () => import('@/views/dashboard/Analysis'),
-                        meta: { title: '分析页', keepAlive: false, permission: ['dashboard']}
-                    },
-                    // 外部链接
-                    {
-                        path: 'https://www.baidu.com/',
-                        name: 'Monitor',
-                        meta: { title: '监控页（外部）', target: '_blank' }
-                    },
-                    {
-                        path: '/dashboard/workplace',
-                        name: 'Workplace',
-                        component: () => import('@/views/dashboard/Workplace'),
-                        meta: { title: '工作台', keepAlive: true, permission: ['dashboard'] }
-                    }
-                ]
-            },
-            {
-                path: '/server',
-                name: 'server',
-                redirect: '/server/KibanaMonitor',
-                component: RouteView,
-                meta: { title: '服务器', keepAlive: true, icon: bxAnaalyse, permission: ['dashboard'] },
-                children: [
-                    {
-                        path: '/server/KibanaMonitor',
-                        name: 'KibanaMonitor',
-                        component: () => import('@/views/server/KibanaMonitor'),
-                        meta: { title: '监控', keepAlive: false, permission: ['dashboard'] ,icon: bxAnaalyse}
-                    },
-                    {
-                        path: '/server/Swagger',
-                        name: 'Swagger',
-                        component: () => import('@/views/server/Swagger'),
-                        meta: { title: 'API', keepAlive: false, permission: ['dashboard'] ,icon: codeAPI}
-                    },
-                ]
-            },
-
-            // warehouse
-            {
-                path: '/warehouse',
-                name: 'warehouse',
-                redirect: '/warehouse/preview',
-                component: RouteView,
-                meta: {
-                  title: '仓库', keepAlive: true, icon: 'bank'
-            },
-                children: [
-                  {
-                    path: '/warehouse/preview',
-                    name: 'Preview',
-                    component: () => import('@/views/warehouse/WarehousePreview'),
-                    meta: {
-                      title: '预览', keepAlive: false, icon: 'search'
-                    }
-                  },
-                  {
-                    path: '/warehouse/detail/:id',
-                    name: 'Detail',
-                    hidden: true,
-                    component: () => import('@/views/warehouse/WarehouseDetail'),
-                    meta: {
-                      title: '详细', keepAlive: false
-                    }
-                  },
-                  {
-                    path: '/warehouse/map',
-                    name: 'Map',
-                    component: () => import('@/views/warehouse/Map'),
-                    meta: {title: '地图', keepAlive: false, icon: 'picture'}
-                  }
-                ]
-            },
-          // equipment
-            {
-              path: '/equipment',
-              name: 'equipment',
-              redirect: '/equipment/preview',
-              meta: {title: '器材', keepAlive: true, icon: 'appstore', permission: ['table']},
-              component: RouteView,
-              children: [
-                {
-                  path: '/equipment/preview',
-                  name: 'EquipPreview',
-                  component: () => import('@/views/equipment/EquipmentPreview'),
-                  meta: {
-                    title: '仓储器材', keepAlive: false, icon: 'database'
-                  }
-                },
-                {
-                  path: '/equipment/using:pageNo([1-9]\\d*)?',
-                  name: 'EquipUsing',
-                  component: () => import('@/views/equipment/EquipmentUsing'),
-                  meta: {
-                    title: '在用器材', keepAlive: false, icon: 'api'
-                  }
-                },
-                {
-                  path: '/equipment/detail/:id',
-                  name: 'EquipDetail',
-                  hidden: true,
-                  component: () => import('@/views/equipment/EquipInfo'),
-                  meta: {
-                    title: '器材详情', keepAlive: false, icon: 'bars'
-                  },
-                },
-              ]
+          {
+            path: '/warehouse/preview',
+            name: 'Preview',
+            component: () => import( '@/views/warehouse/WarehousePreview' ),
+            meta: {
+              title: '预览', keepAlive: false, icon: 'search'
+            }
           },
           {
             path: '/warehouse/detail/:id',
