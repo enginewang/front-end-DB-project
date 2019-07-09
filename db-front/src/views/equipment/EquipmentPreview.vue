@@ -1,148 +1,150 @@
 <template>
-  <div>
-    <a-card :bordered="false">
-      <a-form class="ant-advanced-search-form" :form="form" inline>
-        <a-row :gutter="24">
-          <a-col :md="6" :sm="24">
-            <a-form-item>
-              <label>器材编号：</label>
-              <a-input placeholder="请输入器材编号" v-model="inputID"/>
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="24">
-            <a-form-item>
-              <label>出厂时间：</label>
-              <a-input placeholder="请输入出厂时间" v-model="inputTime"/>
-            </a-form-item>
-          </a-col>
-        </a-row>
-      </a-form>
-      <br>
-      <a-table :columns="columns" :dataSource="eDataShow" rowKey="id" bordered>
-        <template
-                v-for="col in ['id']"
-                :slot="col"
-                slot-scope="text, record"
-        >
-          {{"EQ" + text}}
-        </template>
-        <template slot="status" slot-scope="text">
-          <a-badge :status="text | statusTypeFilter" :text="text | statusFilter" />
-        </template>
-        <template slot="price" slot-scope="text">
-          {{"￥" + text}}
-        </template>
-        <template slot="icon" slot-scope="text">
-          <!--<div>
-            <a-avatar slot="avatar" size="large" shape="square" :src="text"/>
-          </div>-->
-          <div id="app">
-            <div class="">
-              <div
-                      class="pic"
-                      @click="() => showImg(text)"
-              >
-                <a-avatar :src="text"/>
+  <page-view title="仓储器材">
+    <div>
+      <a-card :bordered="false">
+        <a-form class="ant-advanced-search-form" :form="form" inline>
+          <a-row :gutter="24">
+            <a-col :md="6" :sm="24">
+              <a-form-item>
+                <label>器材编号：</label>
+                <a-input placeholder="请输入器材编号" v-model="inputID"/>
+              </a-form-item>
+            </a-col>
+            <a-col :md="6" :sm="24">
+              <a-form-item>
+                <label>出厂时间：</label>
+                <a-input placeholder="请输入出厂时间" v-model="inputTime"/>
+              </a-form-item>
+            </a-col>
+          </a-row>
+        </a-form>
+        <br>
+        <a-table :columns="columns" :dataSource="eDataShow" rowKey="id" bordered>
+          <template
+            v-for="col in ['id']"
+            :slot="col"
+            slot-scope="text, record"
+          >
+            {{"EQ" + text}}
+          </template>
+          <template slot="status" slot-scope="text">
+            <a-badge :status="text | statusTypeFilter" :text="text | statusFilter" />
+          </template>
+          <template slot="price" slot-scope="text">
+            {{"￥" + text}}
+          </template>
+          <template slot="icon" slot-scope="text">
+            <!--<div>
+              <a-avatar slot="avatar" size="large" shape="square" :src="text"/>
+            </div>-->
+            <div id="app">
+              <div class="">
+                <div
+                  class="pic"
+                  @click="() => showImg(text)"
+                >
+                  <a-avatar :src="text"/>
+                </div>
               </div>
+              <vue-easy-lightbox
+                :visible="visible"
+                :imgs="src"
+                @hide="handleHide"
+              ></vue-easy-lightbox>
             </div>
-            <vue-easy-lightbox
-                    :visible="visible"
-                    :imgs="src"
-                    @hide="handleHide"
-            ></vue-easy-lightbox>
-          </div>
-        </template>
+          </template>
 
-      </a-table>
-      <a-button @click="addEquipment" type="primary" icon="plus">&nbsp;&nbsp;添加器材&nbsp;&nbsp;</a-button>
-      <a-modal v-model="showAddForm" footer="">
-        <a-form title="添加器件" @submit="handleSubmit" :form = "form">
-          <a-form-item
-                  label="器材编号"
-                  :labelCol="{lg: {span: 7}, sm: {span: 7}}"
-                  :wrapperCol="{lg: {span: 10}, sm: {span: 17} }">
-            <a-input
-                    v-decorator="[
+        </a-table>
+        <a-button @click="addEquipment" type="primary" icon="plus">&nbsp;&nbsp;添加器材&nbsp;&nbsp;</a-button>
+        <a-modal v-model="showAddForm" footer="">
+          <a-form title="添加器件" @submit="handleSubmit" :form = "form">
+            <a-form-item
+              label="器材编号"
+              :labelCol="{lg: {span: 7}, sm: {span: 7}}"
+              :wrapperCol="{lg: {span: 10}, sm: {span: 17} }">
+              <a-input
+                v-decorator="[
             'id',
             {rules: [{ required: true, message: '请输入标题' }]}
           ]"
-                    name="id"
-                    placeholder="输入器件id" />
-          </a-form-item>
-          <a-form-item
-                  label="名称"
-                  :labelCol="{lg: {span: 7}, sm: {span: 7}}"
-                  :wrapperCol="{lg: {span: 10}, sm: {span: 17} }">
-            <a-input
-                    v-decorator="[
+                name="id"
+                placeholder="输入器件id" />
+            </a-form-item>
+            <a-form-item
+              label="名称"
+              :labelCol="{lg: {span: 7}, sm: {span: 7}}"
+              :wrapperCol="{lg: {span: 10}, sm: {span: 17} }">
+              <a-input
+                v-decorator="[
             'name',
             {rules: [{ required: true, message: '请输入器材名称' }]}
           ]"
-                    name="name"
-                    placeholder="请输入器材名称" />
-          </a-form-item>
-          <a-form-item
-                  label="出厂日期"
-                  :labelCol="{lg: {span: 7}, sm: {span: 7}}"
-                  :wrapperCol="{lg: {span: 10}, sm: {span: 17} }">
-            <a-date-picker
-                    name="productTime"
-                    style="width: 100%"
-                    format="YYYY-MM-DD HH:mm:ss"
-                    :showTime="{ defaultValue: moment('00:00:00', 'HH:mm:ss') }"
-                    v-decorator="[
+                name="name"
+                placeholder="请输入器材名称" />
+            </a-form-item>
+            <a-form-item
+              label="出厂日期"
+              :labelCol="{lg: {span: 7}, sm: {span: 7}}"
+              :wrapperCol="{lg: {span: 10}, sm: {span: 17} }">
+              <a-date-picker
+                name="productTime"
+                style="width: 100%"
+                format="YYYY-MM-DD HH:mm:ss"
+                :showTime="{ defaultValue: moment('00:00:00', 'HH:mm:ss') }"
+                v-decorator="[
             'productTime',
             {rules: [{ required: true, message: '请选择出厂日期' }]}
           ]" />
-          </a-form-item>
-          <a-form-item
-                  label="型号编号"
-                  :labelCol="{lg: {span: 7}, sm: {span: 7}}"
-                  :wrapperCol="{lg: {span: 10}, sm: {span: 17} }">
-            <a-input
-                    v-decorator="[
+            </a-form-item>
+            <a-form-item
+              label="型号编号"
+              :labelCol="{lg: {span: 7}, sm: {span: 7}}"
+              :wrapperCol="{lg: {span: 10}, sm: {span: 17} }">
+              <a-input
+                v-decorator="[
             'modelID',
             {rules: [{ required: true, message: '请输入型号编号' }]}
           ]"
-                    name="modelID"
-                    placeholder="输入型号编号" />
-          </a-form-item>
-          <a-form-item
-                  label="价格"
-                  :labelCol="{lg: {span: 7}, sm: {span: 7}}"
-                  :wrapperCol="{lg: {span: 14}, sm: {span: 20} }"
-                  :required="true"
-          >
-            <a-input-number :min="0" :max="10000" v-decorator="['price']"/>
-          </a-form-item>
-          <a-form-item
-                  label="所在仓库"
-                  :labelCol="{lg: {span: 7}, sm: {span: 7}}"
-                  :wrapperCol="{lg: {span: 10}, sm: {span: 17} }">
-            <a-input
-                    v-decorator="[
+                name="modelID"
+                placeholder="输入型号编号" />
+            </a-form-item>
+            <a-form-item
+              label="价格"
+              :labelCol="{lg: {span: 7}, sm: {span: 7}}"
+              :wrapperCol="{lg: {span: 14}, sm: {span: 20} }"
+              :required="true"
+            >
+              <a-input-number :min="0" :max="10000" v-decorator="['price']"/>
+            </a-form-item>
+            <a-form-item
+              label="所在仓库"
+              :labelCol="{lg: {span: 7}, sm: {span: 7}}"
+              :wrapperCol="{lg: {span: 10}, sm: {span: 17} }">
+              <a-input
+                v-decorator="[
             'warehouseID',
             {rules: [{ required: false, message: '请输入所在仓库' }]}
           ]"
-                    name="warehouseID"
-                    placeholder="输入所在仓库" />
-          </a-form-item>
-          <a-form-item
-                  :wrapperCol="{ span: 24 }"
-                  style="text-align: center"
-          >
-            <a-button htmlType="submit" type="primary">提交</a-button>
-            <a-button style="margin-left: 8px" @click="cancelAddForm">取消</a-button>
-          </a-form-item>
-        </a-form>
-      </a-modal>
-    </a-card>
-  </div>
-
+                name="warehouseID"
+                placeholder="输入所在仓库" />
+            </a-form-item>
+            <a-form-item
+              :wrapperCol="{ span: 24 }"
+              style="text-align: center"
+            >
+              <a-button htmlType="submit" type="primary">提交</a-button>
+              <a-button style="margin-left: 8px" @click="cancelAddForm">取消</a-button>
+            </a-form-item>
+          </a-form>
+        </a-modal>
+      </a-card>
+    </div>
+  </page-view>
 </template>
 
 <script>
   import {getEquipmentStoredList} from '@/api/equipment'
+  import {PageView} from '@/layouts'
   import Fuse from 'fuse.js'
   import Vue from 'vue'
   import Lightbox from 'vue-easy-lightbox'
@@ -233,11 +235,6 @@
         value: 'wh3'
       }],
     onFilter: (value, record) => record.warehouseID.indexOf(value) === 0
-  }, {
-    title: '操作',
-    align: 'center',
-    dataIndex: 'operation',
-    scopedSlots: {customRender: 'operation'}
   }]
   // data
   let inputID = ''
@@ -246,6 +243,9 @@
 
   export default {
     name: 'EquipPreview',
+    components:{
+      PageView,
+    },
     data() {
       this.cacheData = eData.map(item => ({...item}))
       return {

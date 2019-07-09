@@ -2,7 +2,7 @@
   <page-view :avatar="avatar" :title="false">
     <div slot="headerContent">
       <div class="title">{{ timeFix }}！{{ user.name }}<span class="welcome-text">，{{ welcome() }}</span></div>
-      <div>前端工程师 | Eport - 管理员 - VUE平台</div>
+      <div>管理员 | Eport - 健身器材管理平台</div>
     </div>
     <div slot="extra">
       <a-row class="">
@@ -118,7 +118,7 @@
                     <router-link :to="{name: 'repairSheet'}" active-class="active">
                       <a-card-meta
                         title="报修单预览"
-                        description="点击预览报修单">
+                        description="点击预览报修单信息">
                       </a-card-meta>
                     </router-link>
                   </a-card>
@@ -133,7 +133,7 @@
                     <router-link :to="{name: 'checkSheet'}" active-class="active">
                       <a-card-meta
                         title="巡检单预览"
-                        description="点击预览巡检单">
+                        description="点击预览巡检单信息">
                       </a-card-meta>
                     </router-link>
                   </a-card>
@@ -146,8 +146,8 @@
                       slot="cover"
                     />
                       <a-card-meta
-                        title="更多功能"
-                        description="敬请期待">
+                        title="配件管理"
+                        description="点击管理器材配件">
                       </a-card-meta>
                   </a-card>
                 </a-col>

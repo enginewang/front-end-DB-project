@@ -52,7 +52,7 @@
             <detail-list-item term="损坏情况">{{if_damage}}</detail-list-item>
             <detail-list-item term="报修单">{{order}}</detail-list-item>
             <detail-list-item></detail-list-item>
-            <detail-list-item term="">(扫描右侧二维码查看详情)</detail-list-item>
+            <detail-list-item term=""><a-icon type="qrcode"/>（扫描右侧二维码查看详情）</detail-list-item>
           </detail-list>
 
             <a-row type="flex" justify="end">
@@ -87,8 +87,8 @@
     mixins: [mixinDevice],
     data() {
       return {
-        equipIMG:require("@/assets/equip.jpg"),
-        QRcode:require("@/assets/QRcode.png"),
+        equipIMG: require("@/assets/equip.jpg"),
+        QRcode: require("@/assets/QRcode.png"),
         equipName: '',
         factory_time: '',
         install_time: '',
@@ -101,22 +101,6 @@
         IDTitle: '器材编号：EQ' + this.$route.params.id,
 
         equipmentID: this.$route.params.id,
-      }
-    },
-    filters: {
-      statusFilter(status) {
-        const statusMap = {
-          'agree': '成功',
-          'reject': '驳回'
-        }
-        return statusMap[status]
-      },
-      statusTypeFilter(type) {
-        const statusTypeMap = {
-          'agree': 'success',
-          'reject': 'error'
-        }
-        return statusTypeMap[type]
       }
     },
     mounted() {
