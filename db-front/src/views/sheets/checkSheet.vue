@@ -205,7 +205,7 @@ export default {
       }
   },
   computed:{
-      
+
   },
   methods: {
     showImg (text) {
@@ -216,7 +216,7 @@ export default {
     handleHide () {
       this.visible = false
     },
-    
+
     onClickRefresh(){
       this.reload()
     },
@@ -266,7 +266,7 @@ export default {
       this.DataShow = this.Data
     })
   }
-  
+
 }
 
 </script>
