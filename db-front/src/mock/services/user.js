@@ -31,9 +31,9 @@ const info = ( options ) => {
     'deleted': 0,
     'permissions': [{
       'roleId': 'admin',
-      'permissionId': 'dashboard',
-      'permissionName': '仪表盘',
-      'actions': '[{"action":"add","defaultCheck":false,"describe":"新增"},{"action":"query","defaultCheck":false,"describe":"查询"},{"action":"get","defaultCheck":false,"describe":"详情"},{"action":"update","defaultCheck":false,"describe":"修改"},{"action":"delete","defaultCheck":false,"describe":"删除"}]',
+      'permissionId': 'super',
+      'permissionName': '超级权限',
+      'actions': '[]',
       'actionEntitySet': [{
         'action': 'add',
         'describe': '新增',
