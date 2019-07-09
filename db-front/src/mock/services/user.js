@@ -8,6 +8,7 @@ const info = ( options ) => {
     'name': '王小明',
     'username': 'admin',
     'password': '',
+    'telephone': '',
     'avatar': '/avatar.jpg',
     'status': 1,
     'deleted': 0,

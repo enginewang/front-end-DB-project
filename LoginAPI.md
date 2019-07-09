@@ -42,6 +42,7 @@ return: {
         'name': '王小明', 
         'username': 'admin',
         'password': '',
+        'telephone': '',
         'avatar': '/avatar.jpg',
         'status': 1, // 1代表在用
         'deleted': 0,
