@@ -49,8 +49,7 @@
                 <a-select
                   style="max-width: 200px; width: 100%;"
                   placeholder="不限"
-                  v-decorator="['rate']"
-                >
+                  v-decorator="['rate']">
                   <a-select-option value="good">优秀</a-select-option>
                   <a-select-option value="normal">普通</a-select-option>
                 </a-select>
@@ -202,7 +201,7 @@ export default {
        {details: item},
     {
         adaptive: true,
-        draggable: true,
+        draggable: false,
         scrollable: true,
         height: "auto",
         width: "60%"})
