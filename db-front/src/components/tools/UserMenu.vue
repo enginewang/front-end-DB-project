@@ -14,7 +14,7 @@
         </span>
         <a-menu slot="overlay" class="user-dropdown-menu-wrapper">
           <a-menu-item key="0">
-            <router-link :to="{ name: 'center' }">
+            <router-link :to="{ name: 'homepage' }">
               <a-icon type="user"/>
               <span>个人中心</span>
             </router-link>

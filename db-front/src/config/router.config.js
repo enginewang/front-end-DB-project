@@ -24,7 +24,7 @@ export const asyncRouterMap = [
         redirect: '/warehouse/preview',
         component: RouteView,
         meta: {
-          title: '仓库', keepAlive: true, icon: 'bank'
+          title: '仓库', keepAlive: true, icon: 'home'
         },
         children: [
           {
@@ -57,7 +57,7 @@ export const asyncRouterMap = [
         path: '/equipment',
         name: 'equipment',
         redirect: '/equipment/preview',
-        meta: {title: '器材', keepAlive: true, icon: 'appstore'},
+        meta: {title: '器材', keepAlive: true, icon: 'sliders'},
         component: RouteView,
         children: [
           {
@@ -91,7 +91,7 @@ export const asyncRouterMap = [
       {
         path: '/accessory',
         name: 'accessory',
-        meta: {title: '配件', keepAlive: true, icon: 'database'},
+        meta: {title: '配件', keepAlive: true, icon: 'tool'},
         component: RouteView,
         children: [
           {
@@ -139,13 +139,13 @@ export const asyncRouterMap = [
         name: 'staff',
         redirect: '/staff/staffManage',
         component: RouteView,
-        meta: {title: '员工', keepAlive: true, icon: "tool", permission: ['super']},
+        meta: {title: '员工', keepAlive: true, icon: "team", permission: ['super']},
         children: [
           {
             path: '/staff/staffManage',
             name: 'staffManage',
             component: () => import( '@/views/staff/staffManage' ),
-            meta: {title: '员工管理', keepAlive: false, icon: 'slack', permission: ['super']}
+            meta: {title: '员工管理', keepAlive: false, icon: 'check-circle', permission: ['super']}
           }
         ]
       },
@@ -160,7 +160,7 @@ export const asyncRouterMap = [
             path: '/server/KibanaMonitor',
             name: 'KibanaMonitor',
             component: () => import( '@/views/server/KibanaMonitor' ),
-            meta: {title: '监控', keepAlive: false, permission: ['super']}
+            meta: {title: '监控', keepAlive: false, icon: 'video-camera', permission: ['super']}
           },
         ]
       },

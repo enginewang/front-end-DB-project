@@ -141,9 +141,7 @@
   import Vue from 'vue'
   import Lightbox from 'vue-easy-lightbox'
   import moment from 'moment';
-
   Vue.use(Lightbox)
-
   const statusMap = {
     0: {
       status: 'success',
@@ -154,7 +152,6 @@
       text: '报废'
     }
   }
-
   const columns = [{
     title: '器材编号',
     dataIndex: 'id',
@@ -232,7 +229,6 @@
   let inputID = ''
   const eData = []
   const eDataShow = []
-
   export default {
     name: 'EquipPreview',
     data() {
@@ -275,7 +271,6 @@
       }
     },
     // watch for fuzzy search
-
     methods: {
       moment,
       onClickClearSelect() {
@@ -350,7 +345,6 @@
       handleHide () {
         this.visible = false
       }
-
     },
     filters: {
       statusFilter (type) {
@@ -396,31 +390,28 @@
         this.eData = [...response.data]
         this.eDataShow = this.eData
       }),
-      getAllWarehouse().then((response) => {
-        this.allWarehouse = [...response.data]
-        console.log(this.allWarehouse)
-        //this.allWarehouse.splice(this.allWarehouse.indexOf(this.warehouseDetail.name), 1)
-      }),
-      getAllEquipmentType().then((response) => {
-        this.allEquipType = [...response.data]
-        console.log(this.allEquipType)
-      })
+          getAllWarehouse().then((response) => {
+            this.allWarehouse = [...response.data]
+            console.log(this.allWarehouse)
+            //this.allWarehouse.splice(this.allWarehouse.indexOf(this.warehouseDetail.name), 1)
+          }),
+          getAllEquipmentType().then((response) => {
+            this.allEquipType = [...response.data]
+            console.log(this.allEquipType)
+          })
     }
   }
 </script>
 
 <style lang="less" scoped>
   @import '~ant-design-vue/lib/style/themes/default.less';
-
   .button-group {
     margin-bottom: 1rem;
-
     .button {
       margin-left: 0.5rem;
       margin-left: 0.5rem;
     }
   }
-
   .ant-form-inline .ant-form-item {
     display: inline-block;
     margin-right: 0;

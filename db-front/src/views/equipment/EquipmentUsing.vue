@@ -28,9 +28,9 @@
       <div>
         <a-table :columns="columns" :dataSource="eDataShow" rowKey="id" bordered>
           <template
-            v-for="col in ['id', 'type', 'damage', 'address', 'status']"
-            :slot="col"
-            slot-scope="text"
+                  v-for="col in ['id', 'type', 'damage', 'address', 'status']"
+                  :slot="col"
+                  slot-scope="text"
           >
             <div :key="col">
               {{ text }}
@@ -55,10 +55,8 @@
 </template>
 
 <script>
-
   import {getEquipmentUsingList} from '@/api/equipment'
   import Fuse from 'fuse.js'
-
   const statusMap = {
     0: {
       status: 'success',
@@ -69,7 +67,6 @@
       text: '损坏'
     }
   }
-
   const columns = [{
     title: '器材编号',
     dataIndex: 'id',
@@ -121,7 +118,6 @@
   let inputmodel = ''
   const eData = []
   const eDataShow = []
-
   export default {
     name: 'EquipUsing',
     data() {
@@ -260,7 +256,6 @@
           console.log(this.eDataShow)
         }
       }
-
     },
     mounted() {
       getEquipmentUsingList().then((response) => {
@@ -274,25 +269,20 @@
 
 <style lang="less" scoped>
   @import '~ant-design-vue/lib/style/themes/default.less';
-
   .button-group {
     margin-bottom: 1rem;
-
     .button {
       margin-left: 0.5rem;
       margin-left: 0.5rem;
     }
   }
-
   .ant-form-inline .ant-form-item {
     display: inline-block;
     margin-right: 0;
   }
-
   .ant-form-item-control-wrapper {
     width: 100px;
   }
-
   .table-page-search-wrapper .ant-form-inline .ant-form-item .ant-form-item-control-wrapper {
     width: 100%;
   }
