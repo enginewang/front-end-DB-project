@@ -96,7 +96,7 @@ export const asyncRouterMap = [
         children: [
           {
             path: '/accessory/Accessory',
-            name: addAccessoryInWarehouse,
+            name: 'AccessoryInWarehouse',
             component: () => import( '@/views/accessory/Accessory' ),
             meta: {
               title: '配件管理', keepAlive: false, icon: 'bars'
