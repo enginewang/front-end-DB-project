@@ -45,7 +45,7 @@
                 :allowClear="true"
                 optionFilterProp="children"
                 v-model="addData['warehouse']">
-                <a-select-option v-for="(item,index) in warehouses" :key="index" :value="item">{{item}}</a-select-option>
+                <a-select-option v-for="item in warehouses" :key="item" :value="item">{{item}}</a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
@@ -66,7 +66,7 @@
                    :confirmLoading="confirmLoading"
                    @cancel="handleCancel"
                  >
-                  <p>{{`是否将 ${addData.num} 个配件(${addData.model})添加到 ${addData.warehouse}？`}}</p>
+                  <p>{{`是否将 ${addData.num} 个ID为 ${addData.accessoryID} 的配件添加到 ${addData.warehouse}？`}}</p>
                  </a-modal>
                 <a-button
                   size="default"
@@ -263,11 +263,11 @@ export default {
         this.warehouseSelection = [...response.data]
         for(let val of this.warehouseSelection){
           let temp = {
-            text: val.value,
-            value: val.value
+            text: val,
+            value: val
           }
           this.columns[4].filters.push(temp)
-          this.warehouses.push(val.value)
+          this.warehouses.push(val)
         }
         console.log(response)
       })

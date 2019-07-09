@@ -40,15 +40,7 @@ const addAccessory = () => {
 //请求所有仓库名字
 const allWarehouse = () => {
   return {
-    data:[
-      {
-        value: "嘉定仓库",
-        
-      },{
-        value: "wwww",
-        
-      }
-    ]
+    data:["嘉定仓库","五角场仓库"]
   }
 }
 // url: /accessory/allKind'
