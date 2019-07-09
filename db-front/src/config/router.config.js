@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { UserLayout, BasicLayout, RouteView, BlankLayout, PageView } from '@/layouts'
 import { bxAnaalyse } from '@/core/icons'
+import { addAccessoryInWarehouse } from '@/api/accessory';
 
 export const asyncRouterMap = [
 
@@ -114,8 +115,18 @@ export const asyncRouterMap = [
             {
                 path: '/accessory',
                 name:'accessory',
-                component: () => import('@/views/accessory/Accessory'),
-                meta: { title:'配件', keepAlive: true, icon: 'database'}
+                meta: { title:'配件', keepAlive: true, icon: 'database'},
+                component : RouteView,
+                children: [
+                    {
+                        path: '/accessory/Accessory',
+                        name: addAccessoryInWarehouse,
+                        component: () => import('@/views/accessory/Accessory'),
+                        meta: {
+                            title: '配件管理', keepAlive: false, icon: 'bars'
+                        }
+                    }
+                ]
             },
             // sheets
             {
