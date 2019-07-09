@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import {login, getInfo, logout} from '@/api/login'
+import {login, postInfo, logout} from '@/api/login'
 import {ACCESS_TOKEN} from '@/store/mutation-types'
 import {welcome} from '@/utils/util'
 
@@ -49,9 +49,9 @@ const user = {
     },
 
     // 获取用户信息
-    GetInfo ( {commit} ) {
+    PostInfo ( {commit}, token ) {
       return new Promise( ( resolve, reject ) => {
-        getInfo().then( response => {
+        postInfo( token ).then( response => {
           const result = response.result
 
           if ( result.role && result.role.permissions.length > 0 ) {

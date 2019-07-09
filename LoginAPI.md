@@ -1,5 +1,6 @@
 ```
 name: login
+url: 'api/auth/login'
 method: 'post'
 data: {
     password: '21232f297a57a5a743894a0e4a801fc3'， // string, 加密方式是md5
@@ -22,6 +23,7 @@ return: {
 
 ```
 name: logout
+url: 'api/auth/logout'
 method: 'post'
 data: {
     token: "4291d7da9005377ec9aec4a71ea837f"
@@ -34,8 +36,10 @@ return: {
 ```
 
 ```
-name: getInfo
-method: 'get'
+name: postInfo
+url: '/api/user/info'
+method: 'post'
+data: token // 请求者的token
 
 return: {
     result: {
