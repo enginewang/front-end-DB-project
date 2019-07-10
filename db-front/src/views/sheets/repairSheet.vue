@@ -16,13 +16,14 @@
                     {{idFilterValue !== '-' ? idFilterValue : '-'}}
                   </span>
                   <template slot="title" v-else>
-                    请填写保修单账号
+                    请填写报修单编号
                   </template>
                   <a-input
                     :value="idFilterValue"
-                    @change="onIdFilterChange"
+                    @change="filterOnce"
                     placeholder="请填写报修单号"
                     maxLength="25"
+                    v-model="idFilterValue"
                     style="width: 120px"
                   />
                 </a-tooltip>
@@ -31,12 +32,15 @@
             <a-col :lg="8" :md="10" :sm="10" :xs="24">
               <a-form-item :wrapper-col="{ sm: { span: 16 }, xs: { span: 24 } }" label="根据状态查找：">
                 <a-select
+                  allowClear
                   style="max-width: 200px; width: 100%;"
                   placeholder="不限"
-                  v-decorator="['rate']">
-                  <a-select-option value="user">待巡检</a-select-option>
-                  <a-select-option value="inspector">待调度</a-select-option>
-                  <a-select-option value="dispatcher">已调度</a-select-option>
+                  @change="onChange"
+                  v-decorator="['rate']"
+                  >
+                  <a-select-option value="状态:待巡检">待巡检</a-select-option>
+                  <a-select-option value="状态:待调度">待调度</a-select-option>
+                  <a-select-option value="状态:已调度">已调度</a-select-option>
                 </a-select>
               </a-form-item>
             </a-col>
@@ -48,13 +52,14 @@
     <div class="ant-pro-pages-list-projects-cardList">
       <a-list :loading="loading" :data-source="data" :grid="{ gutter: 24, xl: 4, lg: 3, md: 3, sm: 2, xs: 1 }" :pagination="pagination">
         <a-list-item slot="renderItem" slot-scope="item">
-          <a-card class="ant-pro-pages-list-projects-card" hoverable :loading="loading">
-            <img slot="cover" :src="item.cover" :alt="item.title" />
-            <a-card-meta :title="item.title">
+          
+          <a-card class="ant-pro-pages-list-projects-card" hoverable :loading="loading" >
+            <img slot="cover" :src="item.cover" :alt="item.title" style="height:200px;"/>
+            <a-card-meta :title="'报修单编号:'+item.title">
               <template slot="description">
-                <ellipsis :length="50">{{ item.type }}</ellipsis>
+                <ellipsis :length="70">{{ item.type }}</ellipsis>
                 <br>
-                <ellipsis :length="50">{{ item.state }}</ellipsis>
+                <ellipsis :length="70">{{ item.state }}</ellipsis>
               </template>
               <template slot="description">
                 
@@ -115,6 +120,7 @@ export default {
   data () {
     return {
       data: [],
+      allData: [],
       form: this.$form.createForm(this),
       loading: true,
       pagination:{
@@ -125,6 +131,7 @@ export default {
         onChange: this.onChange
       },
       idFilterValue: '',
+      selection: '',
       fusejsOptions: {
         shouldSort: true,
         tokenize: true,
@@ -150,9 +157,7 @@ export default {
     this.getList()
   },
   methods: {
-    handleChange (value) {
-      console.log(`selected ${value}`)
-    },
+   
     getList () {
       // this.$http.get('/list/article', { params: { count: 12 } }).then(res => {
       //   console.log('res', res)
@@ -162,21 +167,24 @@ export default {
       // })
     getRepairSheet().then(response => {
       console.log('sssss',response.data)
-        this.data = response.data
+        pageData = response.data
         this.loading = false
-        pageData = this.data
+        this.data = pageData
       })
 
     },
-    onChange(){
-      console.log("quick jump")
-    },
-    onIdFilterChange (e) {
-      const {value} = e.target
-      console.log("ok")
-      this.idFilterValue = value
+    onChange(value){
+      console.log("Changed",value)
+      this.selection = value
+      console.log("se",this.selection)
       this.filterOnce()
     },
+    // onIdFilterChange (e) {
+    //   const {value} = e.target
+    //   this.idFilterValue = value
+    //   console.log("filterID",value)
+    //   this.filterOnce()
+    // },
     filterOnce(){
       var oldData = pageData
       var options = this.fusejsOptions
@@ -186,12 +194,33 @@ export default {
       if(result != null && result.length > 0){
         console.log("updated")
         this.data = result
+        if(this.selection != ''){
+          var last = []
+          for(let item of result){
+            if(item['state'] == this.selection){
+              last.push(item)
+            }
+          }
+          this.data = last
+        }
       }
-
       else{
+        if(this.selection !=''){
+          var last = []
+          for(let item of pageData){
+            if(item['state'] == this.selection){
+              last.push(item)
+            }
+          }
+          this.data = last
+        }
+        else{
+          this.data = pageData
+        }
+        
         console.log("updated null")
-        this.data = pageData
       }
+      
     },
 
     showDynamicModal (item) {
