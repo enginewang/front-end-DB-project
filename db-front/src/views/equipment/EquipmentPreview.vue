@@ -1,164 +1,274 @@
 <template>
-  <page-view>
-    <a-card :bordered="false">
-      <div>
-        <!--
-        <a-form class="ant-advanced-search-form" :form="form" layout="inline">
+    <div>
+      <a-card :bordered="false">
+        <a-form class="ant-advanced-search-form" :form="form" inline>
           <a-row :gutter="24">
-            <a-col :md="4" :sm="30" v-for="( item,index ) in attribute" :key="index">
-              <a-form-item :label="item.cnType">
-                <a-input :placeholder="item.guide" v-model="equipmentData[item.type]"/>
+            <a-col :md="6" :sm="24">
+              <a-form-item>
+                <label>器材编号：</label>
+                <a-input placeholder="请输入器材编号" v-model="inputID"/>
+              </a-form-item>
+            </a-col>
+            <a-col :md="6" :sm="24">
+              <a-form-item>
+                <label>出厂时间：</label>
+                <a-input placeholder="请输入出厂时间" v-model="inputTime"/>
               </a-form-item>
             </a-col>
           </a-row>
-          <a-row>
-            <a-col :md="5" :sm="25">
-              <span class="table-page-search-submitButtons" :style="advanced && { float: 'right', overflow: 'hidden' } || {} ">
-                <a-button type="primary" @click="onClickSubmit" :disabled="emptyInput" >查询</a-button>
-                <a-button style="margin-left: 8px" type="danger" @click="onClickClearSelect" :disabled="emptyInput" ghost>重置</a-button>
-              </span>
-            </a-col>
-          </a-row>
         </a-form>
-        -->
-      </div>
-      <br>
-      <a-table :columns="columns" :dataSource="eData" rowKey="id" bordered>
-        <template
-          v-for="col in ['id','name', 'address','area']"
-          :slot="col"
-          slot-scope="text, record"
-        >
-          <div :key="col">
-            <a-input
-              v-if="record.editable"
-              style="margin: -5px 0"
-              :value="text"
-              @change="e => handleChange(e.target.value, record.key, col)"
-            />
-            <template v-else>{{ text }}</template>
-          </div>
-        </template>
-        <template slot="operation" slot-scope="text, record">
-          <div class="editable-row-operations">
-          <span v-if="record.editable">
-            <a @click="() => save(record.key)">确认</a>
-            <a-popconfirm title="Sure to cancel?" @confirm="() => cancel(record.key)">
-              &nbsp;&nbsp;&nbsp;&nbsp;<a>取消</a>
-            </a-popconfirm>
-          </span>
-            <span v-else>
-            <a @click="() => edit(record.key)">Edit</a>
-          </span>
-          </div>
-        </template>
+        <br>
+        <a-table :columns="columns" :dataSource="eDataShow" rowKey="id" bordered>
+          <template
+            v-for="col in ['id']"
+            :slot="col"
+            slot-scope="text, record"
+          >
+            {{"EQ" + text}}
+          </template>
+          <template slot="status" slot-scope="text">
+            <a-badge :status="text | statusTypeFilter" :text="text | statusFilter" />
+          </template>
+          <template slot="price" slot-scope="text">
+            {{"￥" + text}}
+          </template>
+          <template slot="icon" slot-scope="text">
+            <!--<div>
+              <a-avatar slot="avatar" size="large" shape="square" :src="text"/>
+            </div>-->
+            <div id="app">
+              <div class="">
+                <div
+                  class="pic"
+                  @click="() => showImg(text)"
+                >
+                  <a-avatar :src="text"/>
+                </div>
+              </div>
+              <vue-easy-lightbox
+                :visible="visible"
+                :imgs="src"
+                @hide="handleHide"
+              ></vue-easy-lightbox>
+            </div>
+          </template>
+
       </a-table>
+      <a-button @click="addEquipment" type="primary" icon="plus">&nbsp;&nbsp;添加器材&nbsp;&nbsp;</a-button>
+      <a-modal v-model="showAddForm" footer="">
+        <a-form title="添加器材" @submit="handleSubmit" :form = "form">
+          <a-form-item
+                  :wrapperCol="{ span: 24 }"
+                  style="text-align: center"
+          >
+            <h3>新建器材</h3>
+          </a-form-item>
+          <a-form-item
+                  label="名称"
+                  :labelCol="{lg: {span: 7}, sm: {span: 7}}"
+                  :wrapperCol="{lg: {span: 10}, sm: {span: 17} }"
+          >
+            <a-select
+                    v-decorator="[
+          'name',
+          {rules: [{ required: true, message: '请选择器材名称' }]}
+        ]"
+                    placeholder="请选择器材名称"
+            >
+              <a-select-option v-for="(item,index) in this.allEquipType" :key="index" :value="item">{{item}}</a-select-option>
+            </a-select>
+          </a-form-item>
+          <a-form-item
+                  label="出厂日期"
+                  :labelCol="{lg: {span: 7}, sm: {span: 7}}"
+                  :wrapperCol="{lg: {span: 10}, sm: {span: 17} }">
+            <a-date-picker
+                    name="productTime"
+                    style="width: 100%"
+                    format="YYYY-MM-DD HH:mm:ss"
+                    :showTime="{ defaultValue: moment('00:00:00', 'HH:mm:ss') }"
+                    v-decorator="[
+            'productTime',
+            {rules: [{ required: true, message: '请选择出厂日期' }]}
+          ]" />
+          </a-form-item>
+          <a-form-item
+                  label="器材型号"
+                  :labelCol="{lg: {span: 7}, sm: {span: 7}}"
+                  :wrapperCol="{lg: {span: 10}, sm: {span: 17} }">
+            <a-input
+                    v-decorator="[
+            'model',
+            {rules: [{ required: true, message: '请输入器材型号' }]}
+          ]"
+                    name="model"
+                    placeholder="输入器材型号" />
+          </a-form-item>
+          <a-form-item
+                  label="仓库"
+                  :labelCol="{lg: {span: 7}, sm: {span: 7}}"
+                  :wrapperCol="{lg: {span: 10}, sm: {span: 17} }"
+          >
+            <a-select
+                    v-decorator="[
+          'warehouse',
+          {rules: [{ required: true, message: '请选择所属仓库' }]}
+        ]"
+                    placeholder="请选择所属仓库"
+            >
+              <a-select-option v-for="(item,index) in this.allWarehouse" :key="index" :value="item">{{item}}</a-select-option>
+            </a-select>
+          </a-form-item>
+
+
+          <a-form-item
+                  :wrapperCol="{ span: 24 }"
+                  style="text-align: center"
+          >
+            <a-button htmlType="submit" type="primary">提交</a-button>
+            <a-button style="margin-left: 8px" @click="cancelAddForm">取消</a-button>
+          </a-form-item>
+        </a-form>
+      </a-modal>
     </a-card>
-  </page-view>
+  </div>
 </template>
 
 <script>
-  import {getEquipmentAllList} from '@/api/equipment'
-  import PageView from "../../layouts/PageView";
-
+  import { getEquipmentStoredList, getAllEquipmentType, addEquipmentStored } from '@/api/equipment'
+  import { getAllWarehouse } from '@/api/warehouse'
+  import Fuse from 'fuse.js'
+  import Vue from 'vue'
+  import Lightbox from 'vue-easy-lightbox'
+  import moment from 'moment';
+  Vue.use(Lightbox)
+  const statusMap = {
+    0: {
+      status: 'success',
+      text: '全新'
+    },
+    1: {
+      status: 'error',
+      text: '报废'
+    }
+  }
   const columns = [{
-    title: '器材id',
+    title: '器材编号',
     dataIndex: 'id',
-    width: '15%',
+    align: 'center',
+    width: '12%',
     scopedSlots: {customRender: 'id'},
     sorter: (a, b) => a.id - b.id
   }, {
     title: '名称',
     dataIndex: 'name',
+    align: 'center',
     width: '10%',
     scopedSlots: {customRender: 'name'}
   }, {
     title: '图标',
     dataIndex: 'icon',
-    width: '10%',
+    align: 'center',
+    width: '7%',
     scopedSlots: {customRender: 'icon'}
   }, {
+    title: '出厂时间',
+    dataIndex: 'productTime',
+    align: 'center',
+    width: '18%',
+    scopedSlots: {customRender: 'productTime'},
+    sorter: (a, b) => a.productTime > b.productTime
+  },{
+    title: '状态',
+    dataIndex: 'status',
+    align: 'center',
+    width: '12%',
+    filters: [{
+      text: '全新',
+      value: '0'
+    }, {
+      text: '报废',
+      value: '1'
+    }],
+    onFilter: (value, record) => record.status.indexOf(value) === 0,
+    scopedSlots: {customRender: 'status'}
+  },{
     title: '型号编号',
-    dataIndex: 'modelID',
-    width: '15%',
-    scopedSlots: {customRender: 'modelID'}
+    dataIndex: 'model',
+    align: 'center',
+    width: '12%',
+    scopedSlots: {customRender: 'model'}
   }, {
     title: '价格',
     dataIndex: 'price',
-    width: '10%',
+    align: 'center',
+    width: '8%',
     scopedSlots: {customRender: 'price'},
     sorter: (a, b) => a.price - b.price
-  }, {
-    title: '数量',
-    dataIndex: 'count',
-    width: '10%',
-    scopedSlots: {customRender: 'count'},
-    sorter: (a, b) => a.count - b.count
-  }, {
+  },{
     title: '所在仓库',
-    dataIndex: 'warehouseID',
-    width: '10%',
+    dataIndex: 'warehouse',
+    align: 'center',
+    width: '14%',
     scopedSlots: {customRender: 'storehouse'},
-    filters: [{
-      text: '仓库1',
-      value: 'wh1'
-    },
-      {
-        text: '仓库2',
-        value: 'wh2'
-      },
-      {
-        text: '仓库3',
-        value: 'wh3'
-      }],
-    onFilter: (value, record) => record.warehouseID.indexOf(value) === 0
-  },
-    {
-      title: '操作',
-      dataIndex: 'operation',
-      scopedSlots: {customRender: 'operation'}
-    }]
+    filters: [],
+    onFilter: (value, record) => record.warehouse.indexOf(value) === 0
+  }]
+  // data
+  let inputID = ''
   const eData = []
+  const eDataShow = []
   export default {
     name: 'EquipPreview',
-    components: {PageView},
     data() {
       this.cacheData = eData.map(item => ({...item}))
       return {
-        attribute: [
-          {type: 'id', cnType: '器材ID', guide: '请输入器材ID'},
-          {type: 'model', cnType: '型号', guide: '请输入器材型号'},
-          {type: 'name', cnType: '地址', guide: '请输入地址'},
-          {type: 'warehouse', cnType: '所在仓库', guide: '请输入所在仓库'},
-          {type: 'equipment', cnType: '价格', guide: '请输入价格'}
-        ],
         equipmentData: {
           id: '',
           name: '',
-          address: '',
-          area: ''
+          productTime: '',
+          status: '',
+          model: '',
+          price: '',
+          count: '',
+          warehouse: ''
         },
+        allWarehouse: [],
+        allEquipType: [],
+        visible: false,
+        visible2: false,
+        src: "",
         eData,
         columns,
+        eDataShow,
+        inputID: '',
+        inputTime: '',
         advanced: false,
-        form: this.$form.createForm(this)
+        form: this.$form.createForm(this),
+        showAddForm: false,
+        newFormCount: 0,
+        newFormWarehouse: '',
       }
     },
     computed: {
       emptyInput() {
-        if (this.equipmentData.id !== '' || this.equipmentData.name !== '' || this.equipmentData.address !== '' || this.equipmentData.area !== '') {
+        if (this.equipmentData.id !== '' || this.equipmentData.name !== '' || this.equipmentData.model !== '' || this.equipmentData.price !== '' || this.equipmentData.count !== '' || this.equipmentData.warehouse !== '') {
           return false
         } else {
           return true
         }
       }
     },
+    // watch for fuzzy search
     methods: {
+      moment,
       onClickClearSelect() {
         this.equipmentData.id = ''
         this.equipmentData.name = ''
-        this.equipmentData.address = ''
-        this.equipmentData.area = ''
+        this.equipmentData.model = ''
+        this.equipmentData.price = ''
+        this.equipmentData.count = ''
+        this.equipmentData.warehouse = ''
       },
       onClickSubmit() {
         console.log(this.equipmentData)
@@ -200,12 +310,90 @@
       },
       toggleAdvanced() {
         this.advanced = !this.advanced
+      },
+      addEquipment() {
+        this.showAddForm = true;
+      },
+      handleSubmit (e) {
+        e.preventDefault()
+        this.form.validateFields((err, value) => {
+          if (!err) {
+            value['productTime'] = value['productTime'].format('YYYY-MM-DD HH:mm:ss');
+            console.log('formData:', value);
+            // 发送post请求，之后需要调整
+            addEquipmentStored(value)
+          }
+        })
+        this.showAddForm = false;
+      },
+      cancelAddForm() {
+        this.showAddForm = false;
+      },
+      showImg (text) {
+        this.visible = true
+        this.src = text
+      },
+      handleHide () {
+        this.visible = false
+      }
+    },
+    filters: {
+      statusFilter (type) {
+        return statusMap[type].text
+      },
+      statusTypeFilter (type) {
+        return statusMap[type].status
+      }
+    },
+    watch: {
+      inputID(pattern){
+        if ( pattern == '' ){
+          this.eDataShow = this.eData
+        }
+        else{
+          const option = {
+            keys: ['id'],
+            threshold: 0.1
+          }
+          var fuse = new Fuse(this.eData, option)
+          this.eDataShow = fuse.search(pattern)
+          console.log(this.eDataShow)
+        }
+      },
+      inputTime(pattern){
+        if ( pattern == '' ){
+          this.eDataShow = this.eData
+        }
+        else{
+          const option = {
+            keys: ['productTime'],
+            threshold: 0.1
+          }
+          var fuse = new Fuse(this.eData, option)
+          this.eDataShow = fuse.search(pattern)
+          console.log(this.eDataShow)
+        }
       }
     },
     mounted() {
-      getEquipmentAllList().then((response) => {
-        console.log(...response)
-        this.eData = [...response]
+      getEquipmentStoredList().then((response) => {
+        console.log(...response.data)
+        this.eData = [...response.data]
+        this.eDataShow = this.eData
+      }),
+      getAllWarehouse().then((response) => {
+        this.allWarehouse = [...response.data]
+        this.columns[7].filters = []
+        for(let val of this.allWarehouse){
+          let temp = {
+            text: val,
+            value: val
+          }
+        this.columns[7].filters.push(temp)
+        }}),
+      getAllEquipmentType().then((response) => {
+        this.allEquipType = [...response.data]
+        console.log(this.allEquipType)
       })
     }
   }
@@ -213,16 +401,13 @@
 
 <style lang="less" scoped>
   @import '~ant-design-vue/lib/style/themes/default.less';
-
   .button-group {
     margin-bottom: 1rem;
-
     .button {
       margin-left: 0.5rem;
       margin-left: 0.5rem;
     }
   }
-
   .ant-form-inline .ant-form-item {
     display: inline-block;
     margin-right: 0;

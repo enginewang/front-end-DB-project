@@ -3,9 +3,10 @@ import { axios } from '@/utils/request'
 const api = {
   preview: '/warehouse/preview',
   detail: '/warehouse/detail',
-  all: '/warehouse/all',
-  address: '/warehouse/address',
-  goods: '/warehouse/goods'
+  allWarehouse: '/warehouse/allWarehouse',
+  allAddress: '/warehouse/allAddress',
+  goods: '/warehouse/goods',
+  schedule: '/warehouse/schedule'
 }
 
 export default api
@@ -36,14 +37,22 @@ export function postGoods (data) {
 
 export function getAllWarehouse () {
   return axios({
-    url: api.all,
+    url: api.allWarehouse,
     method: 'get'
   })
 }
 
-export function getAddress () {
+export function getAllAddress () {
   return axios({
-    url: api.address,
+    url: api.allAddress,
     method: 'get'
+  })
+}
+
+export function postSchedule (data) {
+  return axios({
+    url: api.schedule,
+    method: 'post',
+    data: data[0]
   })
 }

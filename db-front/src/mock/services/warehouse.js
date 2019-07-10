@@ -1,6 +1,6 @@
 import Mock from 'mockjs2'
 
-const address = () => {
+const allAddress = () => {
   return {
     'data': [
       '杨浦区',
@@ -9,30 +9,24 @@ const address = () => {
   }
 }
 
-const all = () => {
+const allWarehouse = () => {
   return {
     'data': [
-      {
-        'name': '嘉定仓库'
-      },
-      {
-        'name': '四平仓库'
-      },
-      {
-        'name': '五角场仓库'
-      }
+      '嘉定仓库',
+      '四平仓库',
+      '五角场仓库'
     ]
   }
 }
 
-const detail = (data) => {
+const detail = ( data ) => {
   let detail = {
     'a0001':
     {
-    'name': '嘉定仓库',
-    'address': '嘉定区',
-    'detailAddress': '曹安公路'
-  },
+      'name': '嘉定仓库',
+      'address': '嘉定区',
+      'detailAddress': '曹安公路'
+    },
     'b0002':
     {
       'name': '四平仓库',
@@ -51,72 +45,69 @@ const detail = (data) => {
   }
 }
 
-const goods = (data) => {
+const goods = ( data ) => {
   let accessory = {
-    'a0001':
-    [
-    {
-      'key': 1,
-      'model': 'Ryzen3700',
-      'type': 'Accessory',
-      'number': 1000
-    },
-    {
-      'key': 2,
-      'model': 'Ryzen3900',
-      'type': 'Accessory',
-      'number': 2000
-    },
-  ],
-    'b0002':
-    [
+    'a0001': [
       {
-        'key': 3,
+        'id': 'a00001',
+        'model': 'Ryzen3700',
+        'type': 'Accessory',
+        'number': 1000
+      },
+      {
+        'id': 'a00002',
+        'model': 'Ryzen3900',
+        'type': 'Accessory',
+        'number': 2000
+      },
+    ],
+    'b0002': [
+      {
+        'id': 'a00003',
         'model': 'Ryzen4900',
         'type': 'Accessory',
         'number': 1000
       },
       {
-        'key': 4,
+        'id': 'a00004',
         'model': 'Ryzen2700',
         'type': 'Accessory',
         'number': 1000
       },
       {
-        'key': 5,
+        'id': 'a00005',
         'model': 'Vega64',
         'type': 'Accessory',
         'number': 1000
       }
     ],
-    'c0003':
-    [
+    'c0003': [
       {
-        'key': 6,
+        'id': 'a00006',
         'model': 'Vega56',
         'type': 'Accessory',
         'number': 1000
       },
       {
-        'key': 7,
+        'id': 'a00007',
         'model': 'Vega40',
         'type': 'Accessory',
         'number': 1000
       },
       {
-        'key': 8,
+        'id': 'a00008',
         'model': 'AMD370',
         'type': 'Accessory',
         'number': 1000
       },
       {
-        'key': 9,
+        'id': 'a00009',
         'model': 'AMD560',
         'type': 'Accessory',
         'number': 1000
       },
       {
-        'key': 10,
+        'id': 'a00010',
         'model': 'AMD580',
         'type': 'Accessory',
         'number': 1000
@@ -125,83 +116,60 @@ const goods = (data) => {
   }
 
   let equipment = {
-    'a0001':
-    [
-    {
-      'key': 1,
-      'id': '10001',
-      'model': 'GTX1080',
-      'type': 'Equipment',
-      'number': 1000
-    },
-    {
-      'key': 2,
-      'id': '10002',
-      'model': 'GTX2080',
-      'type': 'Equipment',
-      'number': 2000
-    },
-  ],
-    'b0002':
-    [
+    'a0001': [
       {
-        'key': 3,
-        'id': '10003',
-        'model': 'GTX3080',
-        'type': 'Equipment',
-        'number': 1000
-      },
-      {
-        'key': 4,
-        'id': '10004',
+        'id': 'e10001',
         'model': 'GTX1080',
         'type': 'Equipment',
-        'number': 1000
       },
       {
-        'key': 5,
-        'id': '10005',
+        'id': 'e10002',
+        'model': 'GTX2080',
+        'type': 'Equipment'
+      },
+    ],
+    'b0002': [
+      {
+        'id': 'e10003',
+        'model': 'GTX3080',
+        'type': 'Equipment'
+      },
+      {
+        'id': 'e10004',
+        'model': 'GTX1080',
+        'type': 'Equipment'
+      },
+      {
+        'id': 'e10005',
         'model': 'GTX980',
-        'type': 'Equipment',
-        'number': 1000
+        'type': 'Equipment'
       }
     ],
-    'c0003':
-    [
+    'c0003': [
       {
-        'key': 6,
-        'id': '10006',
+        'id': 'e10006',
         'model': 'GTX3080',
-        'type': 'Equipment',
-        'number': 1000
+        'type': 'Equipment'
       },
       {
-        'key': 7,
-        'id': '10007',
+        'id': 'e10007',
         'model': 'GTX2080',
-        'type': 'Equipment',
-        'number': 1000
+        'type': 'Equipment'
       },
       {
-        'key': 8,
-        'id': '10008',
+        'id': 'e10008',
         'model': 'GTX1080',
-        'type': 'Equipment',
-        'number': 1000
+        'type': 'Equipment'
       },
       {
-        'key': 9,
-        'id': '10009',
+        'id': 'e10009',
         'model': 'i7-8700k',
-        'type': 'Accessory',
-        'number': 1000
+        'type': 'Equipment'
       },
       {
-        'key': 10,
-        'id': '10010',
+        'id': 'e10010',
         'model': 'i7-8700k',
-        'type': 'Accessory',
-        'number': 1000
+        'type': 'Equipment'
       }
     ]
   }
@@ -217,23 +185,17 @@ const preview = () => {
   return {
     'data': [
       {
-        'key': 1,
         'id': 'a0001',
-        'icon': 0,
         'name': '嘉定仓库',
         'address': '嘉定区'
       },
       {
-        'key': 2,
         'id': 'b0002',
-        'icon': 1,
         'name': '四平仓库',
         'address': '杨浦区'
       },
       {
-        'key': 3,
         'id': 'c0003',
-        'icon': 2,
         'name': '五角场仓库',
         'address': '杨浦区'
       }
@@ -241,11 +203,18 @@ const preview = () => {
   }
 }
 
+const schedule = ( data ) => {
+  console.log( 'schedule', data.body )
+  return {
+    // return differs according type
+  }
+}
 
 
 
-Mock.mock(/\/warehouse\/address/, 'get', address)
-Mock.mock(/\/warehouse\/all/, 'get', all)
-Mock.mock(/\/warehouse\/detail/, 'post', detail)
-Mock.mock(/\/warehouse\/goods/, 'post', goods)
-Mock.mock(/\/warehouse\/preview/, 'get', preview)
+Mock.mock( /\/warehouse\/allAddress/, 'get', allAddress )
+Mock.mock( /\/warehouse\/allWarehouse/, 'get', allWarehouse )
+Mock.mock( /\/warehouse\/detail/, 'post', detail )
+Mock.mock( /\/warehouse\/goods/, 'post', goods )
+Mock.mock( /\/warehouse\/preview/, 'get', preview )
+Mock.mock( /\warehouse\/schedule/, 'post', schedule )

@@ -33,4 +33,12 @@ add API goods to get goods info, and API warehouseDetail change to get warehouse
 
 ###[0.2.3] - 2019.7.7
 - add fuzzy search
--to do modal and refresh
+- to do modal and refresh
+
+###[0.3.1] - 2019.7.8
+- add refresh, API.md
+- to do modal
+
+###[0.3.2] - 2019.7.8
+- complete API, schedule
+- to do: debug, info page, modal check
