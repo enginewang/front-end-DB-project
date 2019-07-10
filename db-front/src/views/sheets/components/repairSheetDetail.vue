@@ -1,5 +1,5 @@
 <template>
-    <page-view :title="报修单" logo="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png">
+    <page-view title="报修单" logo="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png">
 
     <detail-list slot="headerContent" size="small" :col="1" class="detail-layout">
       <detail-list-item term="详细描述">坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了</detail-list-item>
@@ -15,7 +15,7 @@
     
 
     <a-card :bordered='false' title="故障照片">
-        <div :class="photo">
+        <div class="photo">
         <img :src="details.cover" :alt="details.title" />
         </div>
     </a-card>
@@ -119,7 +119,7 @@
             </a-row>
         </standard-form-row>
         <!-- table -->
-    <a-table :columns="columns" :dataSource="wDataShow"  bordered>
+    <a-table :columns="columns"   bordered>
       <template
         v-for="col in ['type','model', 'number']"
         :slot="col"
@@ -157,11 +157,9 @@
 <script>
 import { mixinDevice } from '@/utils/mixin'
 import { PageView } from '@/layouts'
-import DetailList from '@/components/tools/DetailList'
+import DetailList from '@/components'
 import {getRepairSheetById} from '@/api/sheets'
 
-const DetailListItem = DetailList.Item
-console.log("DetailListItem",DetailListItem)
 
 const columns = [{
   title: '类型',
@@ -191,6 +189,7 @@ const columns = [{
 export default {
     mounted(){
       getRepairSheetById(this.details.id).then((response)=>{
+        console.log("id",this.details.id)
         this.getInfo = response.info
         if(this.getInfo === 'ok'){
           this.rpData = [...response.data]
@@ -214,8 +213,6 @@ export default {
     },
     components: {
     PageView,
-    DetailList,
-    DetailListItem
   },
     mixins: [mixinDevice],
   data () {
@@ -223,7 +220,8 @@ export default {
       activeTabKey: '1',
       rpData:[],
       columns,
-      getInfo:''
+      getInfo:'',
+      visible2:true,
     }
   },
   filters: {
@@ -241,8 +239,17 @@ export default {
       }
       return statusTypeMap[type]
     }
-  }
+  },
+  methods:{
+    handleOK(){
+      //
+    },
+    onClickDelete(){
+      //
+    }
 }
+}
+
 </script>
 
 <style lang="less" scoped>

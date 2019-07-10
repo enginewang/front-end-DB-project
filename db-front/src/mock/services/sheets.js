@@ -217,6 +217,7 @@ const repairSheetDetail = (data) => {
         'id': '1223345',
         'details': '把手损坏，零件脱落',
         'stuffNeeded': '齿轮 25mm  x3',
+        'telNumber':'1232432213',
         'eqTypeInWarehouse': [{
           'model':'',
           'type':''

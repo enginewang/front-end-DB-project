@@ -443,13 +443,13 @@ export default {
           dataIndex: 'status',
           filters:[{
             text:'巡检员',
-            value:'巡检员'
+            value:'0'
           },{
             text:'维修员',
-            value:'维修员',
+            value:'1',
           },{
             text:'调度员',
-            value:'调度员'
+            value:'2'
           }],
           onFilter:(value,record) => record.status.indexOf(value) === 0,
           scopedSlots: { customRender: 'status' }
