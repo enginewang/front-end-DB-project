@@ -343,7 +343,7 @@ export default {
       }
       
       deleteWorkSheetRow(target.id).then((response) => {
-        this.deleteInfo = response.data.deleteInfo
+        this.deleteInfo = response.info
         if(this.deleteInfo !== 'fail'){
           this.wData = [...response.data.wData]
           this.wDataShow = this.wData
@@ -379,8 +379,8 @@ export default {
   mounted () {
     console.log(columns[5])
     getWorkSheet().then((response) => {
-      console.log(...response)
-      this.wData = [...response]
+      console.log(...response.data)
+      this.wData = [...response.data]
       this.wDataShow = this.wData
     })
     

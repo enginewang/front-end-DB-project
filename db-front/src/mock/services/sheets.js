@@ -1,7 +1,8 @@
 import Mock from 'mockjs2'
 
 const workSheet = () => {
-  return [
+  return {
+    'data':[
     {
       'id': 'WKS20000001',
       'equipID': 'EQ10000001',
@@ -36,6 +37,7 @@ const workSheet = () => {
       'work_picture': '/avatar.jpg'
     }
   ]
+}
 }
 
 const workSheetRow = (data) => {
@@ -88,12 +90,12 @@ const workSheetRow = (data) => {
     }]
   }
   
-  let deleteInfo = 'ok'
+  let info = 'ok'
   return {
     'data': {
       wData: wData[data.body],
-      deleteInfo: deleteInfo
-    }
+    },
+    'info':info
   }
 }
 
@@ -101,7 +103,8 @@ const checkSheet = () => {
   var prefix1 = 'CST'
   var prefix2 = 'CSF'
   var prefix3 = 'EQ'
-  return [
+  return {
+    'data':[
     {
       'id': prefix1 + String(22000001),
       'potrolID': prefix2 + String(15000001),
@@ -130,6 +133,7 @@ const checkSheet = () => {
       'checkPic': '/avatar2.jpg'
     }
   ]
+}
 }
 
 const checkSheetRow = (data) => {
@@ -196,12 +200,12 @@ const checkSheetRow = (data) => {
     }]
   }
   
-  let deleteInfo = 'ok'
+  let info = 'ok'
   return {
     'data': {
-      Data: Data[data.body],
-      deleteInfo: deleteInfo
-    }
+      Data: Data[data.body]
+    },
+    'info':info
   }
 }
 
