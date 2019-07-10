@@ -156,6 +156,8 @@ export default {
     getWarehousePreview().then((response) => {
       this.previewData = [...response.data]
       this.previewDataShow = this.previewData
+    }).catch(err => {
+      console.log("")
     })
     getAllAddress().then((response) => {
       this.allAddress = [...response.data]
@@ -166,6 +168,8 @@ export default {
         }
         this.columns[2].filters.push(temp)
       }
+    }).catch(err => {
+      console.log(err)
     })
   }
 

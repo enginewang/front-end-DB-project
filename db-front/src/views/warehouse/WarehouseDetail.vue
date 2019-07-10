@@ -294,6 +294,8 @@ export default {
       this.visibleA = true
       getAllWarehouse().then((response) => {
         this.allWarehouse = [...response.data]
+      }).catch(err => {
+        console.log(err)
       })
 
       this.scheduleA.model = target.model
@@ -304,8 +306,10 @@ export default {
       // the "to" in json schedule need to be changed from index to string
       this.scheduleE.to = this.allWarehouse[this.to]
       postSchedule([this.scheduleE]).then((response) => {
-       // this.equipment = [...response.data]
-       // this.equipmentShow = this.equipment
+       this.equipment = [...response.data]
+       this.equipmentShow = this.equipment
+      }).catch(err => {
+        console.log(err)
       })
       this.visibleE = false
     },
@@ -313,8 +317,10 @@ export default {
       // the "to" in json schedule need to be changed from index to string
       this.scheduleA.to = this.allWarehouse[this.to]
       postSchedule([this.scheduleA]).then((response) => {
-       // this.accessory = [...response.data]
-       // this.accessoryShow = this.accessory
+       this.accessory = [...response.data]
+       this.accessoryShow = this.accessory
+      }).catch(err => {
+        console.log(err)
       })
       this.visibleA = false
     }
@@ -325,18 +331,24 @@ export default {
       this.warehouseDetail.name = response.data.name
       this.warehouseDetail.address = response.data.address
       this.warehouseDetail.detailAddress = response.data.detailAddress
-    }),
+    }).catch(err => {
+        console.log(err)
+      })
     // get info of goods
     postGoods(this.warehouseID).then((response) => {
       this.equipment = [...response.data.equipment]
       this.equipmentShow = this.equipment
       this.accessory = [...response.data.accessory]
       this.accessoryShow = this.accessory
-    })
+    }).catch(err => {
+        console.log(err)
+      })
     getAllWarehouse().then((response) => {
       this.allWarehouse = [...response.data]
       this.allWarehouse.splice(this.allWarehouse.indexOf(this.warehouseDetail.name), 1)
-    })
+    }).catch(err => {
+        console.log(err)
+      })
   }
 
 }
