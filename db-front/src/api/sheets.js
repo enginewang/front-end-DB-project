@@ -3,7 +3,7 @@ import { axios } from '@/utils/request'
 const api = {
   workSheet: '/sheets/workSheet',
   checkSheet: '/sheets/checkSheet',
-  repairSheet: '/sheets/repairSheet',
+  repairSheetDetail: '/sheets/repairSheetDetail',
   workSheetRow: '/sheets/workSheetRow',
   checkSheetRow: '/sheets/checkSheetRow'
 }
@@ -34,6 +34,14 @@ export function deleteWorkSheetRow (data) {
 export function deleteCheckSheetRow (data) {
   return axios({
     url: api.checkSheetRow,
+    method: 'post',
+    data: data
+  })
+}
+
+export function getRepairSheetById (data) {
+  return axios({
+    url: api.repairSheetDetail,
     method: 'post',
     data: data
   })

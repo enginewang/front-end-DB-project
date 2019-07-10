@@ -13,6 +13,11 @@
               <a-input placeholder="请输入员工姓名" v-model ="input2"/>
             </a-form-item>
           </a-col>
+          <a-col :md="8" :sm="24">
+            <a-form-item label="根据账号查找员工">
+              <a-input placeholder="请输入员工账号" v-model ="input3"/>
+            </a-form-item>
+          </a-col>
         </a-row>
         <a-row :gutter ="48">
         <a-col  style=" textAlign: 'left' margin-bottom: 24px">
@@ -51,11 +56,6 @@
             <a-col :lg="8" :md="24" :span="20">
               <a-tag color='cyan'>{{ role.roleName }}：</a-tag>
             </a-col>
-            <!--<a-col :lg="20" :md="24" v-if="role.actionEntitySet.length > 0">
-              <a-tag color="cyan" v-for="(action, k) in role.actionEntitySet" :key="k">{{ action.describe }}</a-tag>
-            </a-col>
-            <a-col :span="20" v-else>-</a-col>-->
-          
             <a-col :lg="14" >{{role.var}}</a-col>
           </a-col>
         </a-row>
@@ -85,6 +85,7 @@
       v-model="visible"
       @ok="handleOk"
     >
+    
       <a-form :from="(form)=>{this.form = form} " rowKey ='id' bordered>
 
         <a-form-item
@@ -102,9 +103,9 @@
           :wrapperCol="wrapperCol"
           label="员工姓名"
           hasFeedback
-          validateStatus="success"
+          :validateStatus="successName"
         >
-          <a-input placeholder="新名字" v-model="newmdl.name" id="role_name" />
+          <a-input placeholder="新名字" v-model="newmdl.name"  id="role_name" />
         </a-form-item>
 
 
@@ -115,7 +116,7 @@
           hasFeedback
           validateStatus="success"
         >
-          <a-select v-model="mdl.status">
+          <a-select disabled v-model="mdl.status">
             <a-select-option value="0">巡检员</a-select-option>
             <a-select-option value="1">维修员</a-select-option>
             <a-select-option value="2">调度员</a-select-option>
@@ -125,11 +126,11 @@
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
-          label="账户名"
+          label="登录账号"
           hasFeedback
           validateStatus="success"
         >
-          <a-input placeholder="新账户名" v-model="newmdl.accountID" id="role_name" />
+          <a-input disabled="disabled" v-model="newmdl.accountID" id="role_name" />
         </a-form-item>
 
         <a-form-item
@@ -137,9 +138,9 @@
           :wrapperCol="wrapperCol"
           label="密码"
           hasFeedback
-          validateStatus="success"
+          :validateStatus="successPassword"
         >
-           <a-input placeholder="新密码" v-model="newmdl.password" id="role_password" />
+           <a-input placeholder="新密码(最少8位)" v-model="newmdl.password" id="role_password" />
         </a-form-item>
 
         <a-form-item
@@ -147,9 +148,9 @@
           :wrapperCol="wrapperCol"
           label="电话"
           hasFeedback
-          validateStatus="success"
+          :validateStatus="successTel"
         >
-           <a-input placeholder="新电话" v-model="newmdl.telNumber" id="role_telnumber" />
+           <a-input placeholder="新电话(11位)" v-model="newmdl.telNumber" id="role_telnumber" />
         </a-form-item>
 
         <a-form-item
@@ -157,9 +158,9 @@
           :wrapperCol="wrapperCol"
           label="身份证号码"
           hasFeedback
-          validateStatus="success"
+          :validateStatus="successIdcard"
         >
-           <a-input placeholder="重新填写身份证号码" v-model="newmdl.idCardNumber" id="role_idCard" />
+           <a-input placeholder="重新填写身份证号码(18位)" v-model="newmdl.idCardNumber" id="role_idCard" />
         </a-form-item>
 
         <a-form-item
@@ -168,8 +169,9 @@
           label="每周工作开始时间"
           hasFeedback
           validateStatus="success"
+          visible = 'false'
         >
-          <a-select v-model="newmdl.startTime">
+          <a-select :disabled ="ifRepair" v-model="newmdl.startTime" >
             <a-select-option value="周一">周一</a-select-option>
             <a-select-option value="周二">周二</a-select-option>
             <a-select-option value="周三">周三</a-select-option>
@@ -187,7 +189,7 @@
           hasFeedback
           validateStatus="success"
         >
-          <a-select v-model="newmdl.endTime">
+          <a-select  :disabled ="ifRepair" v-model="newmdl.endTime">
             <a-select-option value="周一">周一</a-select-option>
             <a-select-option value="周二">周二</a-select-option>
             <a-select-option value="周三">周三</a-select-option>
@@ -226,6 +228,7 @@
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="员工姓名"
+          :validateStatus="successAddName"
           hasFeedback
         >
           <a-input placeholder="请输入新用户姓名" v-model="addmdl.name" id="role_name" />
@@ -236,7 +239,7 @@
           :wrapperCol="wrapperCol"
           label="员工身份"
           hasFeedback
-          
+          validateStatus="success"
         >
           <a-select v-model="addmdl.status" >
             <a-select-option value="0">巡检员</a-select-option>
@@ -245,22 +248,15 @@
           </a-select>
         </a-form-item>
 
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="员工账户名"
-          hasFeedback
-        >
-          <a-input placeholder="请输入新用户账户名" v-model="addmdl.accountID" id="role_name" />
-        </a-form-item>
 
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="密码"
           hasFeedback
+          :validateStatus="successAddPassword"
         >
-           <a-input placeholder="请输入新用户密码" v-model="addmdl.password" id="role_password" />
+           <a-input placeholder="请输入新用户密码(最少8位)" v-model="addmdl.password" id="role_password" />
         </a-form-item>
 
         <a-form-item
@@ -268,8 +264,9 @@
           :wrapperCol="wrapperCol"
           label="电话"
           hasFeedback
+          :validateStatus="successAddTel"
         >
-           <a-input placeholder="请填写新用户电话" v-model="addmdl.telNumber" id="role_telnumber" />
+           <a-input placeholder="请填写新用户电话(11位)" v-model="addmdl.telNumber" id="role_telnumber" />
         </a-form-item>
 
         <a-form-item
@@ -277,17 +274,19 @@
           :wrapperCol="wrapperCol"
           label="身份证号码"
           hasFeedback
+          :validateStatus="successAddIdNumber"
         >
-           <a-input placeholder="请填写新用户身份证号码" v-model="addmdl.idCardNumber" id="role_idCard" />
+           <a-input placeholder="请填写新用户身份证号码(18位)" v-model="addmdl.idCardNumber" id="role_idCard" />
         </a-form-item>
 
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="每周工作开始时间"
+          validateStatus="success"
           hasFeedback
         >
-          <a-select v-model="addmdl.startTime">
+          <a-select :disabled="ifAddRepair" v-model="addmdl.startTime">
             <a-select-option value="周一">周一</a-select-option>
             <a-select-option value="周二">周二</a-select-option>
             <a-select-option value="周三">周三</a-select-option>
@@ -302,9 +301,10 @@
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
           label="每周工作结束时间"
+          validateStatus="success"
           hasFeedback
         >
-          <a-select v-model="addmdl.endTime">
+          <a-select :disabled="ifAddRepair" v-model="addmdl.endTime">
             <a-select-option value="周一">周一</a-select-option>
             <a-select-option value="周二">周二</a-select-option>
             <a-select-option value="周三">周三</a-select-option>
@@ -391,16 +391,16 @@ export default {
       },
       addmdl:{
         'name':'',
-        'accountID':'',
         'password':'',
         'status':'0',
         'telNumber':'',
         'idCardNumber':'',
         'startTime':'周一',
-        'endTime':'周五'
+        'endTime':'周日'
       },
       input:'',
       input2: '',
+      input3:'',
       sfData:[],
       sfDataShow:[],
       statusMap,
@@ -408,6 +408,7 @@ export default {
       deleteInfo:'',
       modifyInfo:'',
       addInfo:'',
+      accountInfo:'',
 
       // 高级搜索 展开/关闭
       advanced: false,
@@ -418,37 +419,43 @@ export default {
         {
           title: '员工编号',
           dataIndex: 'id',
+          align:'center',
           sorter:(a,b) => a.id > b.id
         },
         {
           title: '员工姓名',
+          align:'center',
           dataIndex: 'name'
         },
         {
-          title: '员工账户',
+          title: '登录账号',
+          align:'center',
           dataIndex: 'accountID'
         },
         {
           title: '员工密码',
+          align:'center',
           dataIndex: 'password',
           
         }, {
           title: '员工身份',
+          align:'center',
           dataIndex: 'status',
           filters:[{
             text:'巡检员',
-            value:'巡检员'
+            value:'0'
           },{
             text:'维修员',
-            value:'维修员',
+            value:'1',
           },{
             text:'调度员',
-            value:'调度员'
+            value:'2'
           }],
           onFilter:(value,record) => record.status.indexOf(value) === 0,
           scopedSlots: { customRender: 'status' }
         },{
           title: '操作',
+          align:'center',
           width: '150px',
           dataIndex: 'action',
           scopedSlots: { customRender: 'action' }
@@ -461,8 +468,8 @@ export default {
   },
   created () {
     getStaffSheet().then((response) => {
-      console.log(...response)
-      this.sfData = [...response]
+      console.log(...response.data)
+      this.sfData = [...response.data]
       this.sfDataShow = this.sfData
     })
   },
@@ -492,8 +499,84 @@ export default {
               var fuse = new Fuse(this.sfData,option)
               this.sfDataShow = fuse.search(pattern)
           }
+      },
+      input3(pattern){
+          if(pattern == ''){
+              this.sfDataShow = this.sfData
+          }
+          else{
+              const option = {
+                  keys: ['accountID'],
+                  threshold: 0.1
+              }
+              var fuse = new Fuse(this.sfData,option)
+              this.sfDataShow = fuse.search(pattern)
+          }
       }
-
+  },
+  computed:{
+      successName: function(){
+        if(this.newmdl.name === ''){
+          return "error"
+        }
+        return "success"
+      },
+      successTel: function(){
+        if(this.newmdl.telNumber.length !== 11){
+          return "error"
+        }
+        return "success"
+      },
+      successIdcard: function(){
+        if(this.newmdl.idCardNumber.length !== 18){
+          return "error"
+        }
+        return "success"
+      },
+      successPassword: function(){
+        if(this.newmdl.password.length < 8){
+          return "error"
+        }
+        return "success"
+      },
+      ifRepair: function(){
+        console.log("visible",this.newmdl.status)
+        if(this.newmdl.status === '1'){
+          console.log("disabled")
+          return "disabled"
+        }
+      },
+      successAddName: function(){
+        if(this.addmdl.name === ''){
+          return "error"
+        }
+        return "success"
+      },
+      successAddPassword: function(){
+        if(this.addmdl.password.length < 8){
+          return "error"
+        }
+        return "success"
+      },
+      successAddTel: function(){
+        if(this.addmdl.telNumber.length !== 11){
+          return "error"
+        }
+        return "success"
+      },
+      successAddIdNumber: function(){
+        if(this.addmdl.idCardNumber.length !== 18){
+          return "error"
+        }
+        return "success"
+      },
+      ifAddRepair: function(){
+        console.log("status",this.addmdl.status)
+        if(this.addmdl.status === '1'){
+          console.log("disabled")
+          return "disabled"
+        }
+      },
   },
   filters: {
     statusFilter (type) {
@@ -520,23 +603,30 @@ export default {
       this.visible = true
     },
     handleOk () {
+      if(this.successName === "error"||this.successTel === "error"||
+      this.successIdcard === "error"||this.successPassword === "error"){
+        this.$notification.open({
+          message: '修改失败',
+          description: '请按要求填写员工新信息',
+          icon: <a-icon type="exclamation-circle" style="color: #108ee9" />,
+        });
+        return;
+      }
       this.visible2 = true
     },
     handlenewOk(){
       this.visible =false
       this.visible2 = false
       modifyStaffSheetRow(this.newmdl).then((response) => {
-        this.modifyInfo = response.data.modifyInfo
-        if(this.modifyInfo !== 'fail'){
-          this.sfData = [...response.data.msfData]
-          this.sfDataShow = this.sfData
-        }
+        this.modifyInfo = response.info
         if(this.modifyInfo === 'ok'){
           this.$notification.open({
           message: '修改成功',
           description: '本条员工记录修改成功',
           icon: <a-icon type="check" style="color: #108ee9" />,
         });
+        this.sfData = [...response.data.msfData]
+          this.sfDataShow = this.sfData
         }
         else{
           this.$notification.open({
@@ -548,6 +638,15 @@ export default {
       })
     },
     handlenewnewOk(){
+      if(this.successAddName === "error"||this.successAddTel === "error"||
+      this.successAddIdNumber === "error"||this.successAddPassword === "error"){
+        this.$notification.open({
+          message: '添加失败',
+          description: '请按要求填写新员工信息',
+          icon: <a-icon type="exclamation-circle" style="color: #108ee9" />,
+        });
+        return;
+      }
       this.visible5 = true
      
     },
@@ -565,12 +664,10 @@ export default {
       const target = newData.filter(item => this.todelete === item.id)[0]
       console.log(target) 
       deleteStaffSheetRow(target.id).then((response) => {
-        this.deleteInfo = response.data.deleteInfo
-        if(this.deleteInfo !== 'fail'){
+        this.deleteInfo = response.info
+        if(this.deleteInfo === 'ok'){
           this.sfData = [...response.data.sfData]
           this.sfDataShow = this.sfData
-        }
-        if(this.deleteInfo === 'ok'){
           this.$notification.open({
           message: '删除成功',
           description: '本条员工记录删除成功',
@@ -606,17 +703,16 @@ export default {
       this.visible4 = false
       this.visible5 = false
        addStaffSheetRow(this.addmdl).then((response) => {
-        this.addInfo = response.data.addInfo
-        if(this.addInfo !== 'fail'){
-          this.sfData = [...response.data.asfData]
-          this.sfDataShow = this.sfData
-        }
+        this.addInfo = response.info1
+        this.accountInfo = response.info2
         if(this.addInfo === 'ok'){
           this.$notification.open({
           message: '添加成功',
-          description: '本条员工记录添加成功',
+          description: '本条员工记录添加成功。新员工的账号为'+this.accountInfo,
           icon: <a-icon type="check" style="color: #108ee9" />,
         });
+          this.sfData = [...response.data.asfData]
+          this.sfDataShow = this.sfData
         }
         else{
           this.$notification.open({

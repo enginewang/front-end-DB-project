@@ -49,54 +49,49 @@ const equipmentDetail = ( data ) => {
           name: '哑铃',
           factory_time: '2019.07.01',
           install_time: '2019.07.07',
-          using_time: '6 days',
           unit: '同济大学',
           address: '上海市嘉定区曹安公路4800号',
-          if_damage: '已损坏',
-          order: '20190707',
+          if_damage: '损坏',
+
         },
     '10002':
         {
           name: '跑步机',
-          factory_time: '2019.07.01',
-          install_time: '2019.07.07',
-          using_time: '6 days',
+          factory_time: '2019.7.1',
+          install_time: '2019.7.7',
           unit: '清华大学',
           address: '上海市嘉定区曹安公路4800号',
-          if_damage: '已损坏',
+          if_damage: '正常',
           order: '20190707',
         },
     '10003':
         {
           name: '篮球',
           factory_time: '2019.07.01',
-          install_time: '2019.07.07',
-          using_time: '6 days',
+          install_time: '2019.07.10',
           unit: '复旦大学',
           address: '上海市嘉定区曹安公路4800号',
-          if_damage: '已损坏',
+          if_damage: '正常',
           order: '20190707',
         },
     '10004':
         {
           name: '足球',
           factory_time: '2019.07.01',
-          install_time: '2019.07.07',
-          using_time: '6 days',
+          install_time: '2018.07.20',
           unit: '脚痛大学',
           address: '上海市嘉定区曹安公路4800号',
-          if_damage: '已损坏',
+          if_damage: '损坏',
           order: '20190707',
         },
     '10005':
         {
           name: '羽毛球',
           factory_time: '2019.07.01',
-          install_time: '2019.07.07',
-          using_time: '6 days',
+          install_time: '2017.10.12',
           unit: '上海大学',
           address: '上海市嘉定区曹安公路4800号',
-          if_damage: '已损坏',
+          if_damage: '损坏',
           order: '20190707',
         },
   }
@@ -104,6 +99,7 @@ const equipmentDetail = ( data ) => {
     'data': equipdetail[data.body]
   }
 }
+
 
 const equipmentStored = () => {
   return {

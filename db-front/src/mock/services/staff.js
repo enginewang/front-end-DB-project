@@ -2,20 +2,21 @@ import Mock from 'mockjs2'
 import { builder } from '../util';
 
 const staffSheet = () =>{
-    return [
+    return{
+        'data':[
         {
             'id':'STF15000001',
             'name':'昆坤',
-            'accountID':'1234567',
-            'password':'1234567',
+            'accountID':'12345',
+            'password':'12345678',
             'status':'0',
             'detail':[{
                 'roleName':'电话号码',
-                'var':'123456789',
+                'var':'12345678911',
             },
             {
                 'roleName':'身份证号码',
-                'var':'1101101999010100000000',
+                'var':'110110199901010000',
             },
             {
                 'roleName':'账户创建时间',
@@ -37,16 +38,16 @@ const staffSheet = () =>{
         {
             'id':'STF15000003',
             'name':'蔡才',
-            'accountID':'7654321',
-            'password':'1234567',
+            'accountID':'76543',
+            'password':'12345673',
             'status':'0',
             'detail':[{
                 'roleName':'电话号码',
-                'var':'987654321',
+                'var':'98765432134',
             },
             {
                 'roleName':'身份证号码',
-                'var':'1101101999010100002548',
+                'var':'110110199901012548',
             },
             {
                 'roleName':'账户创建时间',
@@ -69,15 +70,15 @@ const staffSheet = () =>{
             'id':'STF15000013',
             'name':'徐绪',
             'accountID':'6543217',
-            'password':'7654321',
+            'password':'76543213',
             'status':'1',
             'detail':[{
                 'roleName':'电话号码',
-                'var':'897654123',
+                'var':'89765412345',
             },
             {
                 'roleName':'身份证号码',
-                'var':'1101101999010100007458',
+                'var':'110110199901017458',
             },
             {
                 'roleName':'账户创建时间',
@@ -89,26 +90,26 @@ const staffSheet = () =>{
             },
             {
                 'roleName':'每周工作开始时间',
-                'var':'周日',
+                'var':'周一',
             },
             {
                 'roleName':'每周工作结束时间',
-                'var':'周五'
+                'var':'周日'
             }]
         },
         {
             'id':'STF15000017',
             'name':'常迢',
-            'accountID':'5674123',
-            'password':'4321765',
+            'accountID':'56741',
+            'password':'43217654',
             'status':'2',
             'detail':[{
                 'roleName':'电话号码',
-                'var':'564378921',
+                'var':'56437892165',
             },
             {
                 'roleName':'身份证号码',
-                'var':'1101101999010100003458',
+                'var':'110110199901013458',
             },
             {
                 'roleName':'账户创建时间',
@@ -130,6 +131,8 @@ const staffSheet = () =>{
     ]
 }
 
+}
+
 const staffSheetDelete = (data) =>{
     console.log("data:",data)
     var text = String(data.body)
@@ -139,7 +142,7 @@ const staffSheetDelete = (data) =>{
         {
             'id':'STF15000003',
             'name':'蔡才',
-            'accountID':'7654321',
+            'accountID':'76321',
             'password':'1234567',
             'status':'0',
             'detail':[{
@@ -191,11 +194,11 @@ const staffSheetDelete = (data) =>{
             },
             {
                 'roleName':'每周工作开始时间',
-                'var':'周日',
+                'var':'周一',
             },
             {
                 'roleName':'每周工作结束时间',
-                'var':'周五'
+                'var':'周日'
             }]
         },
         {
@@ -450,12 +453,12 @@ const staffSheetDelete = (data) =>{
             }]
         }],
     }
-    let deleteInfo = 'ok'
+    let info = 'ok'
     return{
         'data':{
-            sfData: sfData[data.body],
-            deleteInfo:deleteInfo
-        }
+            sfData: sfData[data.body]
+        },
+        'info':info
     }
     
 }
@@ -467,12 +470,12 @@ const staffSheetModify = (data) =>{
     let msfData = {
         
     }
-    let  addInfo = 'ok'
+    let  info = 'ok'
     return{
         'data':{
-            msfData: msfData[data.body],
-            addInfo:addInfo
-        }
+            msfData: msfData[data.body]
+        },
+        'info':info
     }
     
 }
@@ -484,12 +487,14 @@ const staffSheetAdd = (data) =>{
     let asfData = {
         
     }
-    let  modifyInfo = 'ok'
+    let  info1 = 'ok'
+    let info2 = '123jxh'
     return{
         'data':{
             asfData: asfData[data.body],
-            modifyInfo:modifyInfo
-        }
+        },
+        'info1':info1,
+        'info2':info2
     }
     
 }
