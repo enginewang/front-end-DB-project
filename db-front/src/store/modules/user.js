@@ -3,6 +3,8 @@ import {login, postInfo, logout} from '@/api/login'
 import {ACCESS_TOKEN} from '@/store/mutation-types'
 import {welcome} from '@/utils/util'
 
+export var notiSource = null
+
 const user = {
   state: {
     token: '',
@@ -36,13 +38,21 @@ const user = {
     // 登录
     Login ( {commit}, userInfo ) {
       return new Promise( ( resolve, reject ) => {
-        login( userInfo ).then( response => {
+        login( userInfo )
+        .then( response => {
           console.log( 'vuex', response )
           const result = response.result
           Vue.ls.set( ACCESS_TOKEN, result.token, 7 * 24 * 60 * 60 * 1000 )
           commit( 'SET_TOKEN', result.token )
+        } )
+        .then( () =>{
+          // var source = new EventSource('https://tjsseibm.club/api/Notification')
+          // source.onmessage = function(e){
+          //   console.log(e)
+          // }
           resolve()
-        } ).catch( error => {
+        })
+        .catch( error => {
           reject( error )
         } )
       } )
