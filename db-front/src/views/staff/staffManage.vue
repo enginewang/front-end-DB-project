@@ -338,6 +338,7 @@
 import { STable } from '@/components'
 import { getStaffSheet, deleteStaffSheetRow, modifyStaffSheetRow, addStaffSheetRow } from '@/api/staff'
 import Fuse from 'fuse.js'
+import md5 from 'md5'
 
 const statusMap = {
   0: {
@@ -432,7 +433,7 @@ export default {
           align:'center',
           dataIndex: 'accountID'
         },
-        {
+         {
           title: '员工身份',
           align:'center',
           dataIndex: 'status',
@@ -611,6 +612,7 @@ export default {
     handlenewOk(){
       this.visible =false
       this.visible2 = false
+      this.newmdl.password = md5(this.newmdl.password)
       modifyStaffSheetRow(this.newmdl).then((response) => {
         this.modifyInfo = response.info
         if(this.modifyInfo === 'ok'){
@@ -696,6 +698,7 @@ export default {
     onClickNewRow(){
       this.visible4 = false
       this.visible5 = false
+       this.addmdl.password = md5(this.addmdl.password)
        addStaffSheetRow(this.addmdl).then((response) => {
         this.addInfo = response.info1
         this.accountInfo = response.info2
