@@ -196,7 +196,7 @@ export default {
     },
 
     showDynamicModal (item) {
-      console.log(typeof(item))
+      console.log("itemInfo",item)
       this.$modal.show(repairSheetDetail,
        {details: item},
     {
