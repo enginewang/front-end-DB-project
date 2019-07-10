@@ -1,5 +1,5 @@
 import api from './index'
-import {axios} from '@/utils/request'
+import { axios } from '@/utils/request'
 
 /**
  * login func
@@ -12,51 +12,34 @@ import {axios} from '@/utils/request'
  * @param parameter
  * @returns {*}
  */
-export function login ( parameter ) {
-  return axios( {
+export function login(parameter) {
+  return axios({
+    headers: { "Access-Control-Allow-Origin": "*", crossorigin: true },
     url: '/auth/login',
     method: 'post',
     data: parameter
-  } )
+  })
 }
 
-export function getSmsCaptcha ( parameter ) {
-  return axios( {
-    url: api.SendSms,
-    method: 'post',
-    data: parameter
-  } )
-}
-
-export function postInfo ( data ) {
-  return axios( {
+export function postInfo(data) {
+  return axios({
+    headers: { "Access-Control-Allow-Origin": "*", crossorigin: true },
     url: '/user/info',
     method: 'post',
     data: data,
     headers: {
       'Content-Type': 'application/json;charset=UTF-8'
     }
-  } )
+  })
 }
 
-export function logout () {
-  return axios( {
+export function logout() {
+  return axios({
+    headers: { "Access-Control-Allow-Origin": "*", crossorigin: true },
     url: '/auth/logout',
     method: 'post',
     headers: {
       'Content-Type': 'application/json;charset=UTF-8'
     }
-  } )
-}
-
-/**
- * get user 2step code open?
- * @param parameter {*}
- */
-export function get2step ( parameter ) {
-  return axios( {
-    url: api.twoStepCode,
-    method: 'post',
-    data: parameter
-  } )
+  })
 }
