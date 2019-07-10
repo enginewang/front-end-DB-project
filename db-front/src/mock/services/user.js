@@ -7,7 +7,7 @@ const info = ( options ) => {
     'id': '4291d7da9005377ec9aec4a71ea837f',
     'name': '王小明',
     'username': 'admin',
-    'password': '',
+    'password': '123456',
     'telephone': '13838385438',
     'avatar': '/avatar.jpg',
     'status': 1,

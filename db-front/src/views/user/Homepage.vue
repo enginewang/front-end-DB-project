@@ -238,12 +238,6 @@
             <a-card >
               <a-form @submit="handleModifyPassword" :form = "form">
                 <a-form-item
-                        label="账号"
-                        :labelCol="{lg: {span: 7}, sm: {span: 7}}"
-                        :wrapperCol="{lg: {span: 10}, sm: {span: 17} }">
-                  {{userInfo.id}}
-                </a-form-item>
-                <a-form-item
                         label="旧密码"
                         :labelCol="{lg: {span: 7}, sm: {span: 7}}"
                         :wrapperCol="{lg: {span: 10}, sm: {span: 17} }">
@@ -427,6 +421,7 @@
           if (!err) {
             // eslint-disable-next-line no-console
             console.log('Received values of form: ', values)
+            console.log(this.userInfo.password)
             if(values.old_password === this.userInfo.password){
               this.$message.success('密码修改成功！')
               this.old_password = this.old_password.toUpperCase()
