@@ -158,6 +158,7 @@
 import { mixinDevice } from '@/utils/mixin'
 import { PageView } from '@/layouts'
 import DetailList from '@/components/tools/DetailList'
+import {getRepairSheetById} from '@/api/sheets'
 
 const DetailListItem = DetailList.Item
 console.log("DetailListItem",DetailListItem)
@@ -192,9 +193,16 @@ export default {
       getRepairSheetById(this.details.id).then((response)=>{
         this.getInfo = response.info
         if(this.getInfo === 'ok'){
-          
+          this.rpData = [...response.data]
         }
-        this.rpData = [...response.data]
+        else{
+          this.$notification.open({
+          message: '获取失败',
+          description: '获取本报修单详情页失败',
+          icon: <a-icon type="warning" style="color: #108ee9" />,
+        });
+        }
+        
       })
         console.log("details",this.details)
     },

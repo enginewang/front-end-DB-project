@@ -209,18 +209,18 @@ const checkSheetRow = (data) => {
   }
 }
 
-const repairSheet = (data) => {
+const repairSheetDetail = (data) => {
+  console.log("databody",data.body)
   let rpData ={
-    '1':[
+    '1223345':[
       {
-        'id': '1',
+        'id': '1223345',
         'details': '把手损坏，零件脱落',
         'stuffNeeded': '齿轮 25mm  x3',
         'eqTypeInWarehouse': [{
           'model':'',
           'type':''
         }],
-        'eqPic':'/avatar.jpg',
         'status':'0',
         'repairStaff':[
           {
@@ -248,4 +248,4 @@ Mock.mock(/\/sheets\/workSheet/, 'get', workSheet)
 Mock.mock(/\/sheets\/checkSheet/, 'get', checkSheet)
 Mock.mock(/\/sheets\/workSheetRow/, 'post', workSheetRow)
 Mock.mock(/\/sheets\/checkSheetRow/, 'post', checkSheetRow)
-Mock.mock(/\/sheets\/repairSheet/, 'post', repairSheet)
+Mock.mock(/\/sheets\/repairSheetDetail/, 'post', repairSheetDetail)
