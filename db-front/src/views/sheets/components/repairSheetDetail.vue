@@ -12,15 +12,7 @@
         <div class="heading">待审批</div>
       </a-col>
     </a-row>
-    <!-- actions -->
-    <template slot="action">
-      <a-button-group style="margin-right: 4px;">
-        <a-button>操作</a-button>
-        <a-button>操作</a-button>
-        <a-button><a-icon type="ellipsis"/></a-button>
-      </a-button-group>
-      <a-button type="primary" >主操作</a-button>
-    </template>
+    
 
     <a-card :bordered='false' title="故障照片">
         <div :class="photo">
@@ -170,13 +162,13 @@ import DetailList from '@/components/tools/DetailList'
 const DetailListItem = DetailList.Item
 
 const columns = [{
-  title: '配件类型',
+  title: '类型',
   dataIndex: 'type',
   width: '25%',
   scopedSlots: { customRender: 'type' },
   sorter: (a, b) => a.type > b.type,
 }, {
-  title: '配件型号',
+  title: '型号',
   dataIndex: 'model',
   width: '25%',
   scopedSlots: { customRender: 'model' },
