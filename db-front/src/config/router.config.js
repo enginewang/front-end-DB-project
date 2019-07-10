@@ -110,7 +110,7 @@ export const asyncRouterMap = [
         name: 'sheets',
         redirect: '/sheets/workSheet',
         component: RouteView,
-        meta: {title: '各类表单', keepAlive: true, icon: "table"},
+        meta: {title: '表单', keepAlive: true, icon: "table"},
         children: [
           {
             path: '/sheets/workSheet',

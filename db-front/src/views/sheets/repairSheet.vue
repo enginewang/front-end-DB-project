@@ -65,7 +65,7 @@
                 
               </template>
             </a-card-meta>
-            <div class="cardItemContent">
+            <div class="cardItemContent" style="">
               <span>{{ item.updatedAt | fromNow }}</span>
               <a-button type='primary' @click="showDynamicModal(item)">查看详情</a-button>
               <!-- <div class="avatarList">
