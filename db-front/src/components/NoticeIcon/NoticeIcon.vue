@@ -8,6 +8,7 @@
     :arrowPointAtCenter="true"
     :overlayStyle="{ width: '300px', top: '50px' }"
   >
+    <slot></slot>
     <template slot="content">
       <a-spin :spinning="loadding">
         <a-tabs>
