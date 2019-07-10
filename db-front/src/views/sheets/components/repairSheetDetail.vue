@@ -88,6 +88,44 @@
             </a-col>
             </a-row>
         </standard-form-row>
+        <standard-form-row title="添加器材" grid last>
+            <a-row>
+            <a-col :span='6'>
+                <a-form-item label="器材类型" :label-col="{ span: 8 }" :wrapper-col="{ span: 15 }">
+                <a-select
+                  style="width: 100%;"
+                  placeholder="选择器材类型"
+                  >
+                  <a-select-option value="GPU">显卡</a-select-option>
+                  <a-select-option value="CPU">CPU</a-select-option>
+                </a-select>
+                </a-form-item>
+            </a-col>
+            <a-col :span='6'>
+                <a-form-item  label="器材型号" :label-col="{ span: 8 }" :wrapper-col="{ span: 15 }">
+                <a-select
+                  style="width: 80%;"
+                  placeholder="选择器材型号"
+                  >
+                  <a-select-option value="00022">张三</a-select-option>
+                  <a-select-option value="00011">李四</a-select-option>
+                </a-select>
+                </a-form-item>
+            </a-col>
+            <a-col :span='6'>
+                <a-form-item label="数量" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
+                  <a-input
+                    placeholder="输入数量"
+                    maxLength="15"
+                    style="width: 80%"
+                  />
+              </a-form-item>
+            </a-col>
+            <a-col :span='6'>
+                <a-button type='primary'>添加</a-button>
+            </a-col>
+            </a-row>
+        </standard-form-row>
         <!-- table -->
     <a-table :columns="columns" :dataSource="wDataShow"  bordered>
       <template
