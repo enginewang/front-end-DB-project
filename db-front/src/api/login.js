@@ -14,7 +14,6 @@ import { axios } from '@/utils/request'
  */
 export function login(parameter) {
   return axios({
-    headers: { "Access-Control-Allow-Origin": "*", crossorigin: true },
     url: '/auth/login',
     method: 'post',
     data: parameter
@@ -23,7 +22,6 @@ export function login(parameter) {
 
 export function postInfo(data) {
   return axios({
-    headers: { "Access-Control-Allow-Origin": "*", crossorigin: true },
     url: '/user/info',
     method: 'post',
     data: data,
@@ -35,7 +33,6 @@ export function postInfo(data) {
 
 export function logout() {
   return axios({
-    headers: { "Access-Control-Allow-Origin": "*", crossorigin: true },
     url: '/auth/logout',
     method: 'post',
     headers: {
