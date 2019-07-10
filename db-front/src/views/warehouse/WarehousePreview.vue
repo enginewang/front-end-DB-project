@@ -9,18 +9,12 @@
               <a-row :gutter="24">
                 <a-col :md="8" :sm="24">
                   <a-form-item label="编号">
-                    <a-input placeholder="请输入查询编号" v-model="input"/>
+                    <a-input placeholder="请输入查询编号" v-model="input" />
                   </a-form-item>
                 </a-col>
                 <a-col :span="24" :style="{ textAlign: 'right' }">
                   <div class="button-group">
-                    <a-button
-                      size="large"
-                      class="button"
-                      type="primary"
-                      @click="onClickRefresh"
-                    >刷新
-                    </a-button>
+                    <a-button size="large" class="button" type="primary" @click="onClickRefresh">刷新</a-button>
                     <a-button
                       size="large"
                       class="button"
@@ -28,8 +22,7 @@
                       @click="onClickClearSelect"
                       :disabled="emptyInput"
                       ghost
-                    >重置
-                    </a-button>
+                    >重置</a-button>
                   </div>
                 </a-col>
               </a-row>
@@ -38,14 +31,8 @@
           <!-- input bar end -->
           <!-- table -->
           <a-table :columns="columns" :dataSource="previewDataShow" rowKey="id" bordered>
-            <template
-              v-for="col in ['id', 'name', 'address']"
-              slot="col"
-              slot-scope="text"
-            >
-              <div :key="col">
-                {{ text }}
-              </div>
+            <template v-for="col in ['id', 'name', 'address']" slot="col" slot-scope="text">
+              <div :key="col">{{ text }}</div>
             </template>
             <template slot="operation" slot-scope="text, record">
               <div class="editable-row-operations">
@@ -62,62 +49,67 @@
 
 <script>
 import { getWarehousePreview, getAllAddress } from '@/api/warehouse'
-import {PageView} from '@/layouts'
+
+import { PageView } from '@/layouts'
 import Fuse from 'fuse.js'
 
 export default {
   inject: ['reload'],
   name: 'Preview',
   components: {
-    PageView,
+    PageView
   },
-  data () {
+  data() {
     return {
       // form
       form: this.$form.createForm(this),
-      columns : [{
-        title: '编号',
-        dataIndex: 'id',
-        align: 'center',
-        width: '15%',
-        scopedSlots: { customRender: 'id' },
-        sorter: (a, b) => a.id > b.id
-      }, {
-        title: '名称',
-        dataIndex: 'name',
-        align: 'center',
-        width: '15%',
-        scopedSlots: { customRender: 'name' },
-        sorter: (a, b) => a.id > b.id
-      }, {
-        title: '地址',
-        dataIndex: 'address',
-        align: 'center',
-        width: '40%',
-        scopedSlots: { customRender: 'address' },
-        filters: [],
-        onFilter: (value, record) => record.address.indexOf(value) === 0
-      }, {
-        title: '操作',
-        align: 'center',
-        dataIndex: 'operation',
-        scopedSlots: { customRender: 'operation' }
-      }],
+      columns: [
+        {
+          title: '编号',
+          dataIndex: 'id',
+          align: 'center',
+          width: '15%',
+          scopedSlots: { customRender: 'id' },
+          sorter: (a, b) => a.id > b.id
+        },
+        {
+          title: '名称',
+          dataIndex: 'name',
+          align: 'center',
+          width: '15%',
+          scopedSlots: { customRender: 'name' },
+          sorter: (a, b) => a.id > b.id
+        },
+        {
+          title: '地址',
+          dataIndex: 'address',
+          align: 'center',
+          width: '40%',
+          scopedSlots: { customRender: 'address' },
+          filters: [],
+          onFilter: (value, record) => record.address.indexOf(value) === 0
+        },
+        {
+          title: '操作',
+          align: 'center',
+          dataIndex: 'operation',
+          scopedSlots: { customRender: 'operation' }
+        }
+      ],
 
       // data
       input: '',
       previewData: [],
       previewDataShow: [],
-      allAddress: [],
+      allAddress: []
     }
   },
   // watch for fuzzy search
   watch: {
-    input(pattern){
-      if ( pattern == '' ){
+    input(pattern) {
+      if (pattern == '') {
         this.previewDataShow = this.previewData
-      }
-      else{
+      } else {
         const option = {
           keys: ['id'],
           threshold: 0.1
@@ -128,7 +120,7 @@ export default {
     }
   },
   computed: {
-    emptyInput () {
+    emptyInput() {
       if (this.input !== '') {
         return false
       } else {
@@ -138,41 +130,44 @@ export default {
   },
   methods: {
     // clear all input
-    onClickClearSelect () {
+    onClickClearSelect() {
       this.input = ''
     },
     // submit
-    onClickRefresh () {
+    onClickRefresh() {
       this.onClickClearSelect()
       this.reload()
     },
-    getID (id) {
+    getID(id) {
       const newData = [...this.previewDataShow]
       const target = newData.filter(item => id === item.id)[0]
       return target.id
-    },
+    }
   },
-  created () {
-    getWarehousePreview().then((response) => {
-      this.previewData = [...response.data]
-      this.previewDataShow = this.previewData
-    }).catch(err => {
-      console.log("")
-    })
-    getAllAddress().then((response) => {
-      this.allAddress = [...response.data]
-      for(let val of this.allAddress){
-        let temp = {
-          text: val,
-          value: val
+  created() {
+    getWarehousePreview()
+      .then(response => {
+        this.previewData = [...response.data]
+        this.previewDataShow = this.previewData
+      })
+      .catch(err => {
+        console.log('')
+      })
+    getAllAddress()
+      .then(response => {
+        this.allAddress = [...response.data]
+        for (let val of this.allAddress) {
+          let temp = {
+            text: val,
+            value: val
+          }
+          this.columns[2].filters.push(temp)
         }
-        this.columns[2].filters.push(temp)
-      }
-    }).catch(err => {
-      console.log(err)
-    })
+      })
+      .catch(err => {
+        console.log(err)
+      })
   }
-
 }
 </script>
 
