@@ -16,6 +16,7 @@ if ( process.env.NODE_ENV !== 'production' || process.env.VUE_APP_PREVIEW === 't
   require( './services/equipment' )
   require( './services/staff' )
   require( './services/accessory' )
+  require( './services/repairSheet')
 
   Mock.setup( {
     timeout: 800 // setter delay time
