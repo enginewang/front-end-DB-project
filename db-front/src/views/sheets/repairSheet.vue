@@ -54,7 +54,7 @@
         <a-list-item slot="renderItem" slot-scope="item">
           
           <a-card class="ant-pro-pages-list-projects-card" hoverable :loading="loading" >
-            <img slot="cover" :src="item.cover" :alt="item.title" style="height:200px;"/>
+            <img slot="cover" :src="item.cover" :alt="item.title" />
             <a-card-meta :title="'报修单编号:'+item.title">
               <template slot="description">
                 <ellipsis :length="70">{{ item.type }}</ellipsis>
