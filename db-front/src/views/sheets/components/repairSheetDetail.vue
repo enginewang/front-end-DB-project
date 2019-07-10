@@ -1,15 +1,15 @@
 <template>
-    <page-view :title="details.title" logo="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png">
+    <page-view :title="报修单" logo="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png">
 
     <detail-list slot="headerContent" size="small" :col="1" class="detail-layout">
       <detail-list-item term="详细描述">坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了</detail-list-item>
       <detail-list-item term="所需配件">齿轮 25mm 3个</detail-list-item>
       <detail-list-item term="报修用户电话">180 1234 5678</detail-list-item>
     </detail-list>
-    <a-row slot="extra" class="status-list">
+    <a-row slot="extra" class="status-list" this.details>
       <a-col :xs="12" :sm="12">
-        <div class="text">状态</div>
-        <div class="heading">待审批</div>
+        <div class="text">报修单单号</div>
+        <div class="heading">{{this.details.id}}</div>
       </a-col>
     </a-row>
     
@@ -158,8 +158,10 @@
 import { mixinDevice } from '@/utils/mixin'
 import { PageView } from '@/layouts'
 import DetailList from '@/components/tools/DetailList'
+import {getRepairSheetById} from '@/api/sheets'
 
 const DetailListItem = DetailList.Item
+console.log("DetailListItem",DetailListItem)
 
 const columns = [{
   title: '类型',
@@ -188,7 +190,21 @@ const columns = [{
 
 export default {
     mounted(){
-        console.log(this.details)
+      getRepairSheetById(this.details.id).then((response)=>{
+        this.getInfo = response.info
+        if(this.getInfo === 'ok'){
+          this.rpData = [...response.data]
+        }
+        else{
+          this.$notification.open({
+          message: '获取失败',
+          description: '获取本报修单详情页失败',
+          icon: <a-icon type="warning" style="color: #108ee9" />,
+        });
+        }
+        
+      })
+        console.log("details",this.details)
     },
     name: 'repairSheetDetail',
     props:{
@@ -205,93 +221,9 @@ export default {
   data () {
     return {
       activeTabKey: '1',
-      operation1: [
-        {
-          key: 'op1',
-          type: '订购关系生效',
-          name: '曲丽丽',
-          status: 'agree',
-          updatedAt: '2017-10-03  19:23:12',
-          remark: '-'
-        },
-        {
-          key: 'op2',
-          type: '财务复审',
-          name: '付小小',
-          status: 'reject',
-          updatedAt: '2017-10-03  19:23:12',
-          remark: '不通过原因'
-        },
-        {
-          key: 'op3',
-          type: '部门初审',
-          name: '周毛毛',
-          status: 'agree',
-          updatedAt: '2017-10-03  19:23:12',
-          remark: '-'
-        },
-        {
-          key: 'op4',
-          type: '提交订单',
-          name: '林东东',
-          status: 'agree',
-          updatedAt: '2017-10-03  19:23:12',
-          remark: '很棒'
-        },
-        {
-          key: 'op5',
-          type: '创建订单',
-          name: '汗牙牙',
-          status: 'agree',
-          updatedAt: '2017-10-03  19:23:12',
-          remark: '-'
-        }
-      ],
-      operation2: [
-        {
-          key: 'op2',
-          type: '财务复审',
-          name: '付小小',
-          status: 'reject',
-          updatedAt: '2017-10-03  19:23:12',
-          remark: '不通过原因'
-        },
-        {
-          key: 'op3',
-          type: '部门初审',
-          name: '周毛毛',
-          status: 'agree',
-          updatedAt: '2017-10-03  19:23:12',
-          remark: '-'
-        },
-        {
-          key: 'op4',
-          type: '提交订单',
-          name: '林东东',
-          status: 'agree',
-          updatedAt: '2017-10-03  19:23:12',
-          remark: '很棒'
-        }
-      ],
-      operation3: [
-        {
-          key: 'op2',
-          type: '财务复审',
-          name: '付小小',
-          status: 'reject',
-          updatedAt: '2017-10-03  19:23:12',
-          remark: '不通过原因'
-        },
-        {
-          key: 'op3',
-          type: '部门初审',
-          name: '周毛毛',
-          status: 'agree',
-          updatedAt: '2017-10-03  19:23:12',
-          remark: '-'
-        }
-      ],
-      columns
+      rpData:[],
+      columns,
+      getInfo:''
     }
   },
   filters: {

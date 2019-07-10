@@ -11,27 +11,22 @@
 
     <a-row :gutter="24">
       <a-col :md="24" :lg="7">
-        <a-card style="margin-top: 0px" :bordered="true">
+        <a-card style="margin-top: 0px; font-size: medium" :bordered="true">
           <div class="page-header-index-wide page-header-wrapper-grid-content-main">
             <div class="account-center-avatarHolder">
               <div class="avatar">
-                <img :src="equipIMG">
+                <img :src="icon">
               </div>
-              <div class="username">{{equipName}}</div>
+              <div class="username">{{name}}</div>
               <div class="bio">每天锻炼，身体棒棒</div>
             </div>
             <a-divider/>
             <div class="account-center-detail">
               <p>
-                <i class="title"></i>社区健身器械
+                <i class="title"></i>健身器械
               </p>
               <p>
                 <i class="group"></i>增强人体的心肺功能，活动全身主要关节，发展上下肢和腰背部力量，还能通过运动按摩内脏增强消化系统功能。
-              </p>
-              <p>
-                <i class="address"></i>
-                <span>上海市-</span>
-                <span>嘉定区</span>
               </p>
             </div>
           </div>
@@ -39,28 +34,30 @@
       </a-col>
 
       <a-col :md="24" :lg="17">
-        <a-card style="margin-top: 0px" :bordered="true" title="器材信息">
+        <a-card style="margin-top: 0px; font-size: medium" :bordered="true" title="器材信息">
           <detail-list>
             <detail-list-item term="出厂时间">{{factory_time}}</detail-list-item>
             <detail-list-item term="安装时间">{{install_time}}</detail-list-item>
-            <detail-list-item term="使用时长">{{using_time}}</detail-list-item>
+            <detail-list-item term="使用时长">{{using_time}}天</detail-list-item>
             <detail-list-item term="使用单位">{{unit}}</detail-list-item>
             <detail-list-item term="联系地址">{{address}}</detail-list-item>
           </detail-list>
           <a-divider/>
           <detail-list title="详情栏" align="left">
-            <detail-list-item term="损坏情况">{{if_damage}}</detail-list-item>
-            <detail-list-item term="报修单">{{order}}</detail-list-item>
-            <detail-list-item></detail-list-item>
+            <detail-list-item term="损坏情况">
+              <span :style="cStyle">
+                {{if_damage}}
+              </span>
+            </detail-list-item>
             <detail-list-item term=""><a-icon type="qrcode"/>（扫描右侧二维码查看详情）</detail-list-item>
           </detail-list>
 
-            <a-row type="flex" justify="end">
-              <a-col>
-                <img :src="QRcode"
-                  alt="请扫描二维码" width="200" height="200">
-              </a-col>
-            </a-row>
+          <a-row type="flex" justify="end">
+            <a-col>
+              <img :src="QRcode"
+                   alt="请扫描二维码" width="200" height="200">
+            </a-col>
+          </a-row>
         </a-card>
       </a-col>
     </a-row>
@@ -76,6 +73,16 @@
 
   const DetailListItem = DetailList.Item
 
+  function getDays(startDateStr,endDateStr){
+    var startDateArr,endDateArr,days;
+    startDateArr = startDateStr.split('.');
+    endDateArr = endDateStr.split('.');
+    var newDateS = new Date(Date.UTC(startDateArr[0],startDateArr[1]-1,startDateArr[2]));
+    var newDateE = new Date(Date.UTC(endDateArr[0],endDateArr[1]-1,endDateArr[2]));
+    days = parseInt(Math.abs(newDateE - newDateS ) / 1000 / 60 / 60 /24);
+    return days;
+  }
+
   export default {
     name: 'EquipInfo',
     components: {
@@ -87,38 +94,50 @@
     mixins: [mixinDevice],
     data() {
       return {
-        equipIMG: require("@/assets/equip.jpg"),
-        QRcode: require("@/assets/QRcode.png"),
-        equipName: '',
+        cStyle: {},
+        name: '',
         factory_time: '',
         install_time: '',
         using_time: '',
         unit: '',
         address: '',
         if_damage: '',
-        order: '',
+        QRcode: '',
+        icon: '',
         infoData: [],
         IDTitle: '器材编号：EQ' + this.$route.params.id,
 
         equipmentID: this.$route.params.id,
       }
     },
+    watch: {
+      if_damage (is){
+        if(is === "损坏"){
+          this.cStyle= {color:'red'}
+        } else {
+          this.cStyle= {color:'black'}
+        }
+      }
+    },
     mounted() {
       postEquipmentDetail(this.equipmentID).then((response) => {
-        console.log(response)
-        console.log(this.equipmentID)
+        console.log(response);
+        console.log(this.equipmentID);
         this.DetailData = response.data;
-        this.equipName = this.DetailData.name;
+        this.name = this.DetailData.name;
         this.factory_time = this.DetailData.factory_time;
         this.install_time = this.DetailData.install_time;
         this.using_time = this.DetailData.using_time;
         this.unit = this.DetailData.unit;
         this.address = this.DetailData.address;
         this.if_damage = this.DetailData.if_damage;
-        this.order = this.DetailData.order;
+        var date = new Date();
+        var nowMonth = date.getMonth() + 1;
+        var strDate = date.getDate();
+        var seperator = ".";
+        var nowDate = date.getFullYear() + seperator + nowMonth + seperator + strDate;
+        this.using_time = getDays(this.install_time, nowDate)
       })
-
-
     },
   }
 </script>

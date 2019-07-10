@@ -29,7 +29,10 @@ export function addEquipmentStored (parameter) {
   return axios({
     url: api.equipmentStored,
     method: 'post',
-    data: parameter
+    data: parameter,
+    headers:{
+      'Content-Type':'application/x-www-form-urlencoded'
+    }
   })
 }
 
