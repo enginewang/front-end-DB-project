@@ -1,9 +1,14 @@
 <template>
   <div class="user-wrapper">
     <div class="content-box">
-      <a href="https://pro.loacg.com/docs/getting-started" target="_blank">
+      <a href="https://github.com/enginewang/front-end-DB-project" target="_blank">
         <span class="action">
-          <a-icon type="question-circle-o"></a-icon>
+          <a-icon type="github"></a-icon>
+        </span>
+      </a>
+      <a @click="showHealthTips" target="_blank">
+        <span class="action">
+          <a-icon type="coffee" />
         </span>
       </a>
       <notice-icon class="action"/>
@@ -48,12 +53,34 @@ import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'UserMenu',
+  data() {
+    return {
+      healthMessageArr: [
+        '喝点可乐泡枸杞吧！',
+        '泡个脚有益身心健康',
+        '一贯知足，二目远眺，三餐有节，四季不懒',
+        '发常梳，目常运，齿常叩，漱玉津',
+        '苹果入心梨入肺，大枣入脾栗入肾',
+      ],
+    }
+  },
   components: {
     NoticeIcon
   },
   methods: {
     ...mapActions(['Logout']),
     ...mapGetters(['nickname', 'avatar']),
+    showHealthTips() {
+      this.$notification.config({
+        placement: 'bottomRight',
+      });
+      var index = Math.floor(Math.random() * this.healthMessageArr.length)
+      this.$notification.open({
+        message: '健康小贴士',
+        description: this.healthMessageArr[index],
+        icon: <a-icon type="smile" style="color: #108ee9" />,
+    });
+    },
     handleLogout () {
       const that = this
 
