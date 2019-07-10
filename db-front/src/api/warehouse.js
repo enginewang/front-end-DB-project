@@ -11,48 +11,57 @@ const api = {
 
 export default api
 
-export function getWarehousePreview () {
+export function getWarehousePreview() {
   return axios({
     url: api.preview,
     method: 'get'
   })
 }
 
-export function postWarehouseDetail (data) {
+export function postWarehouseDetail(data) {
   return axios({
     url: api.detail,
     method: 'post',
-    data: data
+    data: data,
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
   })
 }
 
 
-export function postGoods (data) {
+export function postGoods(data) {
   return axios({
     url: api.goods,
     method: 'post',
-    data: data
+    data: data,
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
   })
 }
 
-export function getAllWarehouse () {
+export function getAllWarehouse() {
   return axios({
     url: api.allWarehouse,
     method: 'get'
   })
 }
 
-export function getAllAddress () {
+export function getAllAddress() {
   return axios({
     url: api.allAddress,
     method: 'get'
   })
 }
 
-export function postSchedule (data) {
+export function postSchedule(data) {
   return axios({
     url: api.schedule,
     method: 'post',
-    data: data[0]
+    data: data[0],
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
   })
 }

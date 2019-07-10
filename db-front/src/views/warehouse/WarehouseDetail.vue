@@ -303,7 +303,7 @@ export default {
   },
   created() {
     // get detail info of warehouse
-    postWarehouseDetail(this.warehouseID)
+    postWarehouseDetail({ id:this.warehouseID })
       .then(response => {
         this.warehouseDetail.name = response.data.name
         this.warehouseDetail.address = response.data.address
@@ -313,7 +313,7 @@ export default {
         console.log(err)
       })
     // get info of goods
-    postGoods(this.warehouseID)
+    postGoods({ id: this.warehouseID })
       .then(response => {
         this.equipment = [...response.data.equipment]
         this.equipmentShow = this.equipment
