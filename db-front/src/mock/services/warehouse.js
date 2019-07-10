@@ -19,7 +19,7 @@ const allWarehouse = () => {
   }
 }
 
-const detail = (data) => {
+const detail = ( data ) => {
   let detail = {
     'a0001':
     {
@@ -45,7 +45,7 @@ const detail = (data) => {
   }
 }
 
-const goods = (data) => {
+const goods = ( data ) => {
   let accessory = {
     'a0001': [
       {
@@ -203,8 +203,8 @@ const preview = () => {
   }
 }
 
-const schedule = (data) => {
-  console.log(data.body)
+const schedule = ( data ) => {
+  console.log( 'schedule', data.body )
   return {
     // return differs according type
   }
@@ -212,9 +212,9 @@ const schedule = (data) => {
 
 
 
-Mock.mock(/\/warehouse\/allAddress/, 'get', allAddress)
-Mock.mock(/\/warehouse\/allWarehouse/, 'get', allWarehouse)
-Mock.mock(/\/warehouse\/detail/, 'post', detail)
-Mock.mock(/\/warehouse\/goods/, 'post', goods)
-Mock.mock(/\/warehouse\/preview/, 'get', preview)
-Mock.mock(/\warehouse\/schedule/, 'post', schedule)
+Mock.mock( /\/warehouse\/allAddress/, 'get', allAddress )
+Mock.mock( /\/warehouse\/allWarehouse/, 'get', allWarehouse )
+Mock.mock( /\/warehouse\/detail/, 'post', detail )
+Mock.mock( /\/warehouse\/goods/, 'post', goods )
+Mock.mock( /\/warehouse\/preview/, 'get', preview )
+Mock.mock( /\warehouse\/schedule/, 'post', schedule )
