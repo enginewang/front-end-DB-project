@@ -4,11 +4,11 @@ import {builder} from '../util'
 const info = ( options ) => {
   console.log( 'options', options )
   const userInfo = {
-    'id': '4291d7da9005377ec9aec4a71ea837f',
+    'id': '20508',
     'name': '王小明',
     'username': 'admin',
-    'password': '',
-    'telephone': '',
+    'password': '123456',
+    'telephone': '13838385438',
     'avatar': '/avatar.jpg',
     'status': 1,
     'deleted': 0,
@@ -29,9 +29,8 @@ const info = ( options ) => {
     }]
   }
 
-
   userInfo.role = roleObj
   return builder( userInfo )
 }
 
-Mock.mock( /\/api\/user\/info/, 'post', info )
+Mock.mock( /\/api\/user\/info/, 'get', info )

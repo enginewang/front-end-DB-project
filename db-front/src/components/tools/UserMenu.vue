@@ -48,59 +48,58 @@
 </template>
 
 <script>
-import NoticeIcon from '@/components/NoticeIcon'
-import { mapActions, mapGetters } from 'vuex'
-
-export default {
-  name: 'UserMenu',
-  data() {
-    return {
-      healthMessageArr: [
-        '喝点可乐泡枸杞吧！',
-        '泡个脚有益身心健康',
-        '一贯知足，二目远眺，三餐有节，四季不懒',
-        '发常梳，目常运，齿常叩，漱玉津',
-        '苹果入心梨入肺，大枣入脾栗入肾',
-      ],
-    }
-  },
-  components: {
-    NoticeIcon
-  },
-  methods: {
-    ...mapActions(['Logout']),
-    ...mapGetters(['nickname', 'avatar']),
-    showHealthTips() {
-      this.$notification.config({
-        placement: 'bottomRight',
-      });
-      var index = Math.floor(Math.random() * this.healthMessageArr.length)
-      this.$notification.open({
-        message: '健康小贴士',
-        description: this.healthMessageArr[index],
-        icon: <a-icon type="smile" style="color: #108ee9" />,
-    });
+  import NoticeIcon from '@/components/NoticeIcon'
+  import { mapActions, mapGetters } from 'vuex'
+  export default {
+    name: 'UserMenu',
+    data() {
+      return {
+        healthMessageArr: [
+          '喝点可乐泡枸杞吧！',
+          '泡个脚有益身心健康',
+          '一贯知足，二目远眺，三餐有节，四季不懒',
+          '发常梳，目常运，齿常叩，漱玉津',
+          '苹果入心梨入肺，大枣入脾栗入肾',
+        ],
+      }
     },
-    handleLogout () {
-      const that = this
+    components: {
+      NoticeIcon
+    },
+    methods: {
+      ...mapActions(['Logout']),
+      ...mapGetters(['nickname', 'avatar']),
+      showHealthTips() {
+        this.$notification.config({
+          placement: 'bottomRight',
+        });
+        var index = Math.floor(Math.random() * this.healthMessageArr.length)
+        this.$notification.open({
+          message: '健康小贴士',
+          description: this.healthMessageArr[index],
+          icon: <a-icon type="smile" style="color: #108ee9" />,
+      });
+      },
+      handleLogout () {
+        const that = this
 
-      this.$confirm({
-        title: '提示',
-        content: '真的要注销登录吗 ?',
-        onOk () {
-          return that.Logout({}).then(() => {
-            window.location.reload()
-          }).catch(err => {
-            that.$message.error({
-              title: '错误',
-              description: err.message
+        this.$confirm({
+          title: '提示',
+          content: '真的要注销登录吗 ?',
+          onOk () {
+            return that.Logout({}).then(() => {
+              window.location.reload()
+            }).catch(err => {
+              that.$message.error({
+                title: '错误',
+                description: err.message
+              })
             })
-          })
-        },
-        onCancel () {
-        }
-      })
+          },
+          onCancel () {
+          }
+        })
+      }
     }
   }
-}
 </script>
