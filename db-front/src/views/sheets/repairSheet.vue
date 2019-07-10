@@ -49,8 +49,7 @@
                 <a-select
                   style="max-width: 200px; width: 100%;"
                   placeholder="不限"
-                  v-decorator="['rate']"
-                >
+                  v-decorator="['rate']">
                   <a-select-option value="good">优秀</a-select-option>
                   <a-select-option value="normal">普通</a-select-option>
                 </a-select>
@@ -73,6 +72,7 @@
             </a-card-meta>
             <div class="cardItemContent">
               <span>{{ item.updatedAt | fromNow }}</span>
+              <a-button type='primary' @click="showDynamicModal(item)">查看详情</a-button>
               <!-- <div class="avatarList">
                 <avatar-list size="mini">
                   <avatar-list-item
@@ -97,6 +97,8 @@
       </div> -->
       
     </div>
+
+    
   </div>
 </template>
 
@@ -104,6 +106,8 @@
 import moment from 'moment'
 import { TagSelect, StandardFormRow, Ellipsis, AvatarList } from '@/components'
 import Fuse from 'fuse.js'
+import repairSheetDetail from './components/repairSheetDetail'
+
 var pageData = null
 const TagSelectOption = TagSelect.Option
 const AvatarListItem = AvatarList.AvatarItem
@@ -189,8 +193,21 @@ export default {
         console.log("updated null")
         this.data = pageData
       }
-    }
+    },
+
+    showDynamicModal (item) {
+      console.log(typeof(item))
+      this.$modal.show(repairSheetDetail,
+       {details: item},
+    {
+        adaptive: true,
+        draggable: false,
+        scrollable: true,
+        height: "auto",
+        width: "60%"})
+    },
   }
+  
 }
 </script>
 
