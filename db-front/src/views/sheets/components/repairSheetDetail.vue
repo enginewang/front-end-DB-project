@@ -1,36 +1,48 @@
 <template>
-  <a-card>
-    <page-view title="报修单" logo="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png">
+    <page-view title="报修单" logo="/repairSheet.png">
 
-      <detail-list slot="headerContent" size="small" :col="1" class="detail-layout">
-        <detail-list-item term="详细描述">坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了</detail-list-item>
-        <detail-list-item term="所需配件">齿轮 25mm 3个</detail-list-item>
-        <detail-list-item term="报修用户电话">180 1234 5678</detail-list-item>
-      </detail-list>
-      <a-row slot="extra" class="status-list" this.details>
-        <a-col :xs="12" :sm="12">
-          <div class="text">报修单单号</div>
-          <div class="heading">{{this.details.id}}</div>
-        </a-col>
-      </a-row>
+    <detail-list slot="headerContent" size="small" :col="1" class="detail-layout">
+      <detail-list-item term="详细描述">{{this.details.details}}</detail-list-item>
+      <detail-list-item term="所需配件">{{this.details.stuffNeeded}}</detail-list-item>
+      <detail-list-item term="报修用户电话">{{this.details.telNumber}}</detail-list-item>
+    </detail-list>
+    <a-row slot="extra" class="status-list" >
+      <a-col :xs="12" :sm="12">
+        <div class="text">报修单单号</div>
+        <div class="heading" span = "4">{{this.details.title}}</div>
+      </a-col>
+    </a-row>
+    
 
-
-      <a-card :bordered='false' title="故障照片">
-        <div class="photo">
-          <img :src="details.cover" :alt="details.title" />
+    <a-card :bordered='false' :gutter="24">
+        <div class="photo" > 
+          <a-row >
+          <a-col  style="textAlign:center; margin-bottom:24px;margin-top:-36px">
+            <div class="heading" >
+              <a-avatar  size="large" shape="square" src="/camera.png"/>
+              {{"故障器材图片"}}
+              </div>
+          </a-col>
+          </a-row>
+          <a-col style="textAlign:center">
+        <img :src="details.cover" :alt="details.title" />
+          </a-col>
         </div>
       </a-card>
 
-      <a-card :bordered="false" title="维修进度">
-        <a-steps :direction="isMobile() && 'vertical' || 'horizontal'" :current="1" progressDot>
-          <a-step title="用户提交">
-          </a-step>
-          <a-step title="巡检员提交">
-          </a-step>
-          <a-step title="调度完成">
-          </a-step>
-        </a-steps>
-      </a-card>
+    <a-card :bordered="false" title=" ">
+      <a-col  style="textAlign:left; margin-bottom:18px">
+            <div class="heading" >{{"报修单进度"}}</div>
+          </a-col>
+      <a-steps :direction="isMobile() && 'vertical' || 'horizontal'" :current="this.details.state" progressDot>
+        <a-step title="用户提交">
+        </a-step>
+        <a-step title="巡检员提交">
+        </a-step>
+        <a-step title="调度完成">
+        </a-step>
+      </a-steps>
+    </a-card>
 
       <a-card :bordered='false' title="调度">
         <a-form-item  label="维修员">
@@ -43,8 +55,8 @@
           </a-select>
         </a-form-item>
 
-        <standard-form-row title="添加配件" grid last>
-          <a-row>
+        <a-row title="添加配件" grid last>
+            <a-row>
             <a-col :span='6'>
               <a-form-item label="配件类型" :label-col="{ span: 8 }" :wrapper-col="{ span: 15 }">
                 <a-select
@@ -79,10 +91,10 @@
             <a-col :span='6'>
               <a-button type='primary'>添加</a-button>
             </a-col>
-          </a-row>
-        </standard-form-row>
-        <standard-form-row title="添加器材" grid last>
-          <a-row>
+            </a-row>
+        </a-row>
+        <a-row title="添加器材" grid last>
+            <a-row>
             <a-col :span='6'>
               <a-form-item label="器材类型" :label-col="{ span: 8 }" :wrapper-col="{ span: 15 }">
                 <a-select
@@ -117,8 +129,8 @@
             <a-col :span='6'>
               <a-button type='primary'>添加</a-button>
             </a-col>
-          </a-row>
-        </standard-form-row>
+            </a-row>
+        </a-row>
         <!-- table -->
         <a-table :columns="columns"   bordered>
           <template
@@ -153,16 +165,18 @@
       </a-card>
 
     </page-view>
-  </a-card>
+
 </template>
 
 <script>
 import { mixinDevice } from '@/utils/mixin'
 import { PageView } from '@/layouts'
-import DetailList from '@/components'
+import DetailList from '@/components/tools/DetailList'
 import {getRepairSheetById} from '@/api/sheets'
 import ACol from "ant-design-vue/es/grid/Col";
 
+const DetailListItem = DetailList.Item
+console.log("DetailListItem",DetailListItem)
 
 const columns = [{
   title: '类型',
@@ -192,10 +206,14 @@ const columns = [{
 export default {
     mounted(){
       getRepairSheetById(this.details.id).then((response)=>{
-        console.log("id",this.details.id)
+        
         this.getInfo = response.info
         if(this.getInfo === 'ok'){
-          this.rpData = [...response.data]
+          console.log('grs', response.data.rpData)
+          this.rpData = response.data.rpData
+          this.detailInfo = this.rpData[0].details
+          this.eqInfo = this.rpData[0].stuffNeeded
+          this.telInfo = this.rpData[0].telNumber
         }
         else{
           this.$notification.open({
@@ -217,6 +235,9 @@ export default {
     components: {
       ACol,
     PageView,
+    
+    DetailList,
+    DetailListItem
   },
     mixins: [mixinDevice],
   data () {
@@ -225,6 +246,9 @@ export default {
       rpData:[],
       columns,
       getInfo:'',
+      detailInfo:'',
+      eqInfo:'',
+      telInfo:'',
       visible2:true,
     }
   },

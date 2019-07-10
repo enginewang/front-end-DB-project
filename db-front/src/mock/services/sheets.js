@@ -214,7 +214,6 @@ const repairSheetDetail = (data) => {
   let rpData ={
     '1223345':[
       {
-        'id': '1223345',
         'details': '把手损坏，零件脱落',
         'stuffNeeded': '齿轮 25mm  x3',
         'telNumber':'1232432213',
@@ -236,6 +235,7 @@ const repairSheetDetail = (data) => {
     }],
   }
   let info='ok'
+  console.log('rs',rpData[data.body])
   return {
     'data': {
       rpData: rpData[data.body]
