@@ -38,9 +38,9 @@
                   @change="onChange"
                   v-decorator="['rate']"
                   >
-                  <a-select-option value="状态:待巡检">待巡检</a-select-option>
-                  <a-select-option value="状态:待调度">待调度</a-select-option>
-                  <a-select-option value="状态:已调度">已调度</a-select-option>
+                  <a-select-option value="0">用户提交</a-select-option>
+                  <a-select-option value="1">巡检员提交</a-select-option>
+                  <a-select-option value="2">已调度</a-select-option>
                 </a-select>
               </a-form-item>
             </a-col>
@@ -59,13 +59,13 @@
               <template slot="description">
                 <ellipsis :length="70">{{ item.type }}</ellipsis>
                 <br>
-                <ellipsis :length="70">{{ item.state }}</ellipsis>
+                <ellipsis :length="70">{{ state[item.state] }}</ellipsis>
               </template>
               <template slot="description">
                 
               </template>
             </a-card-meta>
-            <div class="cardItemContent">
+            <div class="cardItemContent" style="">
               <span>{{ item.updatedAt | fromNow }}</span>
               <a-button type='primary' @click="showDynamicModal(item)">查看详情</a-button>
               <!-- <div class="avatarList">
@@ -123,9 +123,16 @@ export default {
       allData: [],
       form: this.$form.createForm(this),
       loading: true,
+      state: ["状态：用户提交","状态：巡检员提交","状态：已调度"],
       pagination:{
         pageSize: 8,
-        showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`,
+        showTotal: (total, range) => {
+          console.log("range",range)
+          if(range[1] == 0){
+            return `0-0 of 0 items`
+          }
+          return `${range[0]}-${range[1]} of ${total} items`
+          },
         defaultCurrent: 1,
         showQuickJumper: true,
         onChange: this.onChange
@@ -186,40 +193,79 @@ export default {
     //   this.filterOnce()
     // },
     filterOnce(){
-      var oldData = pageData
+      if(!this.idFilterValue){
+        var result = pageData
+      }
+      else{
+        var oldData = pageData
       var options = this.fusejsOptions
       var fuse = new Fuse(oldData, options)
       var result = fuse.search(this.idFilterValue)
       console.log(result)
-      if(result != null && result.length > 0){
-        console.log("updated")
+
+      }
+      
+      //单号不为空
+      if(result != null && result.length > 0 && !this.selection ){
         this.data = result
-        if(this.selection != ''){
-          var last = []
-          for(let item of result){
-            if(item['state'] == this.selection){
-              last.push(item)
-            }
+        console.log('有ID无状态',this.idFilterValue)
+      }
+      else if(result != null && result.length > 0 && this.selection ){
+        console.log('有ID有状态',this.idFilterValue)
+        var last = []
+        for(let item of result){
+          if(item['state'] == this.selection){
+            last.push(item)
           }
-          this.data = last
         }
+        this.data = last
+      }
+      else if((result == null || result.length <= 0) && this.selection){
+        console.log('无ID有状态',this.selection)
+        var last = []
+        for(let item of this.pageData){
+          if(item['state'] == this.selection){
+            last.push(item)
+          }
+        }
+        this.data = last
       }
       else{
-        if(this.selection !=''){
-          var last = []
-          for(let item of pageData){
-            if(item['state'] == this.selection){
-              last.push(item)
-            }
-          }
-          this.data = last
-        }
-        else{
-          this.data = pageData
-        }
-        
-        console.log("updated null")
+        console.log('无ID无状态')
+        this.data = pageData
       }
+      // if(result != null && result.length > 0){
+      //   console.log("updated")
+      //   this.data = result
+      //   if(this.selection != ''){
+      //     var last = []
+      //     for(let item of result){
+      //       if(item['state'] == this.selection){
+      //         last.push(item)
+      //       }
+      //     }
+      //     this.data = last
+      //   }
+      //   else{
+      //     this.data = result
+      //   }
+      // }
+      // else{
+      //   if(this.selection !=''){
+      //     var last = []
+      //     for(let item of pageData){
+      //       if(item['state'] == this.selection){
+      //         last.push(item)
+      //       }
+      //     }
+      //     this.data = last
+      //   }
+      //   else{
+      //     this.data = pageData
+      //   }
+        
+      //   console.log("updated null")
+      // }
       
     },
 

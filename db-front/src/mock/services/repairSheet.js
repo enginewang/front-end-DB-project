@@ -9,7 +9,7 @@ const allRepairSheet = () => {
         
         'title': 'RST 1',
         'cover': '/avatar2.jpg',
-        'type': '1',
+        'type': '修理类型：2',
         'state': '0',
         'details':'把手损坏，油漆脱落',//报修单详细信息的损坏描述部分
         'stuffNeeded':'齿轮 GPX x3',//报修单详细信息部分的器件需求部分
@@ -44,14 +44,14 @@ const allRepairSheet = () => {
         'title': 'RST2',
         'cover': '/avatar.jpg',
         'type': '修理类型:2',
-        'state': '状态:待巡检',
+        'state': '1',
     },
     {
       
       'title': 'RST3',
       'cover': '/avatar.jpg',
       'type': '修理类型:2',
-      'state': '状态:待巡检',
+      'state': '2',
   },
 
   {
@@ -59,7 +59,7 @@ const allRepairSheet = () => {
     'title': 'RST4',
     'cover': '/avatar.jpg',
     'type': '修理类型:2',
-    'state': '状态:待调度',
+    'state': '0',
 },
 
 {
@@ -67,7 +67,7 @@ const allRepairSheet = () => {
   'title': 'RST5',
   'cover': '/avatar.jpg',
   'type': '修理类型:2',
-  'state': '状态:待调度',
+  'state': '1',
 },
 
 {
@@ -75,7 +75,7 @@ const allRepairSheet = () => {
   'title': 'RST6',
   'cover': '/avatar.jpg',
   'type': '修理类型:2',
-  'state': '状态:待调度',
+  'state': '2',
 },
 
 {
@@ -83,7 +83,7 @@ const allRepairSheet = () => {
   'title': 'RST7',
   'cover': '/avatar.jpg',
   'type': '修理类型:2',
-  'state': '状态:已调度',
+  'state': '0',
 },
 
 {
@@ -91,7 +91,7 @@ const allRepairSheet = () => {
   'title': 'RST8',
   'cover': '/avatar.jpg',
   'type': '修理类型:2',
-  'state': '状态:已调度',
+  'state': '1',
 },
 
 {
@@ -99,7 +99,7 @@ const allRepairSheet = () => {
   'title': 'RST9',
   'cover': '/avatar.jpg',
   'type': '修理类型:2',
-  'state': '状态:已调度',
+  'state': '2',
 }
 
     ]
