@@ -2,14 +2,14 @@
     <page-view title="报修单" logo="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png">
 
     <detail-list slot="headerContent" size="small" :col="1" class="detail-layout">
-      <detail-list-item term="详细描述">坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了坏了</detail-list-item>
-      <detail-list-item term="所需配件">齿轮 25mm 3个</detail-list-item>
-      <detail-list-item term="报修用户电话">180 1234 5678</detail-list-item>
+      <detail-list-item term="详细描述">{{this.detailInfo}}</detail-list-item>
+      <detail-list-item term="所需配件">{{this.eqInfo}}</detail-list-item>
+      <detail-list-item term="报修用户电话">{{this.telInfo}}</detail-list-item>
     </detail-list>
     <a-row slot="extra" class="status-list" this.details>
       <a-col :xs="12" :sm="12">
         <div class="text">报修单单号</div>
-        <div class="heading">{{this.details.id}}</div>
+        <div class="heading" span = "4">{{this.details.id}}</div>
       </a-col>
     </a-row>
     
@@ -42,7 +42,7 @@
                 </a-select>
         </a-form-item>
 
-        <standard-form-row title="添加配件" grid last>
+        <a-row title="添加配件" grid last>
             <a-row>
             <a-col :span='6'>
                 <a-form-item label="配件类型" :label-col="{ span: 8 }" :wrapper-col="{ span: 15 }">
@@ -79,8 +79,8 @@
                 <a-button type='primary'>添加</a-button>
             </a-col>
             </a-row>
-        </standard-form-row>
-        <standard-form-row title="添加器材" grid last>
+        </a-row>
+        <a-row title="添加器材" grid last>
             <a-row>
             <a-col :span='6'>
                 <a-form-item label="器材类型" :label-col="{ span: 8 }" :wrapper-col="{ span: 15 }">
@@ -117,7 +117,7 @@
                 <a-button type='primary'>添加</a-button>
             </a-col>
             </a-row>
-        </standard-form-row>
+        </a-row>
         <!-- table -->
     <a-table :columns="columns"   bordered>
       <template
@@ -157,9 +157,11 @@
 <script>
 import { mixinDevice } from '@/utils/mixin'
 import { PageView } from '@/layouts'
-import DetailList from '@/components'
+import DetailList from '@/components/tools/DetailList'
 import {getRepairSheetById} from '@/api/sheets'
 
+const DetailListItem = DetailList.Item
+console.log("DetailListItem",DetailListItem)
 
 const columns = [{
   title: '类型',
@@ -189,10 +191,14 @@ const columns = [{
 export default {
     mounted(){
       getRepairSheetById(this.details.id).then((response)=>{
-        console.log("id",this.details.id)
+        
         this.getInfo = response.info
         if(this.getInfo === 'ok'){
-          this.rpData = [...response.data]
+          console.log('grs', response.data.rpData)
+          this.rpData = response.data.rpData
+          this.detailInfo = this.rpData[0].details
+          this.eqInfo = this.rpData[0].stuffNeeded
+          this.telInfo = this.rpData[0].telNumber
         }
         else{
           this.$notification.open({
@@ -213,6 +219,9 @@ export default {
     },
     components: {
     PageView,
+    
+    DetailList,
+    DetailListItem
   },
     mixins: [mixinDevice],
   data () {
@@ -221,6 +230,9 @@ export default {
       rpData:[],
       columns,
       getInfo:'',
+      detailInfo:'',
+      eqInfo:'',
+      telInfo:'',
       visible2:true,
     }
   },
