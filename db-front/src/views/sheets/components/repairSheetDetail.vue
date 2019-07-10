@@ -44,7 +44,10 @@
       </a-steps>
     </a-card>
 
-      <a-card :bordered='false' title="调度">
+      <a-card :bordered='false' title=" ">
+        <a-col  style="textAlign:center ; margin-bottom:0px">
+            <div class="heading" >{{"调度"}}</div>
+          </a-col>
         <a-form-item  label="维修员">
           <a-select
             style="max-width: 200px; width: 100%;"
