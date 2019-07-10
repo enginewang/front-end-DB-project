@@ -2,27 +2,11 @@
   <div>
     <a-card :bordered="false" class="ant-pro-components-tag-select">
       <a-form :form="form" layout="inline">
-        <standard-form-row title="所属类目" block style="padding-bottom: 11px;">
-          <a-form-item>
-            <tag-select>
-              <tag-select-option value="Category1">类目一</tag-select-option>
-              <tag-select-option value="Category2">类目二</tag-select-option>
-              <tag-select-option value="Category3">类目三</tag-select-option>
-              <tag-select-option value="Category4">类目四</tag-select-option>
-              <tag-select-option value="Category5">类目五</tag-select-option>
-              <tag-select-option value="Category6">类目六</tag-select-option>
-              <tag-select-option value="Category7">类目七</tag-select-option>
-              <tag-select-option value="Category8">类目八</tag-select-option>
-              <tag-select-option value="Category9">类目九</tag-select-option>
-              <tag-select-option value="Category10">类目十</tag-select-option>
-            </tag-select>
-          </a-form-item>
-        </standard-form-row>
-
-        <standard-form-row title="其它选项" grid last>
+        
+        <standard-form-row  grid last>
           <a-row>
             <a-col :lg="8" :md="10" :sm="10" :xs="24">
-              <a-form-item :wrapper-col="{ sm: { span: 16 }, xs: { span: 24 } }" label="ID">
+              <a-form-item :wrapper-col="{ sm: { span: 16 }, xs: { span: 24 } }" label="根据编号查找：">
                 <a-tooltip
                   :trigger="['focus']"
                   placement="topLeft"
@@ -32,12 +16,12 @@
                     {{idFilterValue !== '-' ? idFilterValue : '-'}}
                   </span>
                   <template slot="title" v-else>
-                    Input ID
+                    请填写保修单账号
                   </template>
                   <a-input
                     :value="idFilterValue"
                     @change="onIdFilterChange"
-                    placeholder="Input ID"
+                    placeholder="请填写报修单号"
                     maxLength="25"
                     style="width: 120px"
                   />
@@ -45,13 +29,14 @@
               </a-form-item>
             </a-col>
             <a-col :lg="8" :md="10" :sm="10" :xs="24">
-              <a-form-item :wrapper-col="{ sm: { span: 16 }, xs: { span: 24 } }" label="好评度">
+              <a-form-item :wrapper-col="{ sm: { span: 16 }, xs: { span: 24 } }" label="根据状态查找：">
                 <a-select
                   style="max-width: 200px; width: 100%;"
                   placeholder="不限"
                   v-decorator="['rate']">
-                  <a-select-option value="good">优秀</a-select-option>
-                  <a-select-option value="normal">普通</a-select-option>
+                  <a-select-option value="user">待巡检</a-select-option>
+                  <a-select-option value="inspector">待调度</a-select-option>
+                  <a-select-option value="dispatcher">已调度</a-select-option>
                 </a-select>
               </a-form-item>
             </a-col>
@@ -67,7 +52,12 @@
             <img slot="cover" :src="item.cover" :alt="item.title" />
             <a-card-meta :title="item.title">
               <template slot="description">
-                <ellipsis :length="50">{{ item.description }}</ellipsis>
+                <ellipsis :length="50">{{ item.type }}</ellipsis>
+                <br>
+                <ellipsis :length="50">{{ item.state }}</ellipsis>
+              </template>
+              <template slot="description">
+                
               </template>
             </a-card-meta>
             <div class="cardItemContent">
@@ -107,6 +97,7 @@ import moment from 'moment'
 import { TagSelect, StandardFormRow, Ellipsis, AvatarList } from '@/components'
 import Fuse from 'fuse.js'
 import repairSheetDetail from './components/repairSheetDetail'
+import { getRepairSheet } from '@/api/repairSheet'
 
 var pageData = null
 const TagSelectOption = TagSelect.Option
@@ -163,12 +154,19 @@ export default {
       console.log(`selected ${value}`)
     },
     getList () {
-      this.$http.get('/list/article', { params: { count: 12 } }).then(res => {
-        console.log('res', res)
-        this.data = res.result
+      // this.$http.get('/list/article', { params: { count: 12 } }).then(res => {
+      //   console.log('res', res)
+      //   this.data = res.result
+      //   this.loading = false
+      //   pageData = this.data
+      // })
+    getRepairSheet().then(response => {
+      console.log('sssss',response.data)
+        this.data = response.data
         this.loading = false
         pageData = this.data
       })
+
     },
     onChange(){
       console.log("quick jump")
@@ -189,6 +187,7 @@ export default {
         console.log("updated")
         this.data = result
       }
+
       else{
         console.log("updated null")
         this.data = pageData
