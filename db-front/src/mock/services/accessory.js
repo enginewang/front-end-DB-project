@@ -70,7 +70,11 @@ const allKind = () => {
 const allType = () => {
   return {
     data:[
-      '履带','螺丝'
+      {
+        value:'履带'
+      },{
+        value:'螺丝'
+      }
     ]
   }
 }

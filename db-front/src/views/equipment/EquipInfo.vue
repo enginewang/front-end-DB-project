@@ -1,5 +1,14 @@
 <template>
-  <page-view title="器材编号：SSE-20508" logo="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png">
+  <page-view :title="IDTitle" logo="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png">
+    <div class="return-button">
+      <router-link :to="{name: 'EquipUsing'}">
+        <a-button type="primary">
+          <a-icon type="left"/>返回
+        </a-button>
+      </router-link>
+    </div>
+
+
     <a-row :gutter="24">
       <a-col :md="24" :lg="7">
         <a-card style="margin-top: 0px" :bordered="true">
@@ -8,7 +17,7 @@
               <div class="avatar">
                 <img :src="equipIMG">
               </div>
-              <div class="username">拉力器</div>
+              <div class="username">{{equipName}}</div>
               <div class="bio">每天锻炼，身体棒棒</div>
             </div>
             <a-divider/>
@@ -43,7 +52,7 @@
             <detail-list-item term="损坏情况">{{if_damage}}</detail-list-item>
             <detail-list-item term="报修单">{{order}}</detail-list-item>
             <detail-list-item></detail-list-item>
-            <detail-list-item term="">(扫描右侧二维码查看详情)</detail-list-item>
+            <detail-list-item term=""><a-icon type="qrcode"/>（扫描右侧二维码查看详情）</detail-list-item>
           </detail-list>
 
             <a-row type="flex" justify="end">
@@ -52,86 +61,9 @@
                   alt="请扫描二维码" width="200" height="200">
               </a-col>
             </a-row>
-
-          <!--
-           <a-card type="inner" title="多层信息组">
-            <detail-list title="组名称" size="small">
-              <detail-list-item term="负责人">林东东</detail-list-item>
-              <detail-list-item term="角色码">1234567</detail-list-item>
-              <detail-list-item term="所属部门">XX公司-YY部</detail-list-item>
-              <detail-list-item term="过期时间">2018-08-08</detail-list-item>
-              <detail-list-item term="描述">这段描述很长很长很长很长很长很长很长很长很长很长很长很长很长很长...</detail-list-item>
-            </detail-list>
-            <a-divider style="margin: 16px 0" />
-            <detail-list title="组名称" size="small" :col="1">
-              <detail-list-item term="学名">	Citrullus lanatus (Thunb.) Matsum. et Nakai一年生蔓生藤本；茎、枝粗壮，具明显的棱。卷须较粗..</detail-list-item>
-            </detail-list>
-            <a-divider style="margin: 16px 0" />
-            <detail-list title="组名称" size="small" :col="2">
-              <detail-list-item term="负责人">付小小</detail-list-item>
-              <detail-list-item term="角色码">1234567</detail-list-item>
-            </detail-list>
-          </a-card>
-          -->
-
         </a-card>
       </a-col>
     </a-row>
-
-
-    <a-card style="margin-top: 24px" :bordered="false" title="器材近半年来使用记录">
-      <div class="no-data">
-        <a-icon type="frown-o"/>
-        暂无数据
-      </div>
-    </a-card>
-
-    <!-- 操作 -->
-    <a-card
-      style="margin-top: 24px"
-      :bordered="false"
-      :tabList="tabList"
-      :activeTabKey="activeTabKey"
-      @tabChange="(key) => {this.activeTabKey = key}"
-    >
-      <a-table
-        v-if="activeTabKey === '1'"
-        :columns="operationColumns"
-        :dataSource="operation1"
-        :pagination="false"
-      >
-        <template
-          slot="status"
-          slot-scope="status">
-          <a-badge :status="status | statusTypeFilter" :text="status | statusFilter"/>
-        </template>
-      </a-table>
-      <a-table
-        v-if="activeTabKey === '2'"
-        :columns="operationColumns"
-        :dataSource="operation2"
-        :pagination="false"
-      >
-        <template
-          slot="status"
-          slot-scope="status">
-          <a-badge :status="status | statusTypeFilter" :text="status | statusFilter"/>
-        </template>
-      </a-table>
-      <a-table
-        v-if="activeTabKey === '3'"
-        :columns="operationColumns"
-        :dataSource="operation3"
-        :pagination="false"
-      >
-        <template
-          slot="status"
-          slot-scope="status">
-          <a-badge :status="status | statusTypeFilter" :text="status | statusFilter"/>
-        </template>
-      </a-table>
-    </a-card>
-
   </page-view>
 </template>
 
@@ -140,7 +72,7 @@
   import {PageView} from '@/layouts'
   import DetailList from '@/components/tools/DetailList'
   import ACol from "ant-design-vue/es/grid/Col"
-  import {getEquipmentInfo} from "@/api/equipment";
+  import {postEquipmentDetail} from "@/api/equipment";
 
   const DetailListItem = DetailList.Item
 
@@ -155,9 +87,9 @@
     mixins: [mixinDevice],
     data() {
       return {
-        equipIMG:require("@/assets/equip.jpg"),
-        QRcode:require("@/assets/QRcode.png"),
-
+        equipIMG: require("@/assets/equip.jpg"),
+        QRcode: require("@/assets/QRcode.png"),
+        equipName: '',
         factory_time: '',
         install_time: '',
         using_time: '',
@@ -166,167 +98,27 @@
         if_damage: '',
         order: '',
         infoData: [],
+        IDTitle: '器材编号：EQ' + this.$route.params.id,
 
-        tabList: [
-          {
-            key: '1',
-            tab: '操作日志①'
-          },
-          {
-            key: '2',
-            tab: '操作日志②'
-          },
-          {
-            key: '3',
-            tab: '操作日志③'
-          }
-        ],
-        activeTabKey: '1',
-
-        operationColumns: [
-          {
-            title: '操作类型',
-            dataIndex: 'type',
-            key: 'type'
-          },
-          {
-            title: '操作人',
-            dataIndex: 'name',
-            key: 'name'
-          },
-          {
-            title: '执行结果',
-            dataIndex: 'status',
-            key: 'status',
-            scopedSlots: {customRender: 'status'}
-          },
-          {
-            title: '操作时间',
-            dataIndex: 'updatedAt',
-            key: 'updatedAt'
-          },
-          {
-            title: '备注',
-            dataIndex: 'remark',
-            key: 'remark'
-          }
-        ],
-        operation1: [
-          {
-            key: 'op1',
-            type: '订购关系生效',
-            name: '曲丽丽',
-            status: 'agree',
-            updatedAt: '2017-10-03  19:23:12',
-            remark: '-'
-          },
-          {
-            key: 'op2',
-            type: '财务复审',
-            name: '付小小',
-            status: 'reject',
-            updatedAt: '2017-10-03  19:23:12',
-            remark: '不通过原因'
-          },
-          {
-            key: 'op3',
-            type: '部门初审',
-            name: '周毛毛',
-            status: 'agree',
-            updatedAt: '2017-10-03  19:23:12',
-            remark: '-'
-          },
-          {
-            key: 'op4',
-            type: '提交订单',
-            name: '林东东',
-            status: 'agree',
-            updatedAt: '2017-10-03  19:23:12',
-            remark: '很棒'
-          },
-          {
-            key: 'op5',
-            type: '创建订单',
-            name: '汗牙牙',
-            status: 'agree',
-            updatedAt: '2017-10-03  19:23:12',
-            remark: '-'
-          }
-        ],
-        operation2: [
-          {
-            key: 'op2',
-            type: '财务复审',
-            name: '付小小',
-            status: 'reject',
-            updatedAt: '2017-10-03  19:23:12',
-            remark: '不通过原因'
-          },
-          {
-            key: 'op3',
-            type: '部门初审',
-            name: '周毛毛',
-            status: 'agree',
-            updatedAt: '2017-10-03  19:23:12',
-            remark: '-'
-          },
-          {
-            key: 'op4',
-            type: '提交订单',
-            name: '林东东',
-            status: 'agree',
-            updatedAt: '2017-10-03  19:23:12',
-            remark: '很棒'
-          }
-        ],
-        operation3: [
-          {
-            key: 'op2',
-            type: '财务复审',
-            name: '付小小',
-            status: 'reject',
-            updatedAt: '2017-10-03  19:23:12',
-            remark: '不通过原因'
-          },
-          {
-            key: 'op3',
-            type: '部门初审',
-            name: '周毛毛',
-            status: 'agree',
-            updatedAt: '2017-10-03  19:23:12',
-            remark: '-'
-          }
-        ]
-      }
-    },
-    filters: {
-      statusFilter(status) {
-        const statusMap = {
-          'agree': '成功',
-          'reject': '驳回'
-        }
-        return statusMap[status]
-      },
-      statusTypeFilter(type) {
-        const statusTypeMap = {
-          'agree': 'success',
-          'reject': 'error'
-        }
-        return statusTypeMap[type]
+        equipmentID: this.$route.params.id,
       }
     },
     mounted() {
-      getEquipmentInfo().then((response) => {
-        this.infoData = [...response];
-        this.factory_time = this.infoData[0].factory_time;
-        this.install_time = this.infoData[0].install_time;
-        this.using_time = this.infoData[0].using_time;
-        this.unit = this.infoData[0].unit;
-        this.address = this.infoData[0].address;
-        this.if_damage = this.infoData[0].if_damage;
-        this.order = this.infoData[0].order;
-
+      postEquipmentDetail(this.equipmentID).then((response) => {
+        console.log(response)
+        console.log(this.equipmentID)
+        this.DetailData = response.data;
+        this.equipName = this.DetailData.name;
+        this.factory_time = this.DetailData.factory_time;
+        this.install_time = this.DetailData.install_time;
+        this.using_time = this.DetailData.using_time;
+        this.unit = this.DetailData.unit;
+        this.address = this.DetailData.address;
+        this.if_damage = this.DetailData.if_damage;
+        this.order = this.DetailData.order;
       })
+
+
     },
   }
 </script>
@@ -469,13 +261,16 @@
       margin-left: unset;
     }
 
-    .text {
-
-    }
-
     .status-list {
       text-align: left;
     }
+  }
+
+  .return-button{
+    position: absolute;
+    z-index: 999;
+    right:1em;
+    top:8.5em;
   }
 
 </style>

@@ -276,8 +276,8 @@ export default {
           this.types = [...response.data]
           for(let val of this.types){
             let temp = {
-              text: val,
-              value: val
+              text: val.value,
+              value: val.value
             }
             this.columns[1].filters.push(temp)
           }
