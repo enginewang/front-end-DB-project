@@ -433,6 +433,11 @@ export default {
           dataIndex: 'accountID'
         },
         {
+          title: '员工密码',
+          align:'center',
+          dataIndex: 'password',
+          
+        }, {
           title: '员工身份',
           align:'center',
           dataIndex: 'status',
@@ -587,6 +592,7 @@ export default {
       this.newmdl.id = this.mdl.id
       this.newmdl.name = this.mdl.name
       this.newmdl.accountID = this.mdl.accountID
+      this.newmdl.password = this.mdl.password
       this.newmdl.status = this.mdl.status
       this.newmdl.telNumber = this.mdl.detail[0].var
       this.newmdl.idCardNumber=this.mdl.detail[1].var

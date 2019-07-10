@@ -31,7 +31,7 @@
       </a-card>
 
     <a-card :bordered="false" title=" ">
-      <a-col  style="textAlign:center; margin-bottom:18px">
+      <a-col  style="textAlign:left; margin-bottom:18px">
             <div class="heading" >{{"报修单进度"}}</div>
           </a-col>
       <a-steps :direction="isMobile() && 'vertical' || 'horizontal'" :current="this.details.state" progressDot>
@@ -44,11 +44,8 @@
       </a-steps>
     </a-card>
 
-      <a-card :bordered='false' title=" ">
-        <a-col  style="textAlign:center; margin-bottom:0px">
-            <div class="heading" >{{"调度"}}</div>
-          </a-col>
-        <a-form-item  label="维修员" style="textAlign:center">
+      <a-card :bordered='false' title="调度">
+        <a-form-item  label="维修员">
           <a-select
             style="max-width: 200px; width: 100%;"
             placeholder="选择维修员"

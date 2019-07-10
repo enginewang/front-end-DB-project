@@ -135,7 +135,6 @@ export default {
           },
         defaultCurrent: 1,
         showQuickJumper: true,
-        onChange: this.onChange
       },
       idFilterValue: '',
       selection: '',
@@ -206,11 +205,11 @@ export default {
       }
       
       //单号不为空
-      if(result != null && result.length > 0 && !this.selection ){
+      if(result != null && result.length > 0 &&( !this.selection || this.selection == '')){
         this.data = result
         console.log('有ID无状态',this.idFilterValue)
       }
-      else if(result != null && result.length > 0 && this.selection ){
+      else if(result != null && result.length > 0 && this.selection && this.selection != '' ){
         console.log('有ID有状态',this.idFilterValue)
         var last = []
         for(let item of result){
@@ -220,7 +219,7 @@ export default {
         }
         this.data = last
       }
-      else if((result == null || result.length <= 0) && this.selection){
+      else if((result == null || result.length <= 0) && this.selection && this.selection != ''){
         console.log('无ID有状态',this.selection)
         var last = []
         for(let item of this.pageData){
