@@ -1,7 +1,7 @@
 <template>
   <page-view :avatar="avatar" :title="false">
     <div slot="headerContent">
-      <div class="title">{{ timeFix }}！{{ user.name }}</div>
+      <div class="title">{{ timeFix }}，{{ user.name }}！</div>
       <div>{{userInfo.role.name}} | Eport - 健身器材管理平台</div>
     </div>
     <!--顶层右侧栏
@@ -193,32 +193,32 @@
           <a-card
                   class="project-list"
                   :loading="loading"
-                  style="margin-bottom: 24px; margin-top: 0px"
+                  style="margin-bottom: 32px; margin-top: 0px"
                   :bordered="false"
                   title="个人信息"
                   :body-style="{ padding: 0 }">
-            <a-card >
-              <a-row style="margin-bottom: 12px">
+            <a-card style="font-size: medium">
+              <a-row style="margin-bottom: 20px">
                 <a-icon type="idcard" theme="twoTone" twoToneColor="#3A5FCD"/>
                 <strong> 账号：</strong>
                 {{userInfo.id }}
               </a-row>
-              <a-row style="margin-bottom: 12px">
+              <a-row style="margin-bottom: 20px">
                 <a-icon type="tag" theme="twoTone" twoToneColor="#3A5FCD"/>
                 <strong> 姓名：</strong>
                 {{ userInfo.name }}
               </a-row>
-              <a-row style="margin-bottom: 12px">
+              <a-row style="margin-bottom: 20px">
                 <a-icon type="phone" theme="twoTone" twoToneColor="#3A5FCD"/>
                 <strong> 联系电话：</strong>
                 {{userInfo.telephone }}
               </a-row>
-              <a-row style="margin-bottom: 12px">
+              <a-row style="margin-bottom: 20px">
                 <a-icon type="up-circle" theme="twoTone" twoToneColor="#3A5FCD"/>
                 <strong> 工作开始时间：</strong>
                 周一
               </a-row>
-              <a-row style="margin-bottom: 12px">
+              <a-row style="margin-bottom: 20px">
                 <a-icon type="down-circle" theme="twoTone" twoToneColor="#3A5FCD"/>
                 <strong> 工作结束时间：</strong>
                 周日
