@@ -1,27 +1,40 @@
 <template>
-    <page-view title="报修单" logo="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png">
+    <page-view title="报修单" logo="/repairSheet.png">
 
     <detail-list slot="headerContent" size="small" :col="1" class="detail-layout">
-      <detail-list-item term="详细描述">{{this.detailInfo}}</detail-list-item>
-      <detail-list-item term="所需配件">{{this.eqInfo}}</detail-list-item>
-      <detail-list-item term="报修用户电话">{{this.telInfo}}</detail-list-item>
+      <detail-list-item term="详细描述">{{this.details.details}}</detail-list-item>
+      <detail-list-item term="所需配件">{{this.details.stuffNeeded}}</detail-list-item>
+      <detail-list-item term="报修用户电话">{{this.details.telNumber}}</detail-list-item>
     </detail-list>
-    <a-row slot="extra" class="status-list" this.details>
+    <a-row slot="extra" class="status-list" >
       <a-col :xs="12" :sm="12">
         <div class="text">报修单单号</div>
-        <div class="heading" span = "4">{{this.details.id}}</div>
+        <div class="heading" span = "4">{{this.details.title}}</div>
       </a-col>
     </a-row>
     
 
-    <a-card :bordered='false' title="故障照片">
-        <div class="photo">
+    <a-card :bordered='false' :gutter="24">
+        <div class="photo" > 
+          <a-row >
+          <a-col  style="textAlign:center; margin-bottom:24px;margin-top:-36px">
+            <div class="heading" >
+              <a-avatar  size="large" shape="square" src="/camera.png"/>
+              {{"故障器材图片"}}
+              </div>
+          </a-col>
+          </a-row>
+          <a-col style="textAlign:center">
         <img :src="details.cover" :alt="details.title" />
+          </a-col>
         </div>
     </a-card>
 
-    <a-card :bordered="false" title="维修进度">
-      <a-steps :direction="isMobile() && 'vertical' || 'horizontal'" :current="1" progressDot>
+    <a-card :bordered="false" title=" ">
+      <a-col  style="textAlign:left; margin-bottom:18px">
+            <div class="heading" >{{"报修单进度"}}</div>
+          </a-col>
+      <a-steps :direction="isMobile() && 'vertical' || 'horizontal'" :current="this.details.status" progressDot>
         <a-step title="用户提交">
         </a-step>
         <a-step title="巡检员提交">
