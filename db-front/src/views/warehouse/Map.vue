@@ -38,7 +38,6 @@ const functionBox = {
   '0-1': ['在用器材',getEquipmentUsingList],
 }
 
-<<<<<<< HEAD
 const treeData = [{
   title: '仓库',
   value: '0-0',
@@ -49,45 +48,6 @@ const treeData = [{
   value: '0-1',
   key: '0-1',
 }]
-=======
-const treeData = [
-  {
-    title: 'Node1',
-    value: '0-0',
-    key: '0-0',
-    children: [
-      {
-        title: 'Child Node1',
-        value: '0-0-0',
-        key: '0-0-0'
-      }
-    ]
-  },
-  {
-    title: 'Node2',
-    value: '0-1',
-    key: '0-1',
-    children: [
-      {
-        title: 'Child Node3',
-        value: '0-1-0',
-        key: '0-1-0',
-        disabled: true
-      },
-      {
-        title: 'Child Node4',
-        value: '0-1-1',
-        key: '0-1-1'
-      },
-      {
-        title: 'Child Node5',
-        value: '0-1-2',
-        key: '0-1-2'
-      }
-    ]
-  }
-]
->>>>>>> 5944c3bc73831a7d2226439d55019a651753b7ec
 
 function refreshMapContainer() {
   var mapContainer = document.getElementById('pleaseresize')
@@ -109,21 +69,12 @@ function initialize() {
   stCtrl.setOffset(new BMap.Size(20, 20))
   map.addControl(stCtrl) // 添加全景控件
   var loadCount = 1
-<<<<<<< HEAD
   // map.addEventListener('tilesloaded', function () {
   //   if (loadCount === 1) {
   //     map.setCenter(startPoint)
   //   }
   //   loadCount = loadCount + 1
   // })
-=======
-  map.addEventListener('tilesloaded', function() {
-    if (loadCount === 1) {
-      map.setCenter(startPoint)
-    }
-    loadCount = loadCount + 1
-  })
->>>>>>> 5944c3bc73831a7d2226439d55019a651753b7ec
 }
 
 function addTestWarehouseMarker() {
