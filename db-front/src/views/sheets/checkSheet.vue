@@ -235,7 +235,7 @@ export default {
       const target = newData.filter(item => this.todelete === item.id)[0]
       console.log(target)
       deleteCheckSheetRow(target.id).then((response) => {
-        this.deleteInfo = response.data.deleteInfo
+        this.deleteInfo = response.info
         if(this.deleteInfo !== 'fail'){
           this.Data = [...response.data.Data]
           this.DataShow = this.Data
@@ -260,8 +260,8 @@ export default {
   },
   mounted () {
     getCheckSheet().then((response) => {
-      console.log(...response)
-      this.Data = [...response]
+      console.log(...response.data)
+      this.Data = [...response.data]
       this.DataShow = this.Data
     })
   }
