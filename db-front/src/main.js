@@ -5,10 +5,10 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store/'
-import { VueAxios } from './utils/request'
+import {VueAxios} from './utils/request'
 
 // mock
-// import './mock'
+import './mock'
 
 import bootstrap from './core/bootstrap'
 import './core/use'
@@ -30,7 +30,7 @@ Vue.use(VModal, { dynamic: true, dynamicDefaults: { clickToClose: false }, injec
 new Vue({
   router,
   store,
-  created() {
+  created () {
     bootstrap()
   },
   render: h => h(App)
