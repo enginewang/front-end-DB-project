@@ -383,6 +383,7 @@
       }),
       getAllWarehouse().then((response) => {
         this.allWarehouse = [...response.data]
+        this.columns[7].filters = []
         for(let val of this.allWarehouse){
           let temp = {
             text: val,
