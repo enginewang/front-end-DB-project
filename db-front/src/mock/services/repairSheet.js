@@ -6,21 +6,101 @@ import Mock from 'mockjs2'
 const allRepairSheet = () => {
   return {
     data: [{
-        'id':'1223345',
-        'title': 'ID:1223345',
+        
+        'title': 'RST 1',
         'cover': '/avatar2.jpg',
-        'type': '修理类型:1',
-        'state': '状态:3',
+        'type': '1',
+        'state': '0',
+        'details':'把手损坏，油漆脱落',//报修单详细信息的损坏描述部分
+        'stuffNeeded':'齿轮 GPX x3',//报修单详细信息部分的器件需求部分
+        'telNumber':'12332532',//报修用户的电话
+        'eqInStore':[{
+          'type':'履带',
+          'model':'GTX'
+        },
+      {
+        'type':'履带',
+        'model':'GTX'
+      },{
+        'type':'履带',
+        'model':'GTX'
+      }],//仓库所有器材的类型和型号的数组
+      'repairStaff':[
+        {
+          'repairId':'RSF15000007',
+          'repairName':'王小明'
+        },
+        {
+          'repairId':'RSF15000017',
+          'repairName':'李小华'
+        }
+      ]//所有可调度维修员的id和名字数组，按这种格式，最好按到维修器材的距离排序
+
         
 
     },
     {
-        'id':'1223345',
-        'title': 'ID:678900',
+        
+        'title': 'RST2',
         'cover': '/avatar.jpg',
         'type': '修理类型:2',
-        'state': '状态:4',
-    }
+        'state': '状态:待巡检',
+    },
+    {
+      
+      'title': 'RST3',
+      'cover': '/avatar.jpg',
+      'type': '修理类型:2',
+      'state': '状态:待巡检',
+  },
+
+  {
+    
+    'title': 'RST4',
+    'cover': '/avatar.jpg',
+    'type': '修理类型:2',
+    'state': '状态:待调度',
+},
+
+{
+
+  'title': 'RST5',
+  'cover': '/avatar.jpg',
+  'type': '修理类型:2',
+  'state': '状态:待调度',
+},
+
+{
+
+  'title': 'RST6',
+  'cover': '/avatar.jpg',
+  'type': '修理类型:2',
+  'state': '状态:待调度',
+},
+
+{
+
+  'title': 'RST7',
+  'cover': '/avatar.jpg',
+  'type': '修理类型:2',
+  'state': '状态:已调度',
+},
+
+{
+
+  'title': 'RST8',
+  'cover': '/avatar.jpg',
+  'type': '修理类型:2',
+  'state': '状态:已调度',
+},
+
+{
+
+  'title': 'RST9',
+  'cover': '/avatar.jpg',
+  'type': '修理类型:2',
+  'state': '状态:已调度',
+}
 
     ]
   }
