@@ -283,7 +283,6 @@
   import {PageView} from '@/layouts'
   import HeadInfo from '@/components/tools/HeadInfo'
   import {Radar} from '@/components'
-
   import {getRoleList, getServiceList,modifyPassword} from '@/api/manage'
   import ARow from "ant-design-vue/es/grid/Row";
   import ACol from "ant-design-vue/es/grid/Col";
@@ -350,7 +349,7 @@
         this.form.validateFields((err, value) => {
           if (!err) {
             if(md5(value.old_password) === this.userInfo.password){
-              this.new_identity.newPassword = value.new_password
+              this.new_identity.newPassword = md5(value.new_password)
               this.new_identity.id = this.userInfo.id
               console.log(this.new_identity)
               modifyPassword(this.new_identity).then(() => {
