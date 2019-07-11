@@ -331,7 +331,7 @@
       this.avatar = this.userInfo.avatar
     },
     mounted() {
-      console.log('vuex',this.userInfo )
+      // console.log('vuex',this.userInfo )
     },
     methods: {
       ...mapGetters(['nickname', 'welcome']),
