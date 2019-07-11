@@ -167,6 +167,7 @@ export default {
       visible: false,
       visible2: false,
       src: "",
+      deleteInfo:'',
       isRouterAlive: true,
       todelete:'',
       form: this.$form.createForm(this)
@@ -245,7 +246,8 @@ export default {
       const target = newData.filter(item => this.todelete === item.id)[0]
       console.log(target)
       deleteCheckSheetRow({ id : target.id}).then((response) => {
-        console.log('res', response)
+        this.deleteInfo = response.info
+        console.log('delete', this.deleteInfo)
         if(this.deleteInfo !== 'fail'){
           this.Data = [...response.data]
           this.DataShow = this.Data

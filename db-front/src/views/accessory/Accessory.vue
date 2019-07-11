@@ -61,7 +61,7 @@
                   :confirmLoading="confirmLoading"
                   @cancel="handleCancel"
                 >
-                  <p>{{`是否将 ${addData.num} 个ID为 ${addData.accessoryID} 的配件添加到 ${addData.warehouse}？`}}</p>
+                  <p>{{`是否将 ${addData.num} 个编码为 ${addData.accessoryID} 的配件添加到 ${addData.warehouse}？`}}</p>
                 </a-modal>
                 <a-button
                   size="default"
@@ -114,7 +114,6 @@
 
             </div>
           </a-col>
-        </a-row>
         </a-row>
       </a-layout>
     </div>
@@ -269,6 +268,7 @@
         this.visible = true
       },
       handleOk(e) {
+        this.showAddForm = false
         this.confirmLoading = true;
         setTimeout(() => {
           this.visible = false;

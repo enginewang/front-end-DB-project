@@ -653,6 +653,7 @@ export default {
       modifyStaffSheetRow(this.newmdl).then((response) => {
         this.modifyInfo = response.info
         if(this.modifyInfo === 'ok'){
+          this.newmdl.password=''
           this.$notification.open({
           message: '修改成功',
           description: '本条员工记录修改成功',
