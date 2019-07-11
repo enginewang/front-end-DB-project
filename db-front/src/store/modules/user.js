@@ -45,10 +45,11 @@ const user = {
             commit('SET_TOKEN', result.token)
           })
           .then(() => {
-            // var source = new EventSource('https://tjsseibm.club/api/Notification')
-            // source.onmessage = function(e){
-            //   console.log(e)
-            // }
+            var source = new EventSource('https://tjsseibm.club/api/Notification')
+            source.onmessage = function(e){
+              console.log(e)
+            }
+            notiSource = source
             resolve()
           })
           .catch(error => {
