@@ -19,7 +19,7 @@ export function getWarehousePreview() {
   })
 }
 
-export function getAll(){
+export function getAll() {
   return axios({
     url: api.all,
     method: 'get',
@@ -49,10 +49,14 @@ export function postGoods(data) {
   })
 }
 
-export function getAllWarehouse() {
+export function postAllWarehouse(data) {
   return axios({
     url: api.allWarehouse,
-    method: 'get'
+    method: 'post',
+    data: data,
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
   })
 }
 
