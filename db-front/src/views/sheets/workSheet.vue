@@ -342,10 +342,10 @@ export default {
         return
       }
       
-      deleteWorkSheetRow(target.id).then((response) => {
+      deleteWorkSheetRow({ id : target.id}).then((response) => {
         this.deleteInfo = response.info
         if(this.deleteInfo !== 'fail'){
-          this.wData = [...response.data.wData]
+          this.wData = [...response.data]
           this.wDataShow = this.wData
         }
         if(this.deleteInfo === 'ok'){

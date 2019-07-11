@@ -70,7 +70,7 @@
             <a-row>
             <a-col :span='8'>
               <a-form-item label="器材选择" :label-col="{ span: 8 }" :wrapper-col="{ span: 15 }" style="textAlign:left">
-                <a-select :disabled="qualified"
+                <a-select :disabled="qualifiedForEq"
                   style="width: 120%;"
                   placeholder="选择器材类型"
                   @change="handleEqChange"
@@ -82,10 +82,15 @@
               </a-form-item>
             </a-col>
      
-            <a-col :span='2'>
-             
-              <a-form-item :validate-status="compare"  :label-col="{ span: 2 }" :wrapper-col="{ span: 2 }">
-                
+            
+            <a-col :span='9'>
+              <a-form-item validate-status="success" label="数量" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
+                <a-input  disabled="disabled"
+                  :placeholder="text"
+                  maxLength="15"
+                  style="width: 100%"
+                  v-model="eqNum"
+                />
               </a-form-item>
             </a-col>
             <a-col :span='6' style="">
@@ -212,11 +217,10 @@ export default {
       this.result.RSTid = this.details.title
       console.log("item",this.details)
       getRepairSheetDetail().then((response)=>{
-        
-        console.log("response",...response.equipType)
-        this.eqType = response.equipType
-        this.acType = response.accessory
-        this.stfList = response.staff
+        console.log("response",response.data)
+        this.eqType = response.data.equipType
+        this.acType = response.data.accessory
+        this.stfList = response.data.staff
         console.log("eqType",this.eqType[0])
         console.log("acType",this.acType)
         console.log("acType",this.stfList)
@@ -241,6 +245,8 @@ export default {
       acType:[],
       stfList:[],
       visible2:true,
+      eqSelected:false,
+      submit:false,
       result:{
         'RSTid':'',
         'stfId':'',
@@ -287,6 +293,12 @@ export default {
         return "disabled"
       }
     },
+    qualifiedForEq:function(){
+      console.log("eqselected",this.eqSelected)
+      if(this.details.state == '0'||this.details.state=='2'||this.eqSelected){
+        return "disabled"
+      }
+    },
     successRepair:function(){
       if(this.result.stfId === ''){
         return "error"
@@ -299,8 +311,8 @@ export default {
       if(this.tempEq === ''){
         return 
       }
-      var tempEqSelect = parseInt(this.tempEq)-1
-      var tempEqNum = parseInt(this.eqType[tempEqSelect].number)
+      var tempEqSelect = parseInt(this.tempEq)
+      var tempEqNum = this.eqType[tempEqSelect].number
       console.log("maxNum",tempEqNum)
       return tempEqNum
       //let temp = this.eqType[this.tempEq-'0'].number-'0'
@@ -310,8 +322,8 @@ export default {
       if(this.tempAc === ''){
         return 
       }
-      var tempAcSelect = parseInt(this.tempAc)-1
-      var tempAcNum = parseInt(this.acType[tempAcSelect].number)
+      var tempAcSelect = parseInt(this.tempAc)
+      var tempAcNum = this.acType[tempAcSelect].number
       console.log("maxNum",tempAcNum)
       return tempAcNum
       //let temp = this.eqType[this.tempEq-'0'].number-'0'
@@ -324,8 +336,8 @@ export default {
       if(!(/(^[1-9]\d*$)/.test(this.eqNum))){
         return "error"
       }
-      var tempEqSelect = parseInt(this.tempEq)-1
-      var tempEqNum = parseInt(this.eqType[tempEqSelect].number)
+      var tempEqSelect = parseInt(this.tempEq)
+      var tempEqNum = this.eqType[tempEqSelect].number
       console.log("maxNum",tempEqNum)
       if(this.eqNum!==''){
         var inputTemp = parseInt(this.eqNum)
@@ -348,8 +360,8 @@ export default {
       if (!(/(^[1-9]\d*$)/.test(this.acNum))){
         return "error"
       }
-      var tempAcSelect = parseInt(this.tempAc)-1
-      var tempAcNum = parseInt(this.acType[tempAcSelect].number)
+      var tempAcSelect = parseInt(this.tempAc)
+      var tempAcNum = this.acType[tempAcSelect].number
       console.log("maxNum2",tempAcNum)
       if(this.acNum!==''){
         var inputTemp = parseInt(this.acNum)
@@ -370,7 +382,7 @@ export default {
         return "最大数量:"+this.maxEqNum
       }
       else{
-        return "请输入数量"
+        return "每次仅允许调度一个器材"
       }
     },
     textAc:function(){
@@ -382,10 +394,10 @@ export default {
       }
     },
     qualifiedforButton:function(){
-    if(this.details.state == '0'||this.details.state=='2'){
+    if(this.details.state == '0'||this.details.state=='2'||this.eqSelected){
         return "disabled"
       }
-    if(this.tempEq === ''||this.eqNum === ''||this.result.stfId === ''){
+    if(this.tempEq === ''||this.result.stfId === ''){
       return "disabled"
     }
   },
@@ -399,7 +411,7 @@ export default {
   },
   qualifiedforSubmit:function(){
     console.log("length",this.result.ls.length)
-    if(this.result.ls.length === 0){
+    if(this.result.ls.length === 0||this.submit){
         return "disabled"
       }
   },
@@ -408,9 +420,12 @@ export default {
   methods:{
     handleOK(){
       this.visible = false
+      this.result.stfId = "ST"+this.result.stfId
+      console.log("this.result.stfId",this.result.stfId)
       submitScheduleDetail(this.result).then((response) =>{
         this.info = response.info
         if(this.info === 'ok'){
+          this.submit = true
           this.details.state = '2'
           this.$notification.open({
           message: '调度成功',
@@ -436,16 +451,9 @@ export default {
       console.log("newAc",this.tempAc)
     },
     handleAddEq(){
-      if(!(/(^[1-9]\d*$)/.test(this.eqNum))){
-        this.$notification.open({
-          message: '添加失败',
-          description: '请输入合法的数字字符',
-          icon: <a-icon type="exclamation-circle" style="color: #108ee9" />,
-        });
-        return;
-      }
-      var tempEqSelect = parseInt(this.tempEq)-1
-      var tempEqNum = parseInt(this.eqType[tempEqSelect].number)
+      this.eqNum = '1'
+      var tempEqSelect = parseInt(this.tempEq)
+      var tempEqNum = this.eqType[tempEqSelect].number
       console.log("容量",tempEqNum)
       var inputTemp = parseInt(this.eqNum)
       console.log("需求",inputTemp)
@@ -458,6 +466,7 @@ export default {
         return;
       }
       else{
+          this.eqSelected = true
           console.log("rowls",this.result.ls)
           this.tempKey = this.tempKey + 1
           console.log("tempKey",this.tempKey)
@@ -469,7 +478,7 @@ export default {
             'key' : this.tempKey+1
           })
           this.eqNum = ''
-          this.eqType[tempEqSelect].number = String(parseInt(this.eqType[tempEqSelect].number)-parseInt(inputTemp))
+          this.eqType[tempEqSelect].number = String(this.eqType[tempEqSelect].number-parseInt(inputTemp))
           console.log("eqNumber",this.eqType.number )
       }
     },
@@ -482,8 +491,8 @@ export default {
         });
         return;
       }
-      var tempAcSelect = parseInt(this.tempAc)-1
-      var tempAcNum = parseInt(this.acType[tempAcSelect].number)
+      var tempAcSelect = parseInt(this.tempAc)
+      var tempAcNum = this.acType[tempAcSelect].number
       console.log("容量2",tempAcNum)
       var inputTemp = parseInt(this.acNum)
       console.log("需求2",inputTemp)
@@ -502,13 +511,13 @@ export default {
           console.log("tempKey",this.tempKey)
           this.result.ls.push({
             'type': this.acType[tempAcSelect].type,
-            'model': this.eqType[tempAcSelect].model,
+            'model': this.acType[tempAcSelect].model,
             'number':inputTemp,
             'statue':'配件',
             'key' : this.tempKey+1
           })
           this.acNum = ''
-          this.acType[tempAcSelect].number = String(parseInt(this.acType[tempAcSelect].number)-parseInt(inputTemp))
+          this.acType[tempAcSelect].number = String(this.acType[tempAcSelect].number-parseInt(inputTemp))
       }
     }
 }
