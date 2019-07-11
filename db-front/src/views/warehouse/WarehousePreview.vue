@@ -150,6 +150,11 @@ export default {
         this.previewDataShow = this.previewData
       })
       .catch(err => {
+        this.$notification.open({
+          message: '获取仓库预览信息失败',
+          description: '请查看控制台信息',
+          icon: <a-icon type="exclamation-circle" style="color: #108ee9" />
+        })
         console.log('')
       })
     getAllAddress()
@@ -164,6 +169,11 @@ export default {
         }
       })
       .catch(err => {
+        this.$notification.open({
+          message: '获取地址列表信息失败',
+          description: '请查看控制台信息',
+          icon: <a-icon type="exclamation-circle" style="color: #108ee9" />
+        })
         console.log(err)
       })
   }
