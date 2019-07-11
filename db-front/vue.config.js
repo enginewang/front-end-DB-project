@@ -1,7 +1,7 @@
 const path = require('path')
 const webpack = require('webpack')
 
-function resolve (dir) {
+function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
@@ -9,7 +9,7 @@ function resolve (dir) {
 module.exports = {
   publicPath: process.env.NODE_ENV === 'production'
     ? '/my-project/'
-    : '/'
+    : '/',
   /*
     Vue-cli3:
     Crashed when using Webpack `import()` #2463
