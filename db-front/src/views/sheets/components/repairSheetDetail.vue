@@ -19,7 +19,7 @@
         <div class="photo" > 
           <a-row >
           <a-col  style="textAlign:center; margin-bottom:0px;margin-top:0px">
-            <div class="heading" >
+            <div class="heading" style="margin-bottom: 12px">
               <a-avatar  size="large" shape="square" src="/camera.png"/>
               {{"故障器材图片"}}
               </div>

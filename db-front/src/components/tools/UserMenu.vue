@@ -11,7 +11,7 @@
           <a-icon type="coffee" />
         </span>
       </a>
-      <notice-icon class="action"/>
+
       <a-dropdown>
         <span class="action ant-dropdown-link user-dropdown-menu">
           <a-avatar class="avatar" size="small" :src="avatar()"/>

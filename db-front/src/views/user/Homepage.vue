@@ -24,24 +24,24 @@
         <a-col :xl="16" :lg="24" :md="24" :sm="24" :xs="24">
           <!--调度管理-->
           <a-card
-                  style="margin-bottom: 24px; margin-top: 0px"
-                  :bordered="false"
-                  title="调度管理"
-                  :body-style="{ padding: 0 }">
+            style="margin-bottom: 24px; margin-top: 0px"
+            :bordered="false"
+            title="调度管理"
+            :body-style="{ padding: 0 }">
             <!--调度卡片-->
             <a-card>
               <a-row :gutter="24">
                 <a-col :md="24" :lg="6">
                   <a-card hoverable>
                     <img
-                            alt="仓库预览"
-                            src="https://res.cloudinary.com/dbmkzs2ez/image/upload/v1562590986/warehouse.png"
-                            slot="cover"
+                      alt="仓库预览"
+                      src="https://res.cloudinary.com/dbmkzs2ez/image/upload/v1562590986/warehouse.png"
+                      slot="cover"
                     />
                     <router-link :to="{name: 'Preview'}" active-class="active">
                       <a-card-meta
-                              title="仓库预览"
-                              description="点击预览仓库信息">
+                        title="仓库预览"
+                        description="点击预览仓库信息">
                       </a-card-meta>
                     </router-link>
                   </a-card>
@@ -49,14 +49,14 @@
                 <a-col :md="24" :lg="6">
                   <a-card hoverable>
                     <img
-                            alt="配件管理"
-                            src="https://res.cloudinary.com/dbmkzs2ez/image/upload/v1562677458/pj.png"
-                            slot="cover"
+                      alt="配件管理"
+                      src="https://res.cloudinary.com/dbmkzs2ez/image/upload/v1562677458/pj.png"
+                      slot="cover"
                     />
                     <router-link :to="{name: 'AccessoryInWarehouse'}" active-class="active">
                       <a-card-meta
-                              title="配件管理"
-                              description="点击管理器材配件">
+                        title="配件管理"
+                        description="点击管理器材配件">
                       </a-card-meta>
                     </router-link>
                   </a-card>
@@ -64,14 +64,14 @@
                 <a-col :md="24" :lg="6">
                   <a-card hoverable>
                     <img
-                            alt="仓储器材"
-                            src="https://res.cloudinary.com/dbmkzs2ez/image/upload/v1562593108/equipment.png"
-                            slot="cover"
+                      alt="仓储器材"
+                      src="https://res.cloudinary.com/dbmkzs2ez/image/upload/v1562593108/equipment.png"
+                      slot="cover"
                     />
                     <router-link :to="{name: 'EquipPreview'}" active-class="active">
                       <a-card-meta
-                              title="仓储器材"
-                              description="点击预览仓储器材">
+                        title="仓储器材"
+                        description="点击预览仓储器材">
                       </a-card-meta>
                     </router-link>
                   </a-card>
@@ -79,14 +79,14 @@
                 <a-col :md="24" :lg="6">
                   <a-card hoverable>
                     <img
-                            alt="在用器材"
-                            src="https://res.cloudinary.com/dbmkzs2ez/image/upload/v1562593722/equipmentUsing.png"
-                            slot="cover"
+                      alt="在用器材"
+                      src="https://res.cloudinary.com/dbmkzs2ez/image/upload/v1562593722/equipmentUsing.png"
+                      slot="cover"
                     />
                     <router-link :to="{name: 'EquipUsing'}" active-class="active">
                       <a-card-meta
-                              title="在用器材"
-                              description="点击查询在用器材">
+                        title="在用器材"
+                        description="点击查询在用器材">
                       </a-card-meta>
                     </router-link>
                   </a-card>
@@ -97,14 +97,14 @@
                 <a-col :md="24" :lg="6">
                   <a-card hoverable>
                     <img
-                            alt="仓库地图"
-                            src="https://res.cloudinary.com/dbmkzs2ez/image/upload/v1562593159/map.png"
-                            slot="cover"
+                      alt="仓库地图"
+                      src="https://res.cloudinary.com/dbmkzs2ez/image/upload/v1562593159/map.png"
+                      slot="cover"
                     />
                     <router-link :to="{name: 'Map'}" active-class="active">
                       <a-card-meta
-                              title="仓库地图"
-                              description="点击查看仓库地图">
+                        title="仓库地图"
+                        description="点击查看仓库地图">
                       </a-card-meta>
                     </router-link>
                   </a-card>
@@ -112,14 +112,14 @@
                 <a-col :md="24" :lg="6">
                   <a-card hoverable>
                     <img
-                            alt="工单预览"
-                            src="https://res.cloudinary.com/dbmkzs2ez/image/upload/v1562593143/gongdan.png"
-                            slot="cover"
+                      alt="工单预览"
+                      src="https://res.cloudinary.com/dbmkzs2ez/image/upload/v1562593143/gongdan.png"
+                      slot="cover"
                     />
                     <router-link :to="{name: 'workSheet'}" active-class="active">
                       <a-card-meta
-                              title="工单预览"
-                              description="点击预览工单信息">
+                        title="工单预览"
+                        description="点击预览工单信息">
                       </a-card-meta>
                     </router-link>
                   </a-card>
@@ -127,14 +127,14 @@
                 <a-col :md="24" :lg="6">
                   <a-card hoverable>
                     <img
-                            alt="报修单预览"
-                            src="https://res.cloudinary.com/dbmkzs2ez/image/upload/v1562593110/baoxiudan.png"
-                            slot="cover"
+                      alt="报修单预览"
+                      src="https://res.cloudinary.com/dbmkzs2ez/image/upload/v1562593110/baoxiudan.png"
+                      slot="cover"
                     />
                     <router-link :to="{name: 'repairSheet'}" active-class="active">
                       <a-card-meta
-                              title="报修单预览"
-                              description="点击预览报修单信息">
+                        title="报修单预览"
+                        description="点击预览报修单信息">
                       </a-card-meta>
                     </router-link>
                   </a-card>
@@ -142,14 +142,14 @@
                 <a-col :md="24" :lg="6">
                   <a-card hoverable>
                     <img
-                            alt="巡检单预览"
-                            src="https://res.cloudinary.com/dbmkzs2ez/image/upload/v1562593181/xunjiandan.png"
-                            slot="cover"
+                      alt="巡检单预览"
+                      src="https://res.cloudinary.com/dbmkzs2ez/image/upload/v1562593181/xunjiandan.png"
+                      slot="cover"
                     />
                     <router-link :to="{name: 'checkSheet'}" active-class="active">
                       <a-card-meta
-                              title="巡检单预览"
-                              description="点击预览巡检单信息">
+                        title="巡检单预览"
+                        description="点击预览巡检单信息">
                       </a-card-meta>
                     </router-link>
                   </a-card>
@@ -181,19 +181,19 @@
 
         <!--个人信息-->
         <a-col
-                style="padding: 0 12px"
-                :xl="8"
-                :lg="24"
-                :md="24"
-                :sm="24"
-                :xs="24">
+          style="padding: 0 12px"
+          :xl="8"
+          :lg="24"
+          :md="24"
+          :sm="24"
+          :xs="24">
           <!--个人信息-->
           <a-card
-                  style="margin-bottom: 24px; margin-top: 0px"
-                  :bordered="false"
-                  title="个人信息"
-                  :body-style="{ padding: 0 }">
-            <a-card >
+            style="margin-bottom: 24px; margin-top: 0px"
+            :bordered="false"
+            title="个人信息"
+            :body-style="{ padding: 0 }">
+            <a-card>
               <a-row style="margin-bottom: 12px">
                 <a-icon type="idcard" theme="twoTone" twoToneColor="#3A5FCD"/>
                 <strong> 账号：</strong>
@@ -224,7 +224,7 @@
           <!--密码修改-->
           <div>
             <a-row style="text-align: center">
-              <a-button @click="modifyPassButton" type="primary" icon="lock"> 修改密码 </a-button>
+              <a-button @click="modifyPassButton" type="primary" icon="lock"> 修改密码</a-button>
               <a-modal v-model="showPasswordForm" footer="">
                 <a-form title="修改密码" @submit="handleSubmit" :form="form">
                   <a-form-item
@@ -238,24 +238,26 @@
                     :labelCol="{lg: {span: 7}, sm: {span: 7}}"
                     :wrapperCol="{lg: {span: 10}, sm: {span: 17} }">
                     <a-input
+                      type="password"
                       v-decorator="[
             'old_password',
             {rules: [{ required: true, message: '请输入旧的密码' }]}
           ]"
                       name="old_password"
-                      placeholder="请输入旧的密码" />
+                      placeholder="请输入旧的密码"/>
                   </a-form-item>
                   <a-form-item
                     label="新密码"
                     :labelCol="{lg: {span: 7}, sm: {span: 7}}"
                     :wrapperCol="{lg: {span: 10}, sm: {span: 17} }">
                     <a-input
+                      type="password"
                       v-decorator="[
             'new_password',
             {rules: [{ required: true, message: '请输入新的密码' }]}
           ]"
                       name="new_password"
-                      placeholder="请输入新的密码" />
+                      placeholder="请输入新的密码"/>
                   </a-form-item>
                   <a-form-item
                     :wrapperCol="{ span: 24 }"
@@ -267,7 +269,6 @@
 
                 </a-form>
               </a-modal>
-              </a-button>
             </a-row>
           </div>
         </a-col>
@@ -283,7 +284,7 @@
   import {PageView} from '@/layouts'
   import HeadInfo from '@/components/tools/HeadInfo'
   import {Radar} from '@/components'
-  import {getRoleList, getServiceList,modifyPassword} from '@/api/manage'
+  import {getRoleList, getServiceList, modifyPassword} from '@/api/manage'
   import ARow from "ant-design-vue/es/grid/Row";
   import ACol from "ant-design-vue/es/grid/Col";
   import AFormItem from "ant-design-vue/es/form/FormItem";
@@ -331,24 +332,24 @@
       this.avatar = this.userInfo.avatar
     },
     mounted() {
-      // console.log('vuex',this.userInfo )
+      console.log('vuex', this.userInfo)
     },
     methods: {
       ...mapGetters(['nickname', 'welcome']),
       cancelModifyPassword() {
         console.log('Cancel modify passsword')
       },
-      modifyPassButton(){
-        this.showPasswordForm= true;
+      modifyPassButton() {
+        this.showPasswordForm = true;
       },
       cancelModifyPassword() {
-        this.showPasswordForm= false;
+        this.showPasswordForm = false;
       },
       handleSubmit(e) {
         e.preventDefault()
         this.form.validateFields((err, value) => {
           if (!err) {
-            if(md5(value.old_password) === this.userInfo.password){
+            if (md5(value.old_password) === this.userInfo.password) {
               this.new_identity.newPassword = md5(value.new_password)
               this.new_identity.id = this.userInfo.id
               console.log(this.new_identity)
@@ -356,7 +357,7 @@
                 this.$message.success('密码修改成功！')
               })
               console.log("Pass!")
-            }else{
+            } else {
               this.$message.error('旧密码输入错误！')
               console.log("Failed!")
             }

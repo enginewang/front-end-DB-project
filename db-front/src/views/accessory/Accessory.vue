@@ -2,109 +2,120 @@
   <page-view title="配件管理">
     <div id="layout">
       <a-layout>
-        <a-layout-header>增加配件</a-layout-header>
         <!-- input bar -->
-        <div>
+        <a-modal v-model="showAddForm" footer>
           <a-form
             class="ant-advanced-search-form"
             :form="form"
           >
-            <a-col :md="8" :sm="24">
-              <a-form-item :label="attributeModelID.cnType">
-                <!-- 选择型号 -->
-                <a-select
-                  showSearch
-                  :allowClear="true"
-                  placeholder="请填写型号"
-                  optionFilterProp="children"
-                  v-model="addData['accessoryID']">
-                  <a-select-option v-for="item in this.models" :key="item.accessory" :value="item.accessory">
-                    {{item.model}}
-                  </a-select-option>
-                </a-select>
-                <!-- 选择型号 -->
-              </a-form-item>
-            </a-col>
-            <a-col :md="3" :sm="24" offset="1">
-              <a-form-item :label="attributeNum.cnType">
-                <!-- 选择数量 -->
-                <a-input-number
-                  v-model="addData[attributeNum.type]"
-                  :defaultValue="1"
-                  :min="1"
-                  :formatter="value => ` ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
-                  :parser="value => value.replace(/\$\s?|(,*)/g, '')"
-                />
-              </a-form-item>
-            </a-col>
-            <a-col :md="8" :sm="24">
-              <a-form-item :label="attributeWarehouse.cnType">
-                <a-select
-                  label="attributeWarehouse.cnType"
-                  placeholder="请选择仓库"
-                  showSearch
-                  :allowClear="true"
-                  optionFilterProp="children"
-                  v-model="addData['warehouse']">
-                  <a-select-option v-for="item in warehouses" :key="item" :value="item">{{item}}</a-select-option>
-                </a-select>
-              </a-form-item>
-            </a-col>
-            <a-col :span="4" :style="{ textAlign: 'right' }">
-              <a-form-item span="4">
-                <div class="button-group">
-                  <a-button
-                    size="default"
-                    class="button"
-                    type="primary"
-                    @click="showModal"
-                    :disabled="emptyInput"
-                  >添加
-                  </a-button>
-                  <a-modal
-                    title="确认信息"
-                    :visible="visible"
-                    @ok="handleOk"
-                    :confirmLoading="confirmLoading"
-                    @cancel="handleCancel"
-                    
-                  >
-                    <p>{{`是否将 ${addData.num} 个ID为 ${addData.accessoryID} 的配件添加到 ${addData.warehouse}？`}}</p>
-                  </a-modal>
-                  <a-button
-                    size="default"
-                    class="button"
-                    type="danger"
-                    @click="onClickClearSelect"
-                    :disabled="emptyInput"
-                  >清空
-                  </a-button>
-                </div>
-              </a-form-item>
-            </a-col>
+            <a-form-item :label="attributeModelID.cnType">
+              <!-- 选择型号 -->
+              <a-select
+                showSearch
+                :allowClear="true"
+                placeholder="请填写型号"
+                optionFilterProp="children"
+                v-model="addData['accessoryID']">
+                <a-select-option v-for="item in this.models" :key="item.accessory" :value="item.accessory">
+                  {{item.model}}
+                </a-select-option>
+              </a-select>
+              <!-- 选择型号 -->
+            </a-form-item>
+            <a-form-item :label="attributeNum.cnType">
+              <!-- 选择数量 -->
+              <a-input-number
+                v-model="addData[attributeNum.type]"
+                :defaultValue="1"
+                :min="1"
+                :formatter="value => ` ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
+                :parser="value => value.replace(/\$\s?|(,*)/g, '')"
+              />
+            </a-form-item>
+            <a-form-item :label="attributeWarehouse.cnType">
+              <a-select
+                label="attributeWarehouse.cnType"
+                placeholder="请选择仓库"
+                showSearch
+                :allowClear="true"
+                optionFilterProp="children"
+                v-model="addData['warehouse']">
+                <a-select-option v-for="item in warehouses" :key="item" :value="item">{{item}}</a-select-option>
+              </a-select>
+            </a-form-item>
+            <a-form-item :wrapperCol="{ span: 24 }" style="text-align: center">
+              <div class="button-group">
+                <a-button
+                  size="default"
+                  class="button"
+                  type="primary"
+                  htmlType="submit"
+                  @click="showModal"
+                  :disabled="emptyInput"
+                >添加
+                </a-button>
+                <a-modal
+                  title="确认信息"
+                  :visible="visible"
+                  @ok="handleOk"
+                  :confirmLoading="confirmLoading"
+                  @cancel="handleCancel"
+                >
+                  <p>{{`是否将 ${addData.num} 个ID为 ${addData.accessoryID} 的配件添加到 ${addData.warehouse}？`}}</p>
+                </a-modal>
+                <a-button
+                  size="default"
+                  class="button"
+                  type="danger"
+                  @click="onClickClearSelect"
+                  :disabled="emptyInput"
+                >清空
+                </a-button>
+                <a-button style="margin-left: 8px" @click="cancelAddForm"
+                >取消
+                </a-button>
+              </div>
+            </a-form-item>
           </a-form>
-        </div>
+        </a-modal>
+
+
         <!-- input bar end -->
         <!-- refresh button -->
-        <div>
-          <a-col :md="8" :sm="24">
-            <a-form-item label="编号">
-              <a-input placeholder="请输入查询编号" v-model="input"/>
+        <a-row :gutter="24">
+          <a-col :span="8">
+            <a-form-item label="编号查询">
+              <a-input placeholder="请输入待查询编号" v-model="input"/>
             </a-form-item>
           </a-col>
-          <a-col :md="8" :sm="24">
-            <div class="button-group2">
+
+          <a-col :span="16" style="text-align: right">
+            <div style="margin-top: 2.5rem">
+              <a-button
+                style="margin-right : 1rem"
+                @click="addAccessoryButton()"
+                type="primary"
+                icon="plus"
+              >添加配件
+              </a-button>
               <a-button
                 size="default"
-                class="button"
                 type="primary"
+                style="text-align: right"
                 @click="onClickReload"
+                icon="reload"
               >刷新表单
               </a-button>
             </div>
           </a-col>
 
-        </div>
+          <a-col :span="8" style="text-align: right">
+            <div >
+
+            </div>
+          </a-col>
+        </a-row>
+        </a-row>
       </a-layout>
     </div>
       <!-- input bar end -->
@@ -131,10 +142,12 @@
   } from '@/api/accessory'
   import Fuse from 'fuse.js'
   import { PageView } from '@/layouts'
+  import ARow from "ant-design-vue/es/grid/Row";
 
 
   export default {
     components:{
+      ARow,
       PageView
     },
     data() {
@@ -203,6 +216,7 @@
         warehouses: [],
         types: [],
         models: [],
+        showAddForm: false,
 
         form: this.$form.createForm(this),
 
@@ -233,6 +247,13 @@
       }
     },
     methods: {
+      //add accessory button
+      addAccessoryButton() {
+        this.showAddForm = true
+      },
+      cancelAddForm() {
+        this.showAddForm = false
+      },
       //show notification
       openNotification () {
         this.$notification.open({

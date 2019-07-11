@@ -5,16 +5,23 @@
         <a-form class="ant-advanced-search-form" :form="form" inline>
           <a-row :gutter="24">
             <a-col :md="6" :sm="24">
-              <a-form-item>
-                <label>器材编号：</label>
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol"
+                label="器材编号：">
                 <a-input placeholder="请输入器材编号" v-model="inputID" />
               </a-form-item>
             </a-col>
             <a-col :md="6" :sm="24">
-              <a-form-item>
-                <label>出厂时间：</label>
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol"
+                label="出厂时间：">
                 <a-input placeholder="请输入出厂时间" v-model="inputTime" />
               </a-form-item>
+            </a-col>
+            <a-col style="text-align: right">
+              <a-button @click="addEquipment" type="primary" icon="plus">&nbsp;&nbsp;添加器材&nbsp;&nbsp;</a-button>
             </a-col>
           </a-row>
         </a-form>
@@ -39,7 +46,6 @@
             </div>
           </template>
         </a-table>
-        <a-button @click="addEquipment" type="primary" icon="plus">&nbsp;&nbsp;添加器材&nbsp;&nbsp;</a-button>
         <a-modal v-model="showAddForm" footer>
           <a-form title="添加器材" @submit="handleSubmit" :form="form">
             <a-form-item :wrapperCol="{ span: 24 }" style="text-align: center">
@@ -134,6 +140,7 @@
   import Vue from 'vue'
   import Lightbox from 'vue-easy-lightbox'
   import moment from 'moment'
+  import ACol from "ant-design-vue/es/grid/Col";
   inject: ['reload'],
   Vue.use(Lightbox)
 
@@ -239,11 +246,20 @@
   export default {
     name: 'EquipPreview',
     components: {
+      ACol,
       PageView
     },
     data() {
       this.cacheData = eData.map(item => ({ ...item }))
       return {
+        labelCol: {
+          xs: { span: 24 },
+          sm: { span: 8 }
+        },
+        wrapperCol: {
+          xs: { span: 24 },
+          sm: { span: 15 }
+        },
         equipmentData: {
           id: '',
           name: '',
