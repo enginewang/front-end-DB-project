@@ -38,7 +38,7 @@
               </div>
             </template>
             <template slot="id" slot-scope="text">
-              {{"EQ" + text }}
+              {{ text }}
             </template>
             <template slot="status" slot-scope="text">
               <a-badge :status="text | statusTypeFilter" :text="text | statusFilter" />
