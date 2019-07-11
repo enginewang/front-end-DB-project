@@ -14,27 +14,7 @@ const allRepairSheet = () => {
         'details':'把手损坏，油漆脱落',//报修单详细信息的损坏描述部分
         'stuffNeeded':'齿轮 GPX x3',//报修单详细信息部分的器件需求部分
         'telNumber':'12332532',//报修用户的电话
-        'eqInStore':[{
-          'type':'履带',
-          'model':'GTX'
-        },
-      {
-        'type':'履带',
-        'model':'GTX'
-      },{
-        'type':'履带',
-        'model':'GTX'
-      }],//仓库所有器材的类型和型号的数组
-      'repairStaff':[
-        {
-          'repairId':'RSF15000007',
-          'repairName':'王小明'
-        },
-        {
-          'repairId':'RSF15000017',
-          'repairName':'李小华'
-        }
-      ]//所有可调度维修员的id和名字数组，按这种格式，最好按到维修器材的距离排序
+        
 
         
 
@@ -45,6 +25,10 @@ const allRepairSheet = () => {
         'cover': '/avatar.jpg',
         'type': '修理类型:2',
         'state': '1',
+        'details':'把手损坏，油漆脱落',//报修单详细信息的损坏描述部分
+        'stuffNeeded':'齿轮 GPX x3',//报修单详细信息部分的器件需求部分
+        'telNumber':'12332532',//报修用户的电话
+        
     },
     {
       
@@ -52,6 +36,9 @@ const allRepairSheet = () => {
       'cover': '/avatar.jpg',
       'type': '修理类型:2',
       'state': '2',
+      'details':'把手损坏，油漆脱落',//报修单详细信息的损坏描述部分
+        'stuffNeeded':'齿轮 GPX x3',//报修单详细信息部分的器件需求部分
+        'telNumber':'12332532',//报修用户的电话
   },
 
   {
@@ -60,6 +47,9 @@ const allRepairSheet = () => {
     'cover': '/avatar.jpg',
     'type': '修理类型:2',
     'state': '0',
+    'details':'把手损坏，油漆脱落',//报修单详细信息的损坏描述部分
+        'stuffNeeded':'齿轮 GPX x3',//报修单详细信息部分的器件需求部分
+        'telNumber':'12332532',//报修用户的电话
 },
 
 {
@@ -68,6 +58,9 @@ const allRepairSheet = () => {
   'cover': '/avatar.jpg',
   'type': '修理类型:2',
   'state': '1',
+  'details':'把手损坏，油漆脱落',//报修单详细信息的损坏描述部分
+        'stuffNeeded':'齿轮 GPX x3',//报修单详细信息部分的器件需求部分
+        'telNumber':'12332532',//报修用户的电话
 },
 
 {
@@ -76,6 +69,9 @@ const allRepairSheet = () => {
   'cover': '/avatar.jpg',
   'type': '修理类型:2',
   'state': '2',
+  'details':'把手损坏，油漆脱落',//报修单详细信息的损坏描述部分
+        'stuffNeeded':'齿轮 GPX x3',//报修单详细信息部分的器件需求部分
+        'telNumber':'12332532',//报修用户的电话
 },
 
 {
@@ -84,6 +80,9 @@ const allRepairSheet = () => {
   'cover': '/avatar.jpg',
   'type': '修理类型:2',
   'state': '0',
+  'details':'把手损坏，油漆脱落',//报修单详细信息的损坏描述部分
+        'stuffNeeded':'齿轮 GPX x3',//报修单详细信息部分的器件需求部分
+        'telNumber':'12332532',//报修用户的电话
 },
 
 {
@@ -92,6 +91,9 @@ const allRepairSheet = () => {
   'cover': '/avatar.jpg',
   'type': '修理类型:2',
   'state': '1',
+  'details':'把手损坏，油漆脱落',//报修单详细信息的损坏描述部分
+        'stuffNeeded':'齿轮 GPX x3',//报修单详细信息部分的器件需求部分
+        'telNumber':'12332532',//报修用户的电话
 },
 
 {
@@ -100,9 +102,15 @@ const allRepairSheet = () => {
   'cover': '/avatar.jpg',
   'type': '修理类型:2',
   'state': '2',
+  'details':'把手损坏，油漆脱落',//报修单详细信息的损坏描述部分
+        'stuffNeeded':'齿轮 GPX x3',//报修单详细信息部分的器件需求部分
+        'telNumber':'12332532',//报修用户的电话
 }
 
-    ]
+  ],
+  
+  
+    
   }
 }
 

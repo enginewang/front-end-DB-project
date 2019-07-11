@@ -48,7 +48,9 @@
         </standard-form-row>
       </a-form>
     </a-card>
-
+    <div class="button">
+      <a-button type='primary' @click="refreshTable">刷新表单</a-button>
+    </div>
     <div class="ant-pro-pages-list-projects-cardList">
       <a-list :loading="loading" :data-source="data" :grid="{ gutter: 24, xl: 4, lg: 3, md: 3, sm: 2, xs: 1 }" :pagination="pagination">
         <a-list-item slot="renderItem" slot-scope="item">
@@ -67,7 +69,13 @@
             </a-card-meta>
             <div class="cardItemContent" >
               <span>{{ item.updatedAt | fromNow }}</span>
-              <a-button type='primary' @click="showDynamicModal(item)">查看详情</a-button>
+
+
+
+
+              <router-link :to="{ name: 'repairDetail', params:{ details: item} }">查看详情</router-link>
+              <!--<a-button type='primary' @click="shownewPage(item)">查看详情</a-button>-->
+
               <!-- <div class="avatarList">
                 <avatar-list size="mini">
                   <avatar-list-item
@@ -135,7 +143,6 @@ export default {
           },
         defaultCurrent: 1,
         showQuickJumper: true,
-        onChange: this.onChange
       },
       idFilterValue: '',
       selection: '',
@@ -160,12 +167,23 @@ export default {
       return moment(date).fromNow()
     }
   },
-  mounted () {
+  created () {
     this.getList()
   },
   methods: {
-   
-    getList () {
+
+   refreshTable() {
+      this.loading = true
+      getRepairSheet().then(response => {
+      console.log('sssss',response.data)
+      pageData = response.data
+      this.loading = false
+      this.data = pageData
+      })
+
+    },
+
+        getList () {
       // this.$http.get('/list/article', { params: { count: 12 } }).then(res => {
       //   console.log('res', res)
       //   this.data = res.result
@@ -206,11 +224,11 @@ export default {
       }
       
       //单号不为空
-      if(result != null && result.length > 0 && !this.selection ){
+      if(result != null && result.length > 0 &&( !this.selection || this.selection == '')){
         this.data = result
         console.log('有ID无状态',this.idFilterValue)
       }
-      else if(result != null && result.length > 0 && this.selection ){
+      else if(result != null && result.length > 0 && this.selection && this.selection != '' ){
         console.log('有ID有状态',this.idFilterValue)
         var last = []
         for(let item of result){
@@ -220,7 +238,7 @@ export default {
         }
         this.data = last
       }
-      else if((result == null || result.length <= 0) && this.selection){
+      else if((result == null || result.length <= 0) && this.selection && this.selection != ''){
         console.log('无ID有状态',this.selection)
         var last = []
         for(let item of this.pageData){
@@ -269,23 +287,17 @@ export default {
       
     },
 
-    showDynamicModal (item) {
-      console.log("itemInfo",item)
-      this.$modal.show(repairSheetDetail,
-       {details: item},
-    {
-        adaptive: true,
-        draggable: false,
-        scrollable: true,
-        height: "auto",
-        width: "60%"})
-    },
+    
+    
   }
   
 }
 </script>
 
 <style lang="less" scoped>
+.button {
+    margin-top: 1rem
+  }
 .ant-pro-components-tag-select {
   /deep/ .ant-pro-tag-select .ant-tag {
     margin-right: 24px;
@@ -323,5 +335,6 @@ export default {
       flex: 0 1 auto;
     }
   }
+
 }
 </style>

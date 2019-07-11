@@ -1,343 +1,349 @@
 <template>
-  <a-card :bordered="false">
-    <div class="table-page-search-wrapper">
-      <a-form layout="inline">
-        <a-row :gutter="48">
-          <a-col :md="8" :sm="24" >
-            <a-form-item label="根据编号查找员工">
-              <a-input placeholder="请输入员工编号" v-model ="input"/>
-            </a-form-item>
-          </a-col>
-          <a-col :md="8" :sm="24">
-            <a-form-item label="根据姓名查找员工">
-              <a-input placeholder="请输入员工姓名" v-model ="input2"/>
-            </a-form-item>
-          </a-col>
-          <a-col :md="8" :sm="24">
-            <a-form-item label="根据账号查找员工">
-              <a-input placeholder="请输入员工账号" v-model ="input3"/>
-            </a-form-item>
-          </a-col>
-        </a-row>
-        <a-row :gutter ="48">
-        <a-col  style=" textAlign: 'left' margin-bottom: 24px">
+  <page-view title="员工管理">
+    <a-card :bordered="false">
+      <div class="table-page-search-wrapper">
+        <a-form layout="inline">
+          <a-row :gutter="48">
+            <a-col :md="8" :sm="24">
+              <a-form-item label="根据编号查找员工">
+                <a-input placeholder="请输入员工编号" v-model="input"/>
+              </a-form-item>
+            </a-col>
+            <a-col :md="8" :sm="24">
+              <a-form-item label="根据姓名查找员工">
+                <a-input placeholder="请输入员工姓名" v-model="input2"/>
+              </a-form-item>
+            </a-col>
+            <a-col :md="8" :sm="24">
+              <a-form-item label="根据账号查找员工">
+                <a-input placeholder="请输入员工账号" v-model="input3"/>
+              </a-form-item>
+            </a-col>
+          </a-row>
+          <a-row :gutter="48">
+            <a-col style=" textAlign: 'left' margin-bottom: 24px">
               <a-button
                 size="large"
                 class="button"
                 type="primary"
                 @click="onClickRefresh"
-              >刷新表单</a-button><br>
-          </a-col>
-          <a-col style=" textAlign: 'right' margin-bottom: 24px">
-          <div class = "addButton"><a-button type="primary" color="#108ee9" size= "large" icon="plus" @click="handleAdd">新建</a-button>
-          </div>
-          </a-col>
-        </a-row>
-      </a-form>
-    </div>
-
-    <a-table
-      size="default"
-      :columns="columns"
-      :dataSource="sfDataShow"
-      rowKey='id'
-      style=" margin-top: 24px"
-    >
-    
-      <div
-        slot="expandedRowRender"
-        slot-scope="record"
-        style="margin: 0">
-        <a-row
-          :gutter="24"
-          :style="{ marginBottom: '12px' }">
-          <a-col :span="12" v-for="(role, index) in record.detail" :key="index" :style="{ marginBottom: '12px' }">
-            
-            <a-col :lg="8" :md="24" :span="20">
-              <a-tag color='cyan'>{{ role.roleName }}：</a-tag>
+              >刷新表单
+              </a-button>
+              <br>
             </a-col>
-            <a-col :lg="14" >{{role.var}}</a-col>
-          </a-col>
-        </a-row>
+            <a-col style=" textAlign: 'right' margin-bottom: 24px">
+              <div class="addButton">
+                <a-button type="primary" color="#108ee9" size="large" icon="plus" @click="handleAdd">新建</a-button>
+              </div>
+            </a-col>
+          </a-row>
+        </a-form>
       </div>
-      <template slot = 'status' slot-scope="text">
-        <a-badge :status="text | statusTypeFilter" :text="text | statusFilter" />
-      </template>
-      <span slot="action" slot-scope="text, record">
+
+      <a-table
+        size="default"
+        :columns="columns"
+        :dataSource="sfDataShow"
+        rowKey='id'
+        style=" margin-top: 24px"
+      >
+
+        <div
+          slot="expandedRowRender"
+          slot-scope="record"
+          style="margin: 0">
+          <a-row
+            :gutter="24"
+            :style="{ marginBottom: '12px' }">
+            <a-col :span="12" v-for="(role, index) in record.detail" :key="index" :style="{ marginBottom: '12px' }">
+
+              <a-col :lg="8" :md="24" :span="20">
+                <a-tag color='cyan'>{{ role.roleName }}：</a-tag>
+              </a-col>
+              <a-col :lg="14">{{role.var}}</a-col>
+            </a-col>
+          </a-row>
+        </div>
+        <template slot='status' slot-scope="text">
+          <a-badge :status="text | statusTypeFilter" :text="text | statusFilter"/>
+        </template>
+        <span slot="action" slot-scope="text, record">
         <a @click="handleEdit(record)">修改</a>
-        <a-divider type="vertical" />
+        <a-divider type="vertical"/>
         <a @click="onClickDelete(record.id)">删除</a>
         <a-modal
-                title="确认删除"
-                v-model = "visible3"
-                @ok = "onClickDeleteRow"
-                >
-                <div class = "modal">
+          title="确认删除"
+          v-model="visible3"
+          @ok="onClickDeleteRow"
+        >
+                <div class="modal">
                     是否删除本条记录
                 </div></a-modal>
       </span>
-    </a-table>
+      </a-table>
 
-    <a-modal
-      title="修改员工信息"
-      style="top: 20px;"
-      :width="800"
-      v-model="visible"
-      @ok="handleOk"
-    >
-    
-      <a-form :from="(form)=>{this.form = form} " rowKey ='id' bordered>
-
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="员工编号"
-          hasFeedback
-          validateStatus="success"
-        >
-          <a-input placeholder="员工编号" v-model="newmdl.id" id="no" disabled="disabled" />
-        </a-form-item>
-
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="员工姓名"
-          hasFeedback
-          :validateStatus="successName"
-        >
-          <a-input placeholder="新名字" v-model="newmdl.name"  id="role_name" />
-        </a-form-item>
-
-
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="员工身份"
-          hasFeedback
-          validateStatus="success"
-        >
-          <a-select disabled v-model="mdl.status">
-            <a-select-option value="0">巡检员</a-select-option>
-            <a-select-option value="1">维修员</a-select-option>
-            <a-select-option value="2">调度员</a-select-option>
-          </a-select>
-        </a-form-item>
-
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="登录账号"
-          hasFeedback
-          validateStatus="success"
-        >
-          <a-input disabled="disabled" v-model="newmdl.accountID" id="role_name" />
-        </a-form-item>
-
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="密码"
-          hasFeedback
-          :validateStatus="successPassword"
-        >
-           <a-input placeholder="新密码(最少8位)" v-model="newmdl.password" id="role_password" />
-        </a-form-item>
-
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="电话"
-          hasFeedback
-          :validateStatus="successTel"
-        >
-           <a-input placeholder="新电话(11位)" v-model="newmdl.telNumber" id="role_telnumber" />
-        </a-form-item>
-
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="身份证号码"
-          hasFeedback
-          :validateStatus="successIdcard"
-        >
-           <a-input placeholder="重新填写身份证号码(18位)" v-model="newmdl.idCardNumber" id="role_idCard" />
-        </a-form-item>
-
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="每周工作开始时间"
-          hasFeedback
-          validateStatus="success"
-          visible = 'false'
-        >
-          <a-select :disabled ="ifRepair" v-model="newmdl.startTime" >
-            <a-select-option value="周一">周一</a-select-option>
-            <a-select-option value="周二">周二</a-select-option>
-            <a-select-option value="周三">周三</a-select-option>
-            <a-select-option value="周四">周四</a-select-option>
-            <a-select-option value="周五">周五</a-select-option>
-            <a-select-option value="周六">周六</a-select-option>
-            <a-select-option value="周日">周日</a-select-option>
-          </a-select>
-        </a-form-item>
-
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="每周工作结束时间"
-          hasFeedback
-          validateStatus="success"
-        >
-          <a-select  :disabled ="ifRepair" v-model="newmdl.endTime">
-            <a-select-option value="周一">周一</a-select-option>
-            <a-select-option value="周二">周二</a-select-option>
-            <a-select-option value="周三">周三</a-select-option>
-            <a-select-option value="周四">周四</a-select-option>
-            <a-select-option value="周五">周五</a-select-option>
-            <a-select-option value="周六">周六</a-select-option>
-            <a-select-option value="周日">周日</a-select-option>
-          </a-select>
-        </a-form-item>
-
-        <a-divider />
-          
-
-      </a-form>
       <a-modal
+        title="修改员工信息"
+        style="top: 20px;"
+        :width="800"
+        v-model="visible"
+        @ok="handleOk"
+      >
+
+        <a-form :from="(form)=>{this.form = form} " rowKey='id' bordered>
+
+          <a-form-item
+            :labelCol="labelCol"
+            :wrapperCol="wrapperCol"
+            label="员工编号"
+            hasFeedback
+            validateStatus="success"
+          >
+            <a-input placeholder="员工编号" v-model="newmdl.id" id="no" disabled="disabled"/>
+          </a-form-item>
+
+          <a-form-item
+            :labelCol="labelCol"
+            :wrapperCol="wrapperCol"
+            label="员工姓名"
+            hasFeedback
+            :validateStatus="successName"
+          >
+            <a-input placeholder="新名字" v-model="newmdl.name" id="role_name"/>
+          </a-form-item>
+
+
+          <a-form-item
+            :labelCol="labelCol"
+            :wrapperCol="wrapperCol"
+            label="员工身份"
+            hasFeedback
+            validateStatus="success"
+          >
+            <a-select disabled v-model="mdl.status">
+              <a-select-option value="0">巡检员</a-select-option>
+              <a-select-option value="1">维修员</a-select-option>
+              <a-select-option value="2">调度员</a-select-option>
+            </a-select>
+          </a-form-item>
+
+          <a-form-item
+            :labelCol="labelCol"
+            :wrapperCol="wrapperCol"
+            label="登录账号"
+            hasFeedback
+            validateStatus="success"
+          >
+            <a-input disabled="disabled" v-model="newmdl.accountID" id="role_name"/>
+          </a-form-item>
+
+          <a-form-item
+            :labelCol="labelCol"
+            :wrapperCol="wrapperCol"
+            label="密码"
+            hasFeedback
+            :validateStatus="successPassword"
+          >
+            <a-input placeholder="新密码(最少8位)" v-model="newmdl.password" id="role_password"/>
+          </a-form-item>
+
+          <a-form-item
+            :labelCol="labelCol"
+            :wrapperCol="wrapperCol"
+            label="电话"
+            hasFeedback
+            :validateStatus="successTel"
+          >
+            <a-input placeholder="新电话(11位)" v-model="newmdl.telNumber" id="role_telnumber"/>
+          </a-form-item>
+
+          <a-form-item
+            :labelCol="labelCol"
+            :wrapperCol="wrapperCol"
+            label="身份证号码"
+            hasFeedback
+            :validateStatus="successIdcard"
+          >
+            <a-input placeholder="重新填写身份证号码(18位)" v-model="newmdl.idCardNumber" id="role_idCard"/>
+          </a-form-item>
+
+          <a-form-item
+            :labelCol="labelCol"
+            :wrapperCol="wrapperCol"
+            label="每周工作开始时间"
+            hasFeedback
+            validateStatus="success"
+            visible='false'
+          >
+            <a-select :disabled="ifRepair" v-model="newmdl.startTime">
+              <a-select-option value="周一">周一</a-select-option>
+              <a-select-option value="周二">周二</a-select-option>
+              <a-select-option value="周三">周三</a-select-option>
+              <a-select-option value="周四">周四</a-select-option>
+              <a-select-option value="周五">周五</a-select-option>
+              <a-select-option value="周六">周六</a-select-option>
+              <a-select-option value="周日">周日</a-select-option>
+            </a-select>
+          </a-form-item>
+
+          <a-form-item
+            :labelCol="labelCol"
+            :wrapperCol="wrapperCol"
+            label="每周工作结束时间"
+            hasFeedback
+            validateStatus="success"
+          >
+            <a-select :disabled="ifRepair" v-model="newmdl.endTime">
+              <a-select-option value="周一">周一</a-select-option>
+              <a-select-option value="周二">周二</a-select-option>
+              <a-select-option value="周三">周三</a-select-option>
+              <a-select-option value="周四">周四</a-select-option>
+              <a-select-option value="周五">周五</a-select-option>
+              <a-select-option value="周六">周六</a-select-option>
+              <a-select-option value="周日">周日</a-select-option>
+            </a-select>
+          </a-form-item>
+
+          <a-divider/>
+
+
+        </a-form>
+        <a-modal
           title="确认修改"
-          v-model ="visible2"
-          @ok ="handlenewOk"
-          >
-          <div class = "modal">
-              是否确认修改
-          </div></a-modal>
-    </a-modal>
-
-
-    <a-modal
-      title="添加新员工"
-      style="top: 20px;"
-      :width="800"
-      v-model="visible4"
-      @ok="handlenewnewOk"
-    >
-      <a-form :from="(form)=>{this.form = form} " rowKey ='id' bordered>
-
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="员工姓名"
-          :validateStatus="successAddName"
-          hasFeedback
+          v-model="visible2"
+          @ok="handlenewOk"
         >
-          <a-input placeholder="请输入新用户姓名" v-model="addmdl.name" id="role_name" />
-        </a-form-item>
-
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="员工身份"
-          hasFeedback
-          validateStatus="success"
-        >
-          <a-select v-model="addmdl.status" >
-            <a-select-option value="0">巡检员</a-select-option>
-            <a-select-option value="1">维修员</a-select-option>
-            <a-select-option value="2">调度员</a-select-option>
-          </a-select>
-        </a-form-item>
+          <div class="modal">
+            是否确认修改
+          </div>
+        </a-modal>
+      </a-modal>
 
 
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="密码"
-          hasFeedback
-          :validateStatus="successAddPassword"
-        >
-           <a-input placeholder="请输入新用户密码(最少8位)" v-model="addmdl.password" id="role_password" />
-        </a-form-item>
-
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="电话"
-          hasFeedback
-          :validateStatus="successAddTel"
-        >
-           <a-input placeholder="请填写新用户电话(11位)" v-model="addmdl.telNumber" id="role_telnumber" />
-        </a-form-item>
-
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="身份证号码"
-          hasFeedback
-          :validateStatus="successAddIdNumber"
-        >
-           <a-input placeholder="请填写新用户身份证号码(18位)" v-model="addmdl.idCardNumber" id="role_idCard" />
-        </a-form-item>
-
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="每周工作开始时间"
-          validateStatus="success"
-          hasFeedback
-        >
-          <a-select :disabled="ifAddRepair" v-model="addmdl.startTime">
-            <a-select-option value="周一">周一</a-select-option>
-            <a-select-option value="周二">周二</a-select-option>
-            <a-select-option value="周三">周三</a-select-option>
-            <a-select-option value="周四">周四</a-select-option>
-            <a-select-option value="周五">周五</a-select-option>
-            <a-select-option value="周六">周六</a-select-option>
-            <a-select-option value="周日">周日</a-select-option>
-          </a-select>
-        </a-form-item>
-
-        <a-form-item
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          label="每周工作结束时间"
-          validateStatus="success"
-          hasFeedback
-        >
-          <a-select :disabled="ifAddRepair" v-model="addmdl.endTime">
-            <a-select-option value="周一">周一</a-select-option>
-            <a-select-option value="周二">周二</a-select-option>
-            <a-select-option value="周三">周三</a-select-option>
-            <a-select-option value="周四">周四</a-select-option>
-            <a-select-option value="周五">周五</a-select-option>
-            <a-select-option value="周六">周六</a-select-option>
-            <a-select-option value="周日">周日</a-select-option>
-          </a-select>
-        </a-form-item>
-
-          
-
-      </a-form>
       <a-modal
-          title="确认添加"
-          v-model ="visible5"
-          @ok ="onClickNewRow"
+        title="添加新员工"
+        style="top: 20px;"
+        :width="800"
+        v-model="visible4"
+        @ok="handlenewnewOk"
+      >
+        <a-form :from="(form)=>{this.form = form} " rowKey='id' bordered>
+
+          <a-form-item
+            :labelCol="labelCol"
+            :wrapperCol="wrapperCol"
+            label="员工姓名"
+            :validateStatus="successAddName"
+            hasFeedback
           >
-          <div class = "modal">
-              是否确认添加
-          </div></a-modal>
-    </a-modal>
+            <a-input placeholder="请输入新用户姓名" v-model="addmdl.name" id="role_name"/>
+          </a-form-item>
+
+          <a-form-item
+            :labelCol="labelCol"
+            :wrapperCol="wrapperCol"
+            label="员工身份"
+            hasFeedback
+            validateStatus="success"
+          >
+            <a-select v-model="addmdl.status">
+              <a-select-option value="0">巡检员</a-select-option>
+              <a-select-option value="1">维修员</a-select-option>
+              <a-select-option value="2">调度员</a-select-option>
+            </a-select>
+          </a-form-item>
 
 
-    
+          <a-form-item
+            :labelCol="labelCol"
+            :wrapperCol="wrapperCol"
+            label="密码"
+            hasFeedback
+            :validateStatus="successAddPassword"
+          >
+            <a-input placeholder="请输入新用户密码(最少8位)" v-model="addmdl.password" id="role_password"/>
+          </a-form-item>
 
-  </a-card>
+          <a-form-item
+            :labelCol="labelCol"
+            :wrapperCol="wrapperCol"
+            label="电话"
+            hasFeedback
+            :validateStatus="successAddTel"
+          >
+            <a-input placeholder="请填写新用户电话(11位)" v-model="addmdl.telNumber" id="role_telnumber"/>
+          </a-form-item>
+
+          <a-form-item
+            :labelCol="labelCol"
+            :wrapperCol="wrapperCol"
+            label="身份证号码"
+            hasFeedback
+            :validateStatus="successAddIdNumber"
+          >
+            <a-input placeholder="请填写新用户身份证号码(18位)" v-model="addmdl.idCardNumber" id="role_idCard"/>
+          </a-form-item>
+
+          <a-form-item
+            :labelCol="labelCol"
+            :wrapperCol="wrapperCol"
+            label="每周工作开始时间"
+            validateStatus="success"
+            hasFeedback
+          >
+            <a-select :disabled="ifAddRepair" v-model="addmdl.startTime">
+              <a-select-option value="周一">周一</a-select-option>
+              <a-select-option value="周二">周二</a-select-option>
+              <a-select-option value="周三">周三</a-select-option>
+              <a-select-option value="周四">周四</a-select-option>
+              <a-select-option value="周五">周五</a-select-option>
+              <a-select-option value="周六">周六</a-select-option>
+              <a-select-option value="周日">周日</a-select-option>
+            </a-select>
+          </a-form-item>
+
+          <a-form-item
+            :labelCol="labelCol"
+            :wrapperCol="wrapperCol"
+            label="每周工作结束时间"
+            validateStatus="success"
+            hasFeedback
+          >
+            <a-select :disabled="ifAddRepair" v-model="addmdl.endTime">
+              <a-select-option value="周一">周一</a-select-option>
+              <a-select-option value="周二">周二</a-select-option>
+              <a-select-option value="周三">周三</a-select-option>
+              <a-select-option value="周四">周四</a-select-option>
+              <a-select-option value="周五">周五</a-select-option>
+              <a-select-option value="周六">周六</a-select-option>
+              <a-select-option value="周日">周日</a-select-option>
+            </a-select>
+          </a-form-item>
+
+
+        </a-form>
+        <a-modal
+          title="确认添加"
+          v-model="visible5"
+          @ok="onClickNewRow"
+        >
+          <div class="modal">
+            是否确认添加
+          </div>
+        </a-modal>
+      </a-modal>
+
+
+    </a-card>
+  </page-view>
 </template>
 
 <script>
 import { STable } from '@/components'
+import { PageView } from '@/layouts'
 import { getStaffSheet, deleteStaffSheetRow, modifyStaffSheetRow, addStaffSheetRow } from '@/api/staff'
 import Fuse from 'fuse.js'
+import md5 from 'md5'
 
 const statusMap = {
   0: {
@@ -358,6 +364,7 @@ export default {
   name: 'TableList',
   inject: ['reload'],
   components: {
+    PageView,
     STable
   },
   data () {
@@ -432,12 +439,7 @@ export default {
           align:'center',
           dataIndex: 'accountID'
         },
-        {
-          title: '员工密码',
-          align:'center',
-          dataIndex: 'password',
-          
-        }, {
+         {
           title: '员工身份',
           align:'center',
           dataIndex: 'status',
@@ -592,7 +594,6 @@ export default {
       this.newmdl.id = this.mdl.id
       this.newmdl.name = this.mdl.name
       this.newmdl.accountID = this.mdl.accountID
-      this.newmdl.password = this.mdl.password
       this.newmdl.status = this.mdl.status
       this.newmdl.telNumber = this.mdl.detail[0].var
       this.newmdl.idCardNumber=this.mdl.detail[1].var
@@ -617,6 +618,7 @@ export default {
     handlenewOk(){
       this.visible =false
       this.visible2 = false
+      this.newmdl.password = md5(this.newmdl.password)
       modifyStaffSheetRow(this.newmdl).then((response) => {
         this.modifyInfo = response.info
         if(this.modifyInfo === 'ok'){
@@ -648,7 +650,7 @@ export default {
         return;
       }
       this.visible5 = true
-     
+
     },
     onClickDelete (id) {
       console.log(id)
@@ -662,7 +664,7 @@ export default {
       const newData = [...this.sfDataShow]
       console.log(newData)
       const target = newData.filter(item => this.todelete === item.id)[0]
-      console.log(target) 
+      console.log(target)
       deleteStaffSheetRow(target.id).then((response) => {
         this.deleteInfo = response.info
         if(this.deleteInfo === 'ok'){
@@ -682,7 +684,7 @@ export default {
         });
         }
       })
-      
+
     },
     onClickRefresh(){
       this.reload()
@@ -695,13 +697,12 @@ export default {
       this.advanced = !this.advanced
     },
     handleAdd () {
-
       this.visible4 = true
-    
     },
     onClickNewRow(){
       this.visible4 = false
       this.visible5 = false
+       this.addmdl.password = md5(this.addmdl.password)
        addStaffSheetRow(this.addmdl).then((response) => {
         this.addInfo = response.info1
         this.accountInfo = response.info2

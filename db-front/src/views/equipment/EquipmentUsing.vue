@@ -1,56 +1,58 @@
 <template>
-  <div>
-    <a-card :bordered="false">
-      <br>
-      <a-form class="ant-advanced-search-form" :form="form" inline>
-        <a-row :gutter="24">
-          <a-col :md="6" :sm="24">
-            <a-form-item>
-              <label>器材编号：</label>
-              <a-input placeholder="请输入器材编号" v-model="inputID"/>
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="24">
-            <a-form-item>
-              <label>型号：</label>
-              <a-input placeholder="请输入型号" v-model="inputmodel"/>
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="24">
-            <a-form-item>
-              <label>地址：</label>
-              <a-input placeholder="请输入地址" v-model="inputAddress"/>
-            </a-form-item>
-          </a-col>
-        </a-row>
-      </a-form>
-      <br>
-      <div>
-        <a-table :columns="columns" :dataSource="eDataShow" rowKey="id" bordered>
-          <template
-                  v-for="col in ['id', 'type', 'damage', 'address', 'status']"
-                  :slot="col"
-                  slot-scope="text"
-          >
-            <div :key="col">
+  <page-view title="在用器材">
+    <div>
+      <a-card :bordered="false">
+        <br>
+        <a-form class="ant-advanced-search-form" :form="form" inline>
+          <a-row :gutter="24">
+            <a-col :md="6" :sm="24">
+              <a-form-item>
+                <label>器材编号：</label>
+                <a-input placeholder="请输入器材编号" v-model="inputID"/>
+              </a-form-item>
+            </a-col>
+            <a-col :md="6" :sm="24">
+              <a-form-item>
+                <label>型号：</label>
+                <a-input placeholder="请输入型号" v-model="inputmodel"/>
+              </a-form-item>
+            </a-col>
+            <a-col :md="6" :sm="24">
+              <a-form-item>
+                <label>地址：</label>
+                <a-input placeholder="请输入地址" v-model="inputAddress"/>
+              </a-form-item>
+            </a-col>
+          </a-row>
+        </a-form>
+        <br>
+        <div>
+          <a-table :columns="columns" :dataSource="eDataShow" rowKey="id" bordered>
+            <template
+              v-for="col in ['id', 'type', 'damage', 'address', 'status']"
+              :slot="col"
+              slot-scope="text"
+            >
+              <div :key="col">
+                {{ text }}
+              </div>
+            </template>
+            <template slot="id" slot-scope="text">
               {{ text }}
-            </div>
-          </template>
-          <template slot="id" slot-scope="text">
-            {{"EQ" + text }}
-          </template>
-          <template slot="status" slot-scope="text">
-            <a-badge :status="text | statusTypeFilter" :text="text | statusFilter" />
-          </template>
-          <template slot="toDetail" slot-scope="text, record">
-            <div>
-              <router-link :to="{ name: 'EquipDetail', params:{ id: getID(record.id)} }">器材详情</router-link>
-            </div>
-          </template>
-        </a-table>
-      </div>
-    </a-card>
-  </div>
+            </template>
+            <template slot="status" slot-scope="text">
+              <a-badge :status="text | statusTypeFilter" :text="text | statusFilter" />
+            </template>
+            <template slot="toDetail" slot-scope="text, record">
+              <div>
+                <router-link :to="{ name: 'EquipDetail', params:{ id: getID(record.id)} }">器材详情</router-link>
+              </div>
+            </template>
+          </a-table>
+        </div>
+      </a-card>
+    </div>
+  </page-view>
 </template>
 
 <script>

@@ -49,7 +49,6 @@
 
 <script>
 import { getWarehousePreview, getAllAddress } from '@/api/warehouse'
-
 import { PageView } from '@/layouts'
 import Fuse from 'fuse.js'
 
