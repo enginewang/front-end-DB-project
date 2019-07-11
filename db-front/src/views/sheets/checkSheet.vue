@@ -1,101 +1,108 @@
 <template>
-  <div>
+  <page-view title="巡检单管理">
     <div>
-      <a-form class="ant-advanced-search-form" :form="form">
-        <a-row :gutter="24">
-          <a-col :md="8" :sm="24">
-            <a-form-item label="巡检单单号">
-              <a-input placeholder="请输入巡检单单号" v-model="input"/>
-            </a-form-item>
+      <div>
+        <a-form class="ant-advanced-search-form" :form="form">
+          <a-row :gutter="24">
+            <a-col :md="8" :sm="24">
+              <a-form-item label="巡检单单号">
+                <a-input placeholder="请输入巡检单单号" v-model="input"/>
+              </a-form-item>
             </a-col>
-        </a-row>
-        <a-row :gutter = '24'>
-            <a-col :md="8" :sm="24" :lg = '10'>
-            <a-form-item label="根据编号查找巡检员">
-              <a-input placeholder="请输入巡检员编号" v-model="input2"/>
-            </a-form-item>
-            </a-col>
-
-             <a-col :md="8" :sm="24" :lg = '10'>
-            <a-form-item label="根据姓名查找巡检员">
-              <a-input placeholder="请输入巡检员姓名" v-model="input3"/>
-            </a-form-item>
+          </a-row>
+          <a-row :gutter='24'>
+            <a-col :md="8" :sm="24" :lg='10'>
+              <a-form-item label="根据编号查找巡检员">
+                <a-input placeholder="请输入巡检员编号" v-model="input2"/>
+              </a-form-item>
             </a-col>
 
-        </a-row>
-        <a-row>
+            <a-col :md="8" :sm="24" :lg='10'>
+              <a-form-item label="根据姓名查找巡检员">
+                <a-input placeholder="请输入巡检员姓名" v-model="input3"/>
+              </a-form-item>
+            </a-col>
+
+          </a-row>
+          <a-row>
             <a-col :span="4" style=" textAlign: 'left';margin-bottom: 24px">
               <a-button
                 size="large"
                 class="button"
                 type="primary"
                 @click="onClickRefresh"
-              >刷新表单</a-button>
-          </a-col>
-        </a-row>
-      </a-form>
-    </div>
-    <!-- table -->
-    <a-card>
-    <a-table :columns="columns" :dataSource="DataShow" rowKey = 'id' bordered>
-        <template
-        v-for="col in ['id','potrolID', '','eqID','checkTime','checkArea']"
-        :slot="col"
-        slot-scope="text"
-        >
-        <div :key="col">
-          {{ text }}
-        </div>
-      </template>
-      <template slot="checkPic" slot-scope="text">
-        <!--<div>
-          <a-avatar slot="avatar" size="large" shape="square" :src="text"/>
-        </div>-->
-        <div id="app">
-          <div class="">
-          <div
-            class="pic"
-            @click="() => showImg(text)"
+              >刷新表单
+              </a-button>
+            </a-col>
+          </a-row>
+        </a-form>
+      </div>
+      <!-- table -->
+      <a-card>
+        <a-table :columns="columns" :dataSource="DataShow" rowKey='id' bordered>
+          <template
+            v-for="col in ['id','potrolID', '','eqID','checkTime','checkArea']"
+            :slot="col"
+            slot-scope="text"
           >
-          <a-avatar :src="text"/>
-          </div>
-        </div>
-        <vue-easy-lightbox
-          :visible="visible"
-          :imgs="src"
-          @hide="handleHide"
-        ></vue-easy-lightbox>
-        </div>
-      </template>
-      <template slot="operation" slot-scope="text, record">
-          <div class="button">
+            <div :key="col">
+              {{ text }}
+            </div>
+          </template>
+          <template slot="checkPic" slot-scope="text">
+            <!--<div>
+              <a-avatar slot="avatar" size="large" shape="square" :src="text"/>
+            </div>-->
+            <div id="app">
+              <div class="">
+                <div
+                  class="pic"
+                  @click="() => showImg(text)"
+                >
+                  <a-avatar :src="text"/>
+                </div>
+              </div>
+              <vue-easy-lightbox
+                :visible="visible"
+                :imgs="src"
+                @hide="handleHide"
+              ></vue-easy-lightbox>
+            </div>
+          </template>
+          <template slot="operation" slot-scope="text, record">
+            <div class="button">
               <a-button
                 size="small"
-                type ="danger"
+                type="danger"
                 @click="onClickDelete(record.id)"
-              >删除</a-button>
+              >删除
+              </a-button>
               <a-modal
                 title="确认删除"
-                v-model = "visible2"
-                @ok = "onClickDeleteRow"
-                >
-                <div class = "modal">
-                    是否删除本条记录
-                </div></a-modal>
+                v-model="visible2"
+                @ok="onClickDeleteRow"
+              >
+                <div class="modal">
+                  是否删除本条记录
+                </div>
+              </a-modal>
             </div>
-        </template>
-    </a-table>
-    </a-card>
-    <!-- table end -->
-    <!-- add bar -->
-    <!-- add bar end -->
-  </div>
+          </template>
+        </a-table>
+      </a-card>
+      <!-- table end -->
+      <!-- add bar -->
+      <!-- add bar end -->
+    </div>
+  </page-view>
 </template>
+
 <script>
 import { getCheckSheet, deleteCheckSheetRow } from '@/api/sheets'
 import Vue from 'vue'
 import Fuse from 'fuse.js'
 import Lightbox from 'vue-easy-lightbox'
+import { PageView } from '@/layouts'
 
 Vue.use(Lightbox)
 
@@ -144,6 +151,9 @@ const Data = []
 const DataShow = []
 
 export default {
+  components: {
+    PageView
+  },
   inject: ['reload'],
   data() {
     this.cacheData = Data.map(item => ({ ...item }))

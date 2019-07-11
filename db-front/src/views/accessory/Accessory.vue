@@ -1,5 +1,5 @@
 <template>
-  <page-view title="仓储器材">
+  <page-view title="配件管理">
     <div id="layout">
       <a-layout>
         <a-layout-header>增加配件</a-layout-header>
