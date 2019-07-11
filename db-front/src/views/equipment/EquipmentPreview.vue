@@ -27,7 +27,7 @@
         </a-form>
         <br />
         <a-table :columns="columns" :dataSource="eDataShow" rowKey="id" bordered>
-          <template v-for="col in ['id']" :slot="col" slot-scope="text, record">{{text}}</template>
+          <template v-for="col in ['id']" :slot="col" slot-scope="text">{{text}}</template>
           <template slot="status" slot-scope="text">
             <a-badge :status="text | statusTypeFilter" :text="text | statusFilter" />
           </template>

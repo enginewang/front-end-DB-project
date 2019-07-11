@@ -39,9 +39,9 @@
                     @change="onChange"
                     v-decorator="['rate']"
                   >
-                    <a-select-option value="状态：0">用户提交</a-select-option>
-                    <a-select-option value="状态：1">巡检员提交</a-select-option>
-                    <a-select-option value="状态：2">已调度</a-select-option>
+                    <a-select-option value="0">用户提交</a-select-option>
+                    <a-select-option value="1">巡检员提交</a-select-option>
+                    <a-select-option value="2">已调度</a-select-option>
                   </a-select>
                 </a-form-item>
               </a-col>
