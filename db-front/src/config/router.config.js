@@ -113,12 +113,6 @@ export const asyncRouterMap = [
         meta: {title: '表单', keepAlive: true, icon: "table"},
         children: [
           {
-            path: '/sheets/workSheet',
-            name: 'workSheet',
-            component: () => import( '@/views/sheets/workSheet' ),
-            meta: {title: '工单', keepAlive: false, icon: 'snippets'}
-          },
-          {
             path: '/sheets/repairSheet',
             name: 'repairSheet',
             component: () => import( '@/views/sheets/repairSheet' ),
@@ -129,6 +123,12 @@ export const asyncRouterMap = [
             name: 'checkSheet',
             component: () => import( '@/views/sheets/checkSheet' ),
             meta: {title: '巡检单', keepAlive: false, icon: 'copy'}
+          },
+          {
+            path: '/sheets/workSheet',
+            name: 'workSheet',
+            component: () => import( '@/views/sheets/workSheet' ),
+            meta: {title: '工单', keepAlive: false, icon: 'snippets'}
           },
           {
             path: '/sheets/components/:details',

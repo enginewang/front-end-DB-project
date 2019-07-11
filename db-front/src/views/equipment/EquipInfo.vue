@@ -18,7 +18,7 @@
                 <img :src="icon">
               </div>
               <div class="username">{{name}}</div>
-              <div class="bio">每天锻炼，身体棒棒</div>
+              <div class="bio">每天锻炼，身体倍棒</div>
             </div>
             <a-divider/>
             <div class="account-center-detail">
