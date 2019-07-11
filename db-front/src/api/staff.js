@@ -20,7 +20,10 @@ export function deleteStaffSheetRow (data) {
   return axios({
     url: api.staffSheetDelete,
     method: 'post',
-    data: data
+    data: data,
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
   })
 }
 
@@ -28,7 +31,10 @@ export function modifyStaffSheetRow (data) {
   return axios({
     url: api.staffSheetModify,
     method: 'post',
-    data: data
+    data: data,
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
   })
 }
 
@@ -36,6 +42,9 @@ export function addStaffSheetRow (data) {
   return axios({
     url: api.staffSheetAdd,
     method: 'post',
-    data: data
+    data: data,
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
   })
 }

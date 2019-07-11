@@ -5,7 +5,8 @@ const api = {
   checkSheet: '/sheets/checkSheet',
   repairSheetDetail: '/sheets/repairSheetDetail',
   workSheetRow: '/sheets/workSheetRow',
-  checkSheetRow: '/sheets/checkSheetRow'
+  checkSheetRow: '/sheets/checkSheetRow',
+  scheduleDetail:'/sheets/scheduleDetail'
 }
 
 export default api
@@ -27,7 +28,10 @@ export function deleteWorkSheetRow (data) {
   return axios({
     url: api.workSheetRow,
     method: 'post',
-    data: data
+    data: data,
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
   })
 }
 
@@ -35,14 +39,27 @@ export function deleteCheckSheetRow (data) {
   return axios({
     url: api.checkSheetRow,
     method: 'post',
-    data: data
+    data: data,
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
   })
 }
 
-export function getRepairSheetById (data) {
+export function getRepairSheetDetail () {
   return axios({
     url: api.repairSheetDetail,
+    method: 'get'
+  })
+}
+
+export function submitScheduleDetail (data) {
+  return axios({
+    url: api.scheduleDetail,
     method: 'post',
-    data: data
+    data: data,
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
   })
 }
