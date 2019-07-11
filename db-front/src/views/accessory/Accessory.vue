@@ -101,7 +101,7 @@
       </div>
       <!-- table -->
       <a-card>
-        <a-table :columns="columns" :dataSource="DataShow"/>
+        <a-table :columns="columns" :dataSource="DataShow" :loading="loading"/>
       </a-card>
       <!-- table end -->
     </a-layout>
@@ -118,6 +118,7 @@ export default {
     data() {
       return {
         //form
+        loading:'true',
         input:'',
         visible: false,
         confirmLoading: false,
@@ -228,10 +229,12 @@ export default {
       },
       //  refresh Table
       onClickReload () {
+        this.loading=true
         getAccessoryInWarehouse().then((response) => {
           this.Data = [...response.data]
           this.DataShow = this.Data
           this.input = ''
+          this.loading=false
         })
       },
       onClickClearSelect () {
@@ -256,6 +259,7 @@ export default {
       getAccessoryInWarehouse().then((response) => {
         this.Data = [...response.data]
         this.DataShow = this.Data
+        this.loading = false
         console.log(response)
       })
       //get all warehouseName
