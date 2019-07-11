@@ -22,7 +22,7 @@
                 {rules: [{ required: true, message: '请输入帐户名或者邮箱' }, { validator: handleUsernameOrEmail }], validateTrigger: 'change'}
               ]"
             >
-              <a-icon slot="prefix" type="user" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+              <a-icon slot="prefix" type="user" :style="{ color: 'rgba(0,0,0,.25)' }" />
             </a-input>
           </a-form-item>
 
@@ -37,7 +37,7 @@
                 {rules: [{ required: true, message: '请输入密码' }], validateTrigger: 'blur'}
               ]"
             >
-              <a-icon slot="prefix" type="lock" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+              <a-icon slot="prefix" type="lock" :style="{ color: 'rgba(0,0,0,.25)' }" />
             </a-input>
           </a-form-item>
         </a-tab-pane>
@@ -52,7 +52,7 @@
           :disabled="state.loginBtn"
         >确定</a-button>
       </a-form-item>
-     </a-form>
+    </a-form>
   </div>
 </template>
 
@@ -63,7 +63,7 @@ import { timeFix } from '@/utils/util'
 import { getSmsCaptcha, get2step } from '@/api/login'
 
 export default {
-  data () {
+  data() {
     return {
       customActiveKey: 'tab1',
       loginBtn: false,
@@ -83,7 +83,7 @@ export default {
   methods: {
     ...mapActions(['Login', 'Logout']),
     // handler
-    handleUsernameOrEmail (rule, value, callback) {
+    handleUsernameOrEmail(rule, value, callback) {
       const { state } = this
       const regex = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/
       if (regex.test(value)) {
@@ -93,7 +93,7 @@ export default {
       }
       callback()
     },
-    handleSubmit (e) {
+    handleSubmit(e) {
       e.preventDefault()
       const {
         form: { validateFields },
@@ -104,7 +104,7 @@ export default {
 
       state.loginBtn = true
 
-      const validateFieldsKey = ['username', 'password'] 
+      const validateFieldsKey = ['username', 'password']
 
       validateFields(validateFieldsKey, { force: true }, (err, values) => {
         if (!err) {
@@ -113,9 +113,9 @@ export default {
           delete loginParams.username
           loginParams[!state.loginType ? 'email' : 'username'] = values.username
           loginParams.password = md5(values.password)
-          console.log('para',loginParams)
+          console.log('para', loginParams)
           Login(loginParams)
-            .then((res) => this.loginSuccess(res))
+            .then(res => this.loginSuccess(res))
             .catch(err => this.requestFailed(err))
             .finally(() => {
               state.loginBtn = false
@@ -127,7 +127,7 @@ export default {
         }
       })
     },
-    loginSuccess (res) {
+    loginSuccess(res) {
       console.log(res)
       this.$router.push({ name: 'homepage' })
       // 延迟 1 秒显示欢迎信息
@@ -138,7 +138,7 @@ export default {
         })
       }, 1000)
     },
-    requestFailed (err) {
+    requestFailed(err) {
       this.$notification['error']({
         message: '错误',
         description: ((err.response || {}).data || {}).message || '请求出现错误，请稍后再试',

@@ -20,14 +20,10 @@ export function login(parameter) {
   })
 }
 
-export function postInfo(data) {
+export function getInfo(data) {
   return axios({
     url: '/user/info',
-    method: 'post',
-    data: data,
-    headers: {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
+    method: 'get',
   })
 }
 
