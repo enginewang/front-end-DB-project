@@ -166,7 +166,7 @@ export const asyncRouterMap = [
             path: '/server/Swagger',
             name: 'Swagger',
             component: () => import( '@/views/server/Swagger' ),
-            meta: {title: '监控', keepAlive: false, icon: codeAPI}
+            meta: {title: 'API', keepAlive: false, icon: codeAPI}
           },
         ]
       },

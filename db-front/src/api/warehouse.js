@@ -6,7 +6,8 @@ const api = {
   allWarehouse: '/warehouse/allWarehouse',
   allAddress: '/warehouse/allAddress',
   goods: '/warehouse/goods',
-  schedule: '/warehouse/schedule'
+  schedule: '/warehouse/schedule',
+  all: '/map/getAll'
 }
 
 export default api
@@ -15,6 +16,13 @@ export function getWarehousePreview() {
   return axios({
     url: api.preview,
     method: 'get'
+  })
+}
+
+export function getAll(){
+  return axios({
+    url: api.all,
+    method: 'get',
   })
 }
 
