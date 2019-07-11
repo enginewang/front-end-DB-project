@@ -9,7 +9,13 @@
           <a-card :bordered="false">
             <!-- refresh button -->
             <div class="button-group">
-              <a-button size="large" class="button" type="primary" @click="reload()">刷新</a-button>
+              <a-button
+                size="large"
+                class="button"
+                type="primary"
+                @click="reload()"
+                icon="reload"
+              >刷新</a-button>
             </div>
             <!-- refresh end -->
             <!-- equipment table -->
@@ -294,12 +300,17 @@ export default {
         .then(response => {
           this.equipment = [...response.data]
           this.equipmentShow = this.equipment
+          this.$notification.open({
+            message: '调度成功!',
+            description: '请继续你的操作',
+            icon: <a-icon type="exclamation-circle" style="color: blue" />
+          })
         })
         .catch(err => {
           this.$notification.open({
             message: '添加失败',
             description: '请查看控制台信息',
-            icon: <a-icon type="exclamation-circle" style="color: #108ee9" />
+            icon: <a-icon type="exclamation-circle" style="color: blue" />
           })
           console.log(err)
         })
@@ -312,6 +323,11 @@ export default {
         .then(response => {
           this.accessory = [...response.data]
           this.accessoryShow = this.accessory
+          this.$notification.open({
+            message: '调度成功!',
+            description: '请继续你的操作',
+            icon: <a-icon type="exclamation-circle" style="color: #108ee9" />
+          })
         })
         .catch(err => {
           this.$notification.open({

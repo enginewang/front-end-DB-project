@@ -14,7 +14,13 @@
                 </a-col>
                 <a-col :span="24" :style="{ textAlign: 'right' }">
                   <div class="button-group">
-                    <a-button size="large" class="button" type="primary" @click="onClickRefresh">刷新</a-button>
+                    <a-button
+                      size="large"
+                      class="button"
+                      type="primary"
+                      @click="onClickRefresh"
+                      icon="reload"
+                    >刷新</a-button>
                     <a-button
                       size="large"
                       class="button"
