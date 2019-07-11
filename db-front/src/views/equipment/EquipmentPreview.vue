@@ -72,8 +72,7 @@
               <a-date-picker
                 name="productTime"
                 style="width: 100%"
-                format="YYYY-MM-DD HH:mm:ss"
-                :showTime="{ defaultValue: moment('00:00:00', 'HH:mm:ss') }"
+                format="YYYY.MM.DD"
                 v-decorator="[
             'productTime',
             {rules: [{ required: true, message: '请选择出厂日期' }]}
@@ -135,7 +134,20 @@
   import Vue from 'vue'
   import Lightbox from 'vue-easy-lightbox'
   import moment from 'moment'
+  inject: ['reload'],
   Vue.use(Lightbox)
+
+
+  function showDate(time) {
+    var Times=new Array()
+    Times=time.split(" ")
+    date=Times[0]
+    for(i=0;i<date.length;i++){
+      if(date[i]==="-"){
+        date[i]="."
+      }
+    }
+  }
   const statusMap = {
     0: {
       status: 'success',
@@ -153,7 +165,7 @@
       align: 'center',
       width: '12%',
       scopedSlots: { customRender: 'id' },
-      sorter: (a, b) => a.id - b.id
+      sorter: (a, b) => parseInt(a.id.toString().slice(2)) - parseInt(b.id.toString().slice(2))
     },
     {
       title: '名称',
@@ -334,10 +346,23 @@
         e.preventDefault()
         this.form.validateFields((err, value) => {
           if (!err) {
-            value['productTime'] = value['productTime'].format('YYYY-MM-DD HH:mm:ss')
+            value['productTime'] = value['productTime'].format('YYYY.MM.DD')
             console.log('formData:', value)
             // 发送post请求，之后需要调整
             addEquipmentStored(value)
+            getEquipmentStoredList().then(response => {
+              this.eData = [...response.data]
+              this.eDataShow = this.eData
+              window.location.reload(true)
+            }).catch(err => {
+              this.$notification.open({
+                message: '添加失败',
+                description: '请查看控制台信息',
+                icon: <a-icon type="exclamation-circle" style="color: #108ee9" />
+            })
+              console.log(err)
+            })
+
           }
         })
         this.showAddForm = false
