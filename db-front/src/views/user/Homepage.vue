@@ -24,8 +24,6 @@
         <a-col :xl="16" :lg="24" :md="24" :sm="24" :xs="24">
           <!--调度管理-->
           <a-card
-                  class="project-list"
-                  :loading="loading"
                   style="margin-bottom: 24px; margin-top: 0px"
                   :bordered="false"
                   title="调度管理"
@@ -191,8 +189,6 @@
                 :xs="24">
           <!--个人信息-->
           <a-card
-                  class="project-list"
-                  :loading="loading"
                   style="margin-bottom: 24px; margin-top: 0px"
                   :bordered="false"
                   title="个人信息"
@@ -229,8 +225,6 @@
           </a-card>
           <!--密码修改-->
           <a-card
-                  class="project-list"
-                  :loading="loading"
                   style="margin-bottom: 24px; margin-top: 0px"
                   :bordered="false"
                   title="修改密码"
@@ -361,60 +355,12 @@
     created() {
       this.user = this.userInfo
       this.avatar = this.userInfo.avatar
-
-      getRoleList().then(res => {
-        console.log('workplace -> call getRoleList()', res)
-      })
-
-      getServiceList().then(res => {
-        console.log('workplace -> call getServiceList()', res)
-      })
     },
     mounted() {
       console.log('vuex',this.userInfo )
-      this.getProjects()
-      this.getActivity()
-      this.getTeams()
-      this.initRadar()
     },
     methods: {
       ...mapGetters(['nickname', 'welcome']),
-      getProjects() {
-        this.$http.get('/list/search/projects')
-            .then(res => {
-              this.projects = res.result && res.result.data
-              this.loading = false
-            })
-      },
-      getActivity() {
-        this.$http.get('/workplace/activity')
-            .then(res => {
-              this.activities = res.result
-            })
-      },
-      getTeams() {
-        this.$http.get('/workplace/teams')
-            .then(res => {
-              this.teams = res.result
-            })
-      },
-      initRadar() {
-        this.radarLoading = true
-
-        this.$http.get('/workplace/radar')
-            .then(res => {
-              const dv = new DataSet.View().source(res.result)
-              dv.transform({
-                type: 'fold',
-                fields: ['个人', '团队', '部门'],
-                key: 'user',
-                value: 'score'
-              })
-
-              this.radarData = dv.rows
-              this.radarLoading = false
-            })
-      },
       handleModifyPassword (e) {
         e.preventDefault()
         this.form.validateFields((err, values) => {
