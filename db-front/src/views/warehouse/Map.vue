@@ -231,9 +231,9 @@ export default {
   mounted() {
     // this.loadScript()
     refreshMapContainer()
-    window.onresize = () => {
-      refreshMapContainer()
-    }
+    // window.onresize = () => {
+    //   refreshMapContainer()
+    // }
     initialize()
     this.refreshMap()
     // addTestWarehouseMarker()
