@@ -25,7 +25,8 @@
 import BMap from 'BMap'
 import router from '../../router'
 import warehouseMarker from '../../assets/marker/warehouse.png'
-import {getAllWarehouse, getWarehousePreview} from '@/api/warehouse'
+import usingEquipMarker from '../../assets/marker/usingEquipment.png'
+import {getAllWarehouse, getWarehousePreview, getAll} from '@/api/warehouse'
 import {getEquipmentStoredList, getEquipmentUsingList} from '@/api/equipment'
 import {getAccesoryInWarehouse, getAccessoryInWarehouse} from '@/api/accessory'
 
@@ -113,66 +114,117 @@ export default {
       this.value = value
       this.refreshMap()
     },
-    translateAddress(address, id, name){
-      var myGeo = new BMap.Geocoder();
-      myGeo.getPoint(address, function(point){
-        if (point) {
-          var myIcon = new BMap.Icon(warehouseMarker, new BMap.Size(70, 70))
-          var marker = new BMap.Marker(point, { icon: myIcon })
-          var sContent =
-          `<h4 style='margin:0 0 5px 0;padding:0.2em 0'>${name}</route-link></h4>` + 
-          "<img style='float:right;margin:4px' id='imgDemo' src='../img/tianAnMen.jpg' width='139' height='104' title='天安门'/>" + 
-          "<p style='margin:0;line-height:1.5;font-size:13px;text-indent:2em'>天安门坐落在中国北京市中心,故宫的南侧,与天安门广场隔长安街相望,是清朝皇城的大门...</p>" + 
-          "</div>";
-          var infoWindow = new BMap.InfoWindow(sContent);
-          marker.addEventListener("mouseover", function(){
-            this.openInfoWindow(infoWindow)
-            document.getElementById('imgDemo').onload = function (){
-              infoWindow.redraw();   //防止在网速较慢，图片未加载时，生成的信息框高度比图片的总高度小，导致图片部分被隐藏
-            }
-          })
-          marker.addEventListener("mouseout", function(){
-            this.closeInfoWindow(infoWindow)
-          })
-          marker.addEventListener("onclick", function(){
-            router.push("/warehouse/detail/" + id)
-          })
-          overlays.push(marker)
-          window.map.addOverlay(marker)
-        }else{
-          alert("您选择地址没有解析到结果!")
+    appendWarehouse(address, id, name, lat, lon){
+      var point = new BMap.Point(lon, lat)
+      var myIcon = new BMap.Icon(warehouseMarker, new BMap.Size(70, 70))
+      var marker = new BMap.Marker(point, { icon: myIcon })
+      var sContent =
+      `<h4 style='margin:0 0 5px 0;padding:0.2em 0'>${name}</h4>` + 
+      `<p style='margin:0;line-height:1.5;font-size:13px;text-indent:2em'>${address}</p>` + 
+      "</div>";
+      var infoWindow = new BMap.InfoWindow(sContent);
+      marker.addEventListener("mouseover", function(){
+        this.openInfoWindow(infoWindow)
+      })
+      marker.addEventListener("mouseout", function(){
+        this.closeInfoWindow(infoWindow)
+      })
+      marker.addEventListener("onclick", function(){
+        router.push("/warehouse/detail/" + id)
+      })
+      overlays.push(marker)
+      window.map.addOverlay(marker)
+    },
+    appendEquipment(address, lat, lon, model, pic, qrCode, type){
+      var point = new BMap.Point(lon, lat)
+      var myIcon = new BMap.Icon(usingEquipMarker, new BMap.Size(70, 70))
+      var marker = new BMap.Marker(point, { icon: myIcon })
+      var sContent =
+      `<h4 style='margin:0 0 5px 0;padding:0.2em 0'>${type} : ${model}</h4>` + 
+      `<img style='float:right;margin:4px' id='imgDemo' src='${pic}' width='70' height='70' title='${type} : ${model}'/>` +
+       `<img style='float:right;margin:4px' id='imgDemo' src='${qrCode}' width='70' height='70' title='${type} : ${model}'/>` +
+      `<p style='margin:0;line-height:1.5;font-size:13px;'>${address}</p>` + 
+      "</div>";
+      var infoWindow = new BMap.InfoWindow(sContent);
+      marker.addEventListener("mouseover", function(){
+        this.openInfoWindow(infoWindow)
+        document.getElementById('imgDemo').onload = function (){
+          infoWindow.redraw();   
         }
-      }, "上海市");
+      })
+      marker.addEventListener("mouseout", function(){
+        this.closeInfoWindow(infoWindow)
+      })
+      marker.addEventListener("onclick", function(){
+        router.push("/warehouse/detail/" + id)
+      })
+      overlays.push(marker)
+      window.map.addOverlay(marker)
     },
     refreshMap(){
       for(var overlay of overlays){
         window.map.removeOverlay(overlay)
       }
-      for(var v of this.value){
-        var typeFunctionPair = functionBox[v]
-        var type = typeFunctionPair[0]
-        var func = typeFunctionPair[1]
-        if(type == "仓库"){
-          func().then( response => {
-              console.log(response.data)
-              var warehouseData = [...response.data]
-              for(var warehouse of warehouseData){
-                var address = warehouse.address
-                var id = warehouse.id
-                var name = warehouse.name
-                console.log(address, id)
-                this.translateAddress(address, id, name)
-              }
-          })
+      getAll().then( response =>{
+        var warehouses = response.data.warehouse
+        var equips = response.data.usingEquipment
+        for(var v of this.value){
+          var type = functionBox[v][0]
+          if(type == "仓库"){
+            for(var warehouse of warehouses){
+              var id = warehouse.id
+              var lat = warehouse.lat
+              var lon = warehouse.lon
+              var name = warehouse.name
+              var detailedAddress = warehouse.detailedAddress
+              this.appendWarehouse(detailedAddress, id, name, lat, lon)
+            }
+          }
+          else{
+            console.log("在用器材")
+            for(var equip of equips){
+              var detailedAddress = equip.detailedAddress
+              var lat = equip.lat
+              var lon = equip.lon
+              var model = equip.model
+              var pic = equip.pic
+              var qrCode = equip.qrCode
+              var type = equip.type
+              this.appendEquipment(detailedAddress, lat, lon, model, pic, qrCode, type)
+            }
+          }
         }
-        else{
-          func().then( response => {
-            console.log(response)
-          })
-        }
-      }
-      var shanghai = new BMap.Point(121.48, 31.22)
-      window.map.centerAndZoom(shanghai, 11)
+
+        console.log(response)
+      })
+
+
+
+      // for(var v of this.value){
+      //   var typeFunctionPair = functionBox[v]
+      //   var type = typeFunctionPair[0]
+      //   var func = typeFunctionPair[1]
+      //   if(type == "仓库"){
+      //     func().then( response => {
+      //         console.log(response.data)
+      //         var warehouseData = [...response.data]
+      //         for(var warehouse of warehouseData){
+      //           var address = warehouse.address
+      //           var id = warehouse.id
+      //           var name = warehouse.name
+      //           console.log(address, id)
+      //           this.translateAddress(address, id, name)
+      //         }
+      //     })
+      //   }
+      //   else{
+      //     func().then( response => {
+      //       console.log(response)
+      //     })
+      //   }
+      // }
+      var TJJD = new BMap.Point(121.222, 31.291)
+      window.map.centerAndZoom(TJJD, 16)
     }
   },
   mounted() {

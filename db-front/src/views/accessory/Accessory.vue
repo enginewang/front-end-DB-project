@@ -102,6 +102,7 @@
               </a-button>
             </div>
           </a-col>
+
         </div>
         <!-- table -->
         <a-card>
@@ -109,6 +110,35 @@
         </a-card>
         <!-- table end -->
       </a-layout>
+
+        </a-form>
+      </div>
+      <!-- input bar end -->
+      <!-- refresh button -->
+      <div>
+        <a-col :md="8" :sm="24">
+          <a-form-item label="编号">
+            <a-input placeholder="请输入查询编号" v-model="input"/>
+          </a-form-item>
+        </a-col>
+        <a-col :md="8" :sm="24">
+          <div class="button-group2">
+            <a-button
+              size="default"
+              class="button"
+              type="primary"
+              @click="onClickReload"
+            >刷新表单</a-button>
+          </div>
+        </a-col>
+      </div>
+      <!-- table -->
+      <a-card>
+        <a-table :columns="columns" :dataSource="DataShow" :loading="loading"/>
+      </a-card>
+      <!-- table end -->
+    </a-layout>
+
 
     </div>
   </page-view>
@@ -133,7 +163,10 @@
     data() {
       return {
         //form
-        input: '',
+
+        loading:'true',
+        input:'',
+
         visible: false,
         confirmLoading: false,
         ModalText: '',
@@ -242,11 +275,15 @@
         this.visible = false
       },
       //  refresh Table
-      onClickReload() {
+
+      onClickReload () {
+        this.loading=true
+
         getAccessoryInWarehouse().then((response) => {
           this.Data = [...response.data]
           this.DataShow = this.Data
           this.input = ''
+          this.loading=false
         })
       },
       onClickClearSelect() {
@@ -271,6 +308,7 @@
       getAccessoryInWarehouse().then((response) => {
         this.Data = [...response.data]
         this.DataShow = this.Data
+        this.loading = false
         console.log(response)
       })
       //get all warehouseName

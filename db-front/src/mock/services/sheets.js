@@ -209,39 +209,66 @@ const checkSheetRow = (data) => {
   }
 }
 
-const repairSheetDetail = (data) => {
-  console.log("databody",data.body)
-  let rpData ={
-    '1223345':[
-      {
-        'details': '把手损坏，零件脱落',
-        'stuffNeeded': '齿轮 25mm  x3',
-        'telNumber':'1232432213',
-        'eqTypeInWarehouse': [{
-          'model':'',
-          'type':''
-        }],
-        'status':'0',
-        'repairStaff':[
-          {
-            'repairId':'RSF15000009',
-            'repairName':'王小明',
-          },
-          {
-            'repairId':'RSF15000010',
-            'repairName':'李小狼',
-          },
-        ]
-    }],
-  }
-  let info='ok'
-  console.log('rs',rpData[data.body])
-  return {
-    'data': {
-      rpData: rpData[data.body]
+const repairSheetDetail = () => {
+  return{
+  'equipType':[
+  {
+    'no':'1',
+    'type':"跑步机",
+    "model":"GTX",
+    'number':'13'
+  },
+  {
+    'no':'2',
+    'type':"杠铃",
+    "model":"GTP",
+    'number':'2'
+  },
+  {
+    'no':'3',
+    'type':"瑜伽垫",
+    "model":"GOP",
+    'number':'5'
+  }],
+  'accessory': [
+    {
+      'no':'1',
+      'type':"把手",
+      "model":"GMG",
+      'number':'15'
     },
-    'info':info
-  }
+    {
+      'no':'2',
+      'type':"履带",
+      "model":"FP",
+      'number':'50'
+    },
+    {
+      'no':'3',
+      'type':"螺丝",
+      "model":"PR",
+      'number':'20'
+    }
+    
+  ],//每一类配件的model，type及其数目
+  'staff':[
+    {
+      'staffId':'STF1500001',
+      'staffName':'王小明'
+    },
+    {
+      'staffId':'STF1500010',
+      'staffName':'李小华'
+    }
+  ]//所有可调度维修员的id和名字，最好按到维修器材到距离排序
+}
+}
+
+const scheduleDetail = (data) => {
+  console.log("data.body",data.body)
+  return{
+    'info':'ok'//ok表调度成功，fail表调度失败
+}
 }
 
 
@@ -249,4 +276,5 @@ Mock.mock(/\/sheets\/workSheet/, 'get', workSheet)
 Mock.mock(/\/sheets\/checkSheet/, 'get', checkSheet)
 Mock.mock(/\/sheets\/workSheetRow/, 'post', workSheetRow)
 Mock.mock(/\/sheets\/checkSheetRow/, 'post', checkSheetRow)
-Mock.mock(/\/sheets\/repairSheetDetail/, 'post', repairSheetDetail)
+Mock.mock(/\/sheets\/repairSheetDetail/, 'get', repairSheetDetail)
+Mock.mock(/\/sheets\/scheduleDetail/, 'post', scheduleDetail)

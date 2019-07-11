@@ -57,21 +57,25 @@
                 <a-row :gutter="24">
                   <a-col :md="8" :sm="24">
                     <a-form-item>
-                      <a-input placeholder="请输入配件型号" v-model="accessoryInput" />
+                      <a-input placeholder="请输入配件编号" v-model="accessoryInput" />
                     </a-form-item>
                   </a-col>
                 </a-row>
               </a-form>
             </div>
-            <a-table :columns="acol" :dataSource="accessoryShow" rowKey="model" bordered>
-              <template v-for="col in ['model', 'type', 'number']" :slot="col" slot-scope="text">
+            <a-table :columns="acol" :dataSource="accessoryShow" rowKey="id" bordered>
+              <template
+                v-for="col in ['id','model', 'type', 'number']"
+                :slot="col"
+                slot-scope="text"
+              >
                 <div :key="col">
                   <div>{{ text }}</div>
                 </div>
               </template>
               <template slot="operation" slot-scope="text, record">
                 <div class="editable-row-operations">
-                  <a-button @click="() => scheduleAccessory(record.model)">调度</a-button>
+                  <a-button @click="() => scheduleAccessory(record.id)">调度</a-button>
                   <!-- modal -->
                   <a-modal title="调度" v-model="visibleA" @ok="handleOKA">
                     <div class="modal">
@@ -203,6 +207,7 @@ export default {
       // 2 schedules
       scheduleA: {
         type: 'Accessory',
+        id: '',
         model: '',
         from: '',
         // the name of "to" warehouse
@@ -225,7 +230,7 @@ export default {
         this.accessoryShow = this.accessory
       } else {
         const option = {
-          keys: ['model'],
+          keys: ['id'],
           threshold: 0.1
         }
         var fuse = new Fuse(this.accessory, option)
@@ -257,20 +262,14 @@ export default {
       this.scheduleE.from = this.warehouseDetail.name
     },
     // schedule for accessory
-    scheduleAccessory(model) {
+    scheduleAccessory(id) {
       const newData = [...this.accessory]
-      const target = newData.filter(item => model === item.model)[0]
+      const target = newData.filter(item => id === item.id)[0]
       this.max = target.number
       this.visibleA = true
-      getAllWarehouse()
-        .then(response => {
-          this.allWarehouse = [...response.data]
-        })
-        .catch(err => {
-          console.log(err)
-        })
 
       this.scheduleA.model = target.model
+      this.scheduleA.id = target.id
       this.scheduleA.from = this.warehouseDetail.name
     },
     // event after click ok
@@ -303,7 +302,7 @@ export default {
   },
   created() {
     // get detail info of warehouse
-    postWarehouseDetail(this.warehouseID)
+    postWarehouseDetail({ id: this.warehouseID })
       .then(response => {
         this.warehouseDetail.name = response.data.name
         this.warehouseDetail.address = response.data.address
@@ -313,7 +312,7 @@ export default {
         console.log(err)
       })
     // get info of goods
-    postGoods(this.warehouseID)
+    postGoods({ id: this.warehouseID })
       .then(response => {
         this.equipment = [...response.data.equipment]
         this.equipmentShow = this.equipment
@@ -326,7 +325,7 @@ export default {
     getAllWarehouse()
       .then(response => {
         this.allWarehouse = [...response.data]
-        this.allWarehouse.splice(this.allWarehouse.indexOf(this.warehouseDetail.name), 1)
+        // this.allWarehouse.splice(this.allWarehouse.indexOf(this.warehouseDetail.name), 1)
       })
       .catch(err => {
         console.log(err)
