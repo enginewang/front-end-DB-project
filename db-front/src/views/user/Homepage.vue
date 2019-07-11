@@ -1,7 +1,7 @@
 <template>
   <page-view :avatar="avatar" :title="false">
     <div slot="headerContent">
-      <div class="title">{{ timeFix }}！{{ user.name }}</div>
+      <div class="title">{{ timeFix }}，{{ user.name }}！</div>
       <div>{{userInfo.role.name}} | Eport - 健身器材管理平台</div>
     </div>
     <!--顶层右侧栏
@@ -217,54 +217,60 @@
               <a-row style="margin-bottom: 12px">
                 <a-icon type="down-circle" theme="twoTone" twoToneColor="#3A5FCD"/>
                 <strong> 工作结束时间：</strong>
-                周日
+                周五
               </a-row>
+              <a-row style="margin-bottom: 12px">
+                <a-icon type="lock" theme="twoTone" twoToneColor="#3A5FCD"/>
+                <strong> 修改密码：</strong>
+                <a-button @click="modifyPassButton" type="primary" icon="plus"> 修改密码 </a-button>
 
-
-            </a-card>
-          </a-card>
-          <!--密码修改-->
-          <a-card
-                  style="margin-bottom: 24px; margin-top: 0px"
-                  :bordered="false"
-                  title="修改密码"
-                  :body-style="{ padding: 0 }">
-            <a-card >
-              <a-form @submit="handleModifyPassword" :form = "form">
-                <a-form-item
-                        label="旧密码"
-                        :labelCol="{lg: {span: 7}, sm: {span: 7}}"
-                        :wrapperCol="{lg: {span: 10}, sm: {span: 17} }">
-                  <a-input
-                          v-decorator="[
+                <a-modal v-model="showPasswordForm" footer="">
+                  <a-form title="修改密码" @submit="handleSubmit" :form="form">
+                    <a-form-item
+                      :wrapperCol="{ span: 24 }"
+                      style="text-align: center"
+                    >
+                      <h3>修改密码</h3>
+                    </a-form-item>
+                    <a-form-item
+                      label="旧密码"
+                      :labelCol="{lg: {span: 7}, sm: {span: 7}}"
+                      :wrapperCol="{lg: {span: 10}, sm: {span: 17} }">
+                      <a-input
+                        v-decorator="[
             'old_password',
             {rules: [{ required: true, message: '请输入旧的密码' }]}
           ]"
-                          name="old_password"
-                          placeholder="请输入旧的密码" />
-                </a-form-item>
-                <a-form-item
-                        label="新密码"
-                        :labelCol="{lg: {span: 7}, sm: {span: 7}}"
-                        :wrapperCol="{lg: {span: 10}, sm: {span: 17} }">
-                  <a-input
-                          v-decorator="[
+                        name="old_password"
+                        placeholder="请输入旧的密码" />
+                    </a-form-item>
+                    <a-form-item
+                      label="新密码"
+                      :labelCol="{lg: {span: 7}, sm: {span: 7}}"
+                      :wrapperCol="{lg: {span: 10}, sm: {span: 17} }">
+                      <a-input
+                        v-decorator="[
             'new_password',
             {rules: [{ required: true, message: '请输入新的密码' }]}
           ]"
-                          name="new_password"
-                          placeholder="请输入新的密码" />
-                </a-form-item>
-                <a-form-item
-                        :wrapperCol="{ span: 24 }"
-                        style="text-align: center"
-                >
-                  <a-button htmlType="submit" type="primary">提交</a-button>
-                  <a-button style="margin-left: 8px" @click="cancelModifyPassword">取消</a-button>
-                </a-form-item>
-              </a-form>
+                        name="new_password"
+                        placeholder="请输入新的密码" />
+                    </a-form-item>
+                    <a-form-item
+                      :wrapperCol="{ span: 24 }"
+                      style="text-align: center"
+                    >
+                      <a-button htmlType="submit" type="primary">提交</a-button>
+                      <a-button style="margin-left: 8px" @click="cancelModifyPassword">取消</a-button>
+                    </a-form-item>
+
+                  </a-form>
+                </a-modal>
+                </a-button>
+              </a-row>
             </a-card>
           </a-card>
+          <!--密码修改-->
         </a-col>
       </a-row>
     </div>
@@ -274,21 +280,23 @@
 <script>
   import {timeFix} from '@/utils/util'
   import {mapGetters} from 'vuex'
-
+  import {Button} from 'ant-design-vue'
   import {PageView} from '@/layouts'
   import HeadInfo from '@/components/tools/HeadInfo'
   import {Radar} from '@/components'
 
-  import {getRoleList, getServiceList} from '@/api/manage'
+  import {getRoleList, getServiceList,modifyPassword} from '@/api/manage'
   import ARow from "ant-design-vue/es/grid/Row";
   import ACol from "ant-design-vue/es/grid/Col";
-
+  import AFormItem from "ant-design-vue/es/form/FormItem";
+  import md5 from 'md5'
 
   const DataSet = require('@antv/data-set')
 
   export default {
     name: 'Homepage',
     components: {
+      AFormItem,
       ACol,
       ARow,
       PageView,
@@ -308,6 +316,11 @@
         old_password: '',
         new_password: '',
         form: this.$form.createForm(this),
+        showPasswordForm: false,
+        new_identity: {
+          id: '',
+          newPassword: '',
+        },
         // data
         axis1Opts: {
           dataKey: 'item',
@@ -382,12 +395,32 @@
       cancelModifyPassword() {
         console.log('Cancel modify passsword')
       },
-      handlePasswordChange(value){
-        console.log(value)
-        if(value === this.old_password){
-          console.log("Pass!")
-        }
-      }
+      modifyPassButton(){
+        this.showPasswordForm= true;
+      },
+      cancelModifyPassword() {
+        this.showPasswordForm= false;
+      },
+      handleSubmit(e) {
+        e.preventDefault()
+        this.form.validateFields((err, value) => {
+          if (!err) {
+            if(md5(value.old_password) === this.userInfo.password){
+              this.new_identity.newPassword = value.new_password
+              this.new_identity.id = this.userInfo.id
+              console.log(this.new_identity)
+              modifyPassword(this.new_identity).then(() => {
+                this.$message.success('密码修改成功！')
+              })
+              console.log("Pass!")
+            }else{
+              this.$message.error('旧密码输入错误！')
+              console.log("Failed!")
+            }
+          }
+        })
+        this.showPasswordForm = false;
+      },
     }
   }
 </script>

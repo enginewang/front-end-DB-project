@@ -697,9 +697,7 @@ export default {
       this.advanced = !this.advanced
     },
     handleAdd () {
-
       this.visible4 = true
-
     },
     onClickNewRow(){
       this.visible4 = false
