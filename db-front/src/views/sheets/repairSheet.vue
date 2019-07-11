@@ -62,6 +62,8 @@
                 <ellipsis :length="70">{{ item.type }}</ellipsis>
                 <br>
                 <ellipsis :length="70">{{ state[item.state] }}</ellipsis>
+                <br>
+                <ellipsis :length="70">{{`待维修器材编号：${item['EqId']}`}}</ellipsis>
               </template>
               <template slot="description">
                 
@@ -313,7 +315,7 @@ export default {
   }
 
   /deep/ .ant-card-meta-description {
-    height: 44px;
+    height: 66px;
     overflow: hidden;
     line-height: 22px;
   }
