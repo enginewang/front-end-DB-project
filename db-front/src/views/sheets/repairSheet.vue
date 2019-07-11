@@ -1,109 +1,108 @@
 <template>
-  <page-view title="报修单管理">
-    <div>
-      <a-card :bordered="false" class="ant-pro-components-tag-select">
-        <a-form :form="form" layout="inline">
-
-          <standard-form-row grid last>
-            <a-row>
-              <a-col :lg="8" :md="10" :sm="10" :xs="24">
-                <a-form-item :wrapper-col="{ sm: { span: 16 }, xs: { span: 24 } }" label="根据编号查找：">
-                  <a-tooltip
-                    :trigger="['focus']"
-                    placement="topLeft"
-                    overlayClassName="numeric-input"
-                  >
+  <div>
+    <a-card :bordered="false" class="ant-pro-components-tag-select">
+      <a-form :form="form" layout="inline">
+        
+        <standard-form-row  grid last>
+          <a-row>
+            <a-col :lg="8" :md="10" :sm="10" :xs="24">
+              <a-form-item :wrapper-col="{ sm: { span: 16 }, xs: { span: 24 } }" label="根据编号查找：">
+                <a-tooltip
+                  :trigger="['focus']"
+                  placement="topLeft"
+                  overlayClassName="numeric-input"
+                >
                   <span slot="title" v-if="idFilterValue" class="numeric-input-title">
                     {{idFilterValue !== '-' ? idFilterValue : '-'}}
                   </span>
-                    <template slot="title" v-else>
-                      请填写报修单编号
-                    </template>
-                    <a-input
-                      :value="idFilterValue"
-                      @change="filterOnce"
-                      placeholder="请填写报修单号"
-                      maxLength="25"
-                      v-model="idFilterValue"
-                      style="width: 120px"
-                    />
-                  </a-tooltip>
-                </a-form-item>
-              </a-col>
-              <a-col :lg="8" :md="10" :sm="10" :xs="24">
-                <a-form-item :wrapper-col="{ sm: { span: 16 }, xs: { span: 24 } }" label="根据状态查找：">
-                  <a-select
-                    allowClear
-                    style="max-width: 200px; width: 100%;"
-                    placeholder="不限"
-                    @change="onChange"
-                    v-decorator="['rate']"
+                  <template slot="title" v-else>
+                    请填写报修单编号
+                  </template>
+                  <a-input
+                    :value="idFilterValue"
+                    @change="filterOnce"
+                    placeholder="请填写报修单号"
+                    maxLength="25"
+                    v-model="idFilterValue"
+                    style="width: 120px"
+                  />
+                </a-tooltip>
+              </a-form-item>
+            </a-col>
+            <a-col :lg="8" :md="10" :sm="10" :xs="24">
+              <a-form-item :wrapper-col="{ sm: { span: 16 }, xs: { span: 24 } }" label="根据状态查找：">
+                <a-select
+                  allowClear
+                  style="max-width: 200px; width: 100%;"
+                  placeholder="不限"
+                  @change="onChange"
+                  v-decorator="['rate']"
                   >
-                    <a-select-option value="0">用户提交</a-select-option>
-                    <a-select-option value="1">巡检员提交</a-select-option>
-                    <a-select-option value="2">已调度</a-select-option>
-                  </a-select>
-                </a-form-item>
-              </a-col>
-            </a-row>
-          </standard-form-row>
-        </a-form>
-      </a-card>
-      <div class="button">
-        <a-button type='primary' @click="refreshTable">刷新表单</a-button>
-      </div>
-      <div class="ant-pro-pages-list-projects-cardList">
-        <a-list :loading="loading" :data-source="data" :grid="{ gutter: 24, xl: 4, lg: 3, md: 3, sm: 2, xs: 1 }"
-                :pagination="pagination">
-          <a-list-item slot="renderItem" slot-scope="item">
-
-            <a-card class="ant-pro-pages-list-projects-card" hoverable :loading="loading">
-              <img slot="cover" :src="item.cover" :alt="item.title"/>
-              <a-card-meta :title="'报修单编号:'+item.title">
-                <template slot="description">
-                  <ellipsis :length="70">{{ item.type }}</ellipsis>
-                  <br>
-                  <ellipsis :length="70">{{ state[item.state] }}</ellipsis>
-                </template>
-                <template slot="description">
-
-                </template>
-              </a-card-meta>
-              <div class="cardItemContent">
-                <span>{{ item.updatedAt | fromNow }}</span>
-
-
-                <router-link :to="{ name: 'repairDetail', params:{ details: item} }">查看详情</router-link>
-                <!--<a-button type='primary' @click="shownewPage(item)">查看详情</a-button>-->
-
-                <!-- <div class="avatarList">
-                  <avatar-list size="mini">
-                    <avatar-list-item
-                      v-for="(member, i) in item.members"
-                      :key="`${item.id}-avatar-${i}`"
-                      :src="member.avatar"
-                      :tips="member.name"
-                    />
-                  </avatar-list>
-                </div> -->
-              </div>
-            </a-card>
-          </a-list-item>
-        </a-list>
-        <!-- <div id="pagination" >
-          <a-pagination
-            :total="totalCards"
-            :showTotal="(total, range) => `${range[0]}-${range[1]} of ${total} items`"
-            :pageSize="8"
-            :defaultCurrent="1"
-          />
-        </div> -->
-
-      </div>
-
-
+                  <a-select-option value="状态：0">用户提交</a-select-option>
+                  <a-select-option value="状态：1">巡检员提交</a-select-option>
+                  <a-select-option value="状态：2">已调度</a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+          </a-row>
+        </standard-form-row>
+      </a-form>
+    </a-card>
+    <div class="button">
+      <a-button type='primary' @click="refreshTable">刷新表单</a-button>
     </div>
-  </page-view>
+    <div class="ant-pro-pages-list-projects-cardList">
+      <a-list :loading="loading" :data-source="data" :grid="{ gutter: 24, xl: 4, lg: 3, md: 3, sm: 2, xs: 1 }" :pagination="pagination">
+        <a-list-item slot="renderItem" slot-scope="item">
+          
+          <a-card class="ant-pro-pages-list-projects-card" hoverable :loading="loading" >
+            <img slot="cover" :src="item.cover" :alt="item.title" />
+            <a-card-meta :title="'报修单编号:'+item.title">
+              <template slot="description">
+                <ellipsis :length="70">{{ item.type }}</ellipsis>
+                <br>
+                <ellipsis :length="70">{{ state[item.state] }}</ellipsis>
+              </template>
+              <template slot="description">
+                
+              </template>
+            </a-card-meta>
+            <div class="cardItemContent" style="">
+              <span>{{ item.updatedAt | fromNow }}</span>
+
+
+
+
+              <router-link :to="{ name: 'repairDetail', params:{ details: item} }">查看详情</router-link>
+              <!--<a-button type='primary' @click="shownewPage(item)">查看详情</a-button>-->
+
+              <!-- <div class="avatarList">
+                <avatar-list size="mini">
+                  <avatar-list-item
+                    v-for="(member, i) in item.members"
+                    :key="`${item.id}-avatar-${i}`"
+                    :src="member.avatar"
+                    :tips="member.name"
+                  />
+                </avatar-list>
+              </div> -->
+            </div>
+          </a-card>
+        </a-list-item>
+      </a-list>
+      <!-- <div id="pagination" >
+        <a-pagination
+          :total="totalCards"
+          :showTotal="(total, range) => `${range[0]}-${range[1]} of ${total} items`"
+          :pageSize="8"
+          :defaultCurrent="1"
+        />
+      </div> -->
+      
+    </div>
+
+    
+  </div>
 </template>
 
 <script>
@@ -112,7 +111,6 @@ import { TagSelect, StandardFormRow, Ellipsis, AvatarList } from '@/components'
 import Fuse from 'fuse.js'
 import repairSheetDetail from './components/repairSheetDetail'
 import { getRepairSheet } from '@/api/repairSheet'
-import { PageView } from '@/layouts'
 
 var pageData = null
 const TagSelectOption = TagSelect.Option
@@ -125,8 +123,7 @@ export default {
     Ellipsis,
     TagSelect,
     TagSelectOption,
-    StandardFormRow,
-    PageView
+    StandardFormRow
   },
   data () {
     return {
