@@ -67,6 +67,7 @@
                     @ok="handleOk"
                     :confirmLoading="confirmLoading"
                     @cancel="handleCancel"
+                    
                   >
                     <p>{{`是否将 ${addData.num} 个ID为 ${addData.accessoryID} 的配件添加到 ${addData.warehouse}？`}}</p>
                   </a-modal>
@@ -104,43 +105,19 @@
           </a-col>
 
         </div>
-        <!-- table -->
-        <a-card>
-          <a-table :columns="columns" :dataSource="DataShow"/>
-        </a-card>
-        <!-- table end -->
       </a-layout>
-
-        </a-form>
-      </div>
+    </div>
       <!-- input bar end -->
       <!-- refresh button -->
-      <div>
-        <a-col :md="8" :sm="24">
-          <a-form-item label="编号">
-            <a-input placeholder="请输入查询编号" v-model="input"/>
-          </a-form-item>
-        </a-col>
-        <a-col :md="8" :sm="24">
-          <div class="button-group2">
-            <a-button
-              size="default"
-              class="button"
-              type="primary"
-              @click="onClickReload"
-            >刷新表单</a-button>
-          </div>
-        </a-col>
-      </div>
+      
+  
       <!-- table -->
       <a-card>
-        <a-table :columns="columns" :dataSource="DataShow" :loading="loading"/>
+        <a-table :columns="columns" :dataSource="DataShow" :loading="loading" />
       </a-card>
       <!-- table end -->
-    </a-layout>
 
 
-    </div>
   </page-view>
 </template>
 
@@ -157,16 +134,14 @@
 
 
   export default {
-    component:{
+    components:{
       PageView
     },
     data() {
       return {
         //form
-
-        loading:'true',
+        loading: true,
         input:'',
-
         visible: false,
         confirmLoading: false,
         ModalText: '',
@@ -200,12 +175,12 @@
           }, {
             title: '价格',
             dataIndex: 'price',
-            orter: (a, b) => a.price - b.price
+            sorter: (a, b) => a['price'] - b['price']
           }, {
             title: '库存数量',
             dataIndex: 'num',
             align: 'center',
-            sorter: (a, b) => a.num - b.num
+            sorter: (a, b) => a['num'] - b['num']
           }, {
             title: '所在仓库',
             dataIndex: 'warehouse',
@@ -235,8 +210,10 @@
       }
     },
     watch: {
-      input(pattern) {
-        if (pattern == '') {
+      input(pattern){
+        if( !pattern){
+          console.log("pattern",pattern)
+
           this.DataShow = this.Data
         } else {
           const option = {
@@ -256,6 +233,16 @@
       }
     },
     methods: {
+      //show notification
+      openNotification () {
+        this.$notification.open({
+          message: '提示信息',
+          description: '添加成功！',
+          onClick: () => {
+            console.log('Notification Clicked!');
+          },
+        });
+      },
       //show modal
       showModal() {
         this.visible = true
@@ -266,9 +253,10 @@
           this.visible = false;
           this.confirmLoading = false;
           this.onClickSubmit();
+          this.openNotification();
           console.log("addData", this.addData)
           //   this.onClickClearSelect()
-        }, 1000)
+        }, 10)
       },
       handleCancel(e) {
         console.log('Clicked cancel button');
@@ -278,9 +266,21 @@
 
       onClickReload () {
         this.loading=true
-
         getAccessoryInWarehouse().then((response) => {
-          this.Data = [...response.data]
+          var temp = [...response.data]
+          var result=[]
+          for(let item of temp){
+            var t = {
+              'key': item['key']+item['warehouseID'],
+              'model': item['model'],
+              'type' : item.type,
+              'price': item['price'],
+              'num': item['num'],
+              'warehouse': item['warehouse']
+            }
+            result.push(t)
+          }
+          this.Data = result
           this.DataShow = this.Data
           this.input = ''
           this.loading=false
@@ -305,19 +305,32 @@
         console.log('model', response)
         this.models = [...response.data]
       })
-      getAccessoryInWarehouse().then((response) => {
-        this.Data = [...response.data]
-        this.DataShow = this.Data
-        this.loading = false
-        console.log(response)
-      })
+     getAccessoryInWarehouse().then((response) => {
+          var temp = [...response.data]
+          var result=[]
+          for(let item of temp){
+            var t = {
+              'key': item['key']+item['warehouseID'],
+              'model': item['model'],
+              'type' : item['type'],
+              'price': item['price'],
+              'num': item['num'],
+              'warehouse': item['warehouse']
+            }
+            result.push(t)
+          }
+          this.Data = result
+          this.DataShow = this.Data
+          this.input = ''
+          this.loading=false
+        })
       //get all warehouseName
       getWarehouseName().then((response) => {
         this.warehouseSelection = [...response.data]
         for (let val of this.warehouseSelection) {
           let temp = {
-            text: val,
-            value: val
+            'text': val,
+            'value': val
           }
           this.columns[4].filters.push(temp)
           this.warehouses.push(val)
@@ -329,8 +342,8 @@
         this.types = [...response.data]
         for (let val of this.types) {
           let temp = {
-            text: val.value,
-            value: val.value
+            text: val,
+            value: val
           }
           this.columns[1].filters.push(temp)
         }
