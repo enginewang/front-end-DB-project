@@ -2,6 +2,7 @@
     <page-view title="报修单" logo="/repairSheet.png">
 
     <detail-list slot="headerContent" size="small" :col="1" class="detail-layout">
+      <detail-list-item term="待检修器材">{{this.details.EqId}}</detail-list-item>
       <detail-list-item term="详细描述">{{this.details.details}}</detail-list-item>
       <detail-list-item term="所需配件">{{this.details.stuffNeeded}}</detail-list-item>
       <detail-list-item term="报修用户电话">{{this.details.telNumber}}</detail-list-item>
@@ -172,6 +173,8 @@ import { PageView } from '@/layouts'
 import DetailList from '@/components/tools/DetailList'
 import {getRepairSheetDetail, submitScheduleDetail} from '@/api/sheets'
 import ACol from "ant-design-vue/es/grid/Col";
+  import {mapGetters} from 'vuex'
+
 
 
 const DetailListItem = DetailList.Item
@@ -212,10 +215,12 @@ const columns = [{
 export default {
     inject: ['reload'],
     created(){
+      this.result.DSTid = this.userInfo.id
       
       this.details = this.$route.params.details
       this.result.RSTid = this.details.title
-      console.log("item",this.details)
+      this.eqID = this.details.eqID
+      console.log("this.details.eqID",this.details.EqId)
       getRepairSheetDetail().then((response)=>{
         console.log("response",response.data)
         this.eqType = response.data.equipType
@@ -244,10 +249,12 @@ export default {
       eqType:[],
       acType:[],
       stfList:[],
+      eqID:'',
       visible2:true,
       eqSelected:false,
       submit:false,
       result:{
+        'DSTid':'',
         'RSTid':'',
         'stfId':'',
         'ls':[]
@@ -268,7 +275,7 @@ export default {
       acNum:'',
       columns,
       visible:false,
-      info:''
+      info:'',
     }
   },
   filters: {
@@ -288,6 +295,9 @@ export default {
     }
   },
   computed:{
+    userInfo() {
+        return this.$store.getters.userInfo
+      },
     qualified:function(){
       if(this.details.state == '0'||this.details.state=='2'){
         return "disabled"
@@ -415,10 +425,10 @@ export default {
         return "disabled"
       }
   },
-  },
-  
+  }, 
   methods:{
     handleOK(){
+      
       this.visible = false
       this.result.stfId = "ST"+this.result.stfId
       console.log("this.result.stfId",this.result.stfId)
@@ -520,7 +530,7 @@ export default {
           this.acType[tempAcSelect].number = String(this.acType[tempAcSelect].number-parseInt(inputTemp))
       }
     }
-}
+},
 }
 
 </script>
