@@ -137,15 +137,26 @@
             <a-input disabled="disabled" v-model="newmdl.accountID" id="role_name"/>
           </a-form-item>
 
-          <a-form-item
-            :labelCol="labelCol"
-            :wrapperCol="wrapperCol"
-            label="密码"
-            hasFeedback
-            :validateStatus="successPassword"
-          >
-            <a-input placeholder="新密码(最少8位)" v-model="newmdl.password" id="role_password"/>
-          </a-form-item>
+          <a-row :gutter="24" style="margin-left: 2rem">
+            <a-col :md="24" :lg="18">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol"
+                label="密码"
+                hasFeedback
+                :validateStatus="successPassword"
+              >
+                <a-input placeholder="新密码(最少8位)" v-model="newmdl.password" id="role_password"/>
+              </a-form-item>
+            </a-col>
+            <a-col :md="24" :lg="2">
+              <a-button>
+                编辑
+              </a-button>
+            </a-col>
+          </a-row>
+
+
 
           <a-form-item
             :labelCol="labelCol"
@@ -344,6 +355,8 @@ import { PageView } from '@/layouts'
 import { getStaffSheet, deleteStaffSheetRow, modifyStaffSheetRow, addStaffSheetRow } from '@/api/staff'
 import Fuse from 'fuse.js'
 import md5 from 'md5'
+import ARow from "ant-design-vue/es/grid/Row";
+import ACol from "ant-design-vue/es/grid/Col";
 
 const statusMap = {
   0: {
@@ -364,6 +377,8 @@ export default {
   name: 'TableList',
   inject: ['reload'],
   components: {
+    ACol,
+    ARow,
     PageView,
     STable
   },
