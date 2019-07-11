@@ -22,7 +22,7 @@ export function postEquipmentDetail(data) {
     method: 'post',
     data: data,
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json;charset=UTF-8'
     }
   })
 }
@@ -34,7 +34,7 @@ export function addEquipmentStored(parameter) {
     method: 'post',
     data: parameter,
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
+      'Content-Type': 'application/json;charset=UTF-8'
     }
   })
 }

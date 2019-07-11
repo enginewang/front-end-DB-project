@@ -356,6 +356,8 @@ import { PageView } from '@/layouts'
 import { getStaffSheet, deleteStaffSheetRow, modifyStaffSheetRow, addStaffSheetRow } from '@/api/staff'
 import Fuse from 'fuse.js'
 import md5 from 'md5'
+import ARow from "ant-design-vue/es/grid/Row";
+import ACol from "ant-design-vue/es/grid/Col";
 
 const statusMap = {
   0: {
@@ -376,6 +378,8 @@ export default {
   name: 'TableList',
   inject: ['reload'],
   components: {
+    ACol,
+    ARow,
     PageView,
     STable
   },
