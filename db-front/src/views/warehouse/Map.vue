@@ -135,7 +135,7 @@ export default {
       overlays.push(marker)
       window.map.addOverlay(marker)
     },
-    appendEquipment(address, lat, lon, model, pic, qrCode, type){
+    appendEquipment(address, lat, lon, model, pic, qrCode, type, id){
       var point = new BMap.Point(lon, lat)
       var myIcon = new BMap.Icon(usingEquipMarker, new BMap.Size(70, 70))
       var marker = new BMap.Marker(point, { icon: myIcon })
@@ -156,7 +156,7 @@ export default {
         this.closeInfoWindow(infoWindow)
       })
       marker.addEventListener("onclick", function(){
-        router.push("/warehouse/detail/" + id)
+        router.push("/equipment/detail/" + id)
       })
       overlays.push(marker)
       window.map.addOverlay(marker)
@@ -190,7 +190,8 @@ export default {
               var pic = equip.pic
               var qrCode = equip.qrCode
               var type = equip.type
-              this.appendEquipment(detailedAddress, lat, lon, model, pic, qrCode, type)
+              var id = equip.id
+              this.appendEquipment(detailedAddress, lat, lon, model, pic, qrCode, type, id)
             }
           }
         }
