@@ -140,7 +140,7 @@
           hasFeedback
           :validateStatus="successPassword"
         >
-           <a-input placeholder="新密码(最少8位)" v-model="newmdl.password" id="role_password" />
+           <a-input placeholder="新密码(8-12位)" v-model="newmdl.password" id="role_password" />
         </a-form-item>
 
         <a-form-item
@@ -256,7 +256,7 @@
           hasFeedback
           :validateStatus="successAddPassword"
         >
-           <a-input placeholder="请输入新用户密码(最少8位)" v-model="addmdl.password" id="role_password" />
+           <a-input placeholder="请输入新用户密码(8-12位)" v-model="addmdl.password" id="role_password" />
         </a-form-item>
 
         <a-form-item
@@ -521,7 +521,11 @@ export default {
         if(this.newmdl.telNumber.length !== 11){
           return "error"
         }
+        if(!(/(^[0-9]\d*$)/.test(this.newmdl.telNumber))){
+          return "error"
+      }else{
         return "success"
+      }
       },
       successIdcard: function(){
         if(this.newmdl.idCardNumber.length !== 18){
@@ -530,7 +534,7 @@ export default {
         return "success"
       },
       successPassword: function(){
-        if(this.newmdl.password.length < 8){
+        if(this.newmdl.password.length < 8||this.newmdl.password.length > 12){
           return "error"
         }
         return "success"
@@ -549,13 +553,16 @@ export default {
         return "success"
       },
       successAddPassword: function(){
-        if(this.addmdl.password.length < 8){
+        if(this.addmdl.password.length < 8 ||this.addmdl.password.length > 12){
           return "error"
         }
         return "success"
       },
       successAddTel: function(){
         if(this.addmdl.telNumber.length !== 11){
+          return "error"
+        }
+        if(!(/(^[0-9]\d*$)/.test(this.addmdl.telNumber))){
           return "error"
         }
         return "success"
@@ -659,7 +666,7 @@ export default {
       console.log(newData)
       const target = newData.filter(item => this.todelete === item.id)[0]
       console.log(target) 
-      deleteStaffSheetRow(target.id).then((response) => {
+      deleteStaffSheetRow({id:target.id}).then((response) => {
         this.deleteInfo = response.info
         if(this.deleteInfo === 'ok'){
           this.sfData = [...response.data.sfData]
