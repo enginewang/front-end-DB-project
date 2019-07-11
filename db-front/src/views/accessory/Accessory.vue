@@ -152,7 +152,7 @@ export default {
           },{
             title: '价格',
             dataIndex: 'price',
-            orter: (a, b) => a.price - b.price
+            sorter: (a, b) => a.price - b.price
           }, {
             title: '库存数量',
             dataIndex: 'num',
@@ -188,7 +188,8 @@ export default {
     },
     watch: {
       input(pattern){
-        if( pattern == ''){
+        if( !pattern){
+          console.log("pattern",pattern)
           this.DataShow = this.Data
         }
         else{
