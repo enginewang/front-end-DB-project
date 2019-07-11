@@ -2,7 +2,7 @@
   <page-view :title="IDTitle" logo="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png">
     <div class="return-button">
       <router-link :to="{name: 'EquipUsing'}">
-        <a-button type="primary">
+        <a-button type="primary" >
           <a-icon type="left"/>返回
         </a-button>
       </router-link>
@@ -18,7 +18,7 @@
                 <img :src="icon">
               </div>
               <div class="username">{{name}}</div>
-              <div class="bio">每天锻炼，身体棒棒</div>
+              <div class="bio">每天锻炼，身体倍棒</div>
             </div>
             <a-divider/>
             <div class="account-center-detail">
@@ -26,7 +26,7 @@
                 <i class="title"></i>健身器械
               </p>
               <p>
-                <i class="group"></i>增强人体的心肺功能，活动全身主要关节，发展上下肢和腰背部力量，还能通过运动按摩内脏增强消化系统功能。
+                <i class="group"></i>{{ equipMessage }}
               </p>
             </div>
           </div>
@@ -104,6 +104,7 @@
         if_damage: '',
         QRcode: '',
         icon: '',
+        equipMessage: '',
         infoData: [],
         IDTitle: '器材编号：' + this.$route.params.id,
 
@@ -130,7 +131,18 @@
         this.using_time = this.DetailData.using_time;
         this.unit = this.DetailData.unit;
         this.address = this.DetailData.address;
-        this.if_damage = this.DetailData.if_damage;
+        if (this.DetailData.if_damage === "1") {
+          this.if_damage = '损坏'
+        } else {
+          this.if_damage = '正常'
+        };
+        if (this.DetailData.name === '太空漫步机') {
+          this.equipMessage = '太空漫步机可以锻炼下肢肌肉力量灵活性，促进心脑血管系统及心肺呼吸系统的健康，而且还增加了热量消耗。'
+        } else if (this.DetailData.name === '跑步机') {
+          this.equipMessage='跑步机是家庭及健身房常备的健身器材，而且是当今家庭健身器材中最简单的一种，是家庭健身器的最佳选择。'
+        }else {
+          this.equipMessage='增强人体的心肺功能，活动全身主要关节，发展上下肢和腰背部力量，还能通过运动按摩内脏增强消化系统功能。'
+        };
         this.icon = this.DetailData.icon;
         this.QRcode = this.DetailData.QRcode;
         var date = new Date();

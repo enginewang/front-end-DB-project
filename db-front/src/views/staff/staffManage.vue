@@ -137,15 +137,27 @@
             <a-input disabled="disabled" v-model="newmdl.accountID" id="role_name"/>
           </a-form-item>
 
-          <a-form-item
-            :labelCol="labelCol"
-            :wrapperCol="wrapperCol"
-            label="密码"
-            hasFeedback
-            :validateStatus="successPassword"
-          >
-            <a-input placeholder="新密码(最少8位)" v-model="newmdl.password" id="role_password"/>
-          </a-form-item>
+      
+          <a-row :gutter="24" style="margin-left: 2rem">
+            <a-col :md="24" :lg="18">
+              <a-form-item
+                :labelCol="labelCol"
+                :wrapperCol="wrapperCol"
+                label="密码"
+                hasFeedback
+                :validateStatus="successPassword"
+              >
+                <a-input :disabled="passwordCheck" placeholder="新密码(8-12位)" v-model="newmdl.password" id="role_password"/>
+              </a-form-item>
+            </a-col>
+            <a-col :md="24" :lg="6">
+              <a-button @click="modifyPassword">
+                编辑
+              </a-button>
+            </a-col>
+          </a-row>
+
+       
 
           <a-form-item
             :labelCol="labelCol"
@@ -203,9 +215,9 @@
               <a-select-option value="周日">周日</a-select-option>
             </a-select>
           </a-form-item>
-
+        
           <a-divider/>
-
+        
 
         </a-form>
         <a-modal
@@ -261,7 +273,7 @@
             hasFeedback
             :validateStatus="successAddPassword"
           >
-            <a-input placeholder="请输入新用户密码(最少8位)" v-model="addmdl.password" id="role_password"/>
+            <a-input placeholder="请输入新用户密码(8-12位)" v-model="addmdl.password" id="role_password"/>
           </a-form-item>
 
           <a-form-item
@@ -344,6 +356,8 @@ import { PageView } from '@/layouts'
 import { getStaffSheet, deleteStaffSheetRow, modifyStaffSheetRow, addStaffSheetRow } from '@/api/staff'
 import Fuse from 'fuse.js'
 import md5 from 'md5'
+import ARow from "ant-design-vue/es/grid/Row";
+import ACol from "ant-design-vue/es/grid/Col";
 
 const statusMap = {
   0: {
@@ -364,6 +378,8 @@ export default {
   name: 'TableList',
   inject: ['reload'],
   components: {
+    ACol,
+    ARow,
     PageView,
     STable
   },
@@ -385,6 +401,8 @@ export default {
       visible3:false,
       visible4:false,
       visible5:false,
+      editPassword:false,
+      passwordCheck:"disabled",
       newmdl:{
         'id':'',
         'name':'',
@@ -527,7 +545,11 @@ export default {
         if(this.newmdl.telNumber.length !== 11){
           return "error"
         }
+        if(!(/(^[0-9]\d*$)/.test(this.newmdl.telNumber))){
+          return "error"
+      }else{
         return "success"
+      }
       },
       successIdcard: function(){
         if(this.newmdl.idCardNumber.length !== 18){
@@ -536,7 +558,10 @@ export default {
         return "success"
       },
       successPassword: function(){
-        if(this.newmdl.password.length < 8){
+        if(!this.editPassword){
+          return "success"
+        }
+        if(this.newmdl.password.length < 8||this.newmdl.password.length > 12){
           return "error"
         }
         return "success"
@@ -555,13 +580,16 @@ export default {
         return "success"
       },
       successAddPassword: function(){
-        if(this.addmdl.password.length < 8){
+        if(this.addmdl.password.length < 8 ||this.addmdl.password.length > 12){
           return "error"
         }
         return "success"
       },
       successAddTel: function(){
         if(this.addmdl.telNumber.length !== 11){
+          return "error"
+        }
+        if(!(/(^[0-9]\d*$)/.test(this.addmdl.telNumber))){
           return "error"
         }
         return "success"
@@ -618,7 +646,10 @@ export default {
     handlenewOk(){
       this.visible =false
       this.visible2 = false
-      this.newmdl.password = md5(this.newmdl.password)
+      if(this.editPassword){
+        this.newmdl.password = md5(this.newmdl.password)
+      }
+      this.newmdl.password = this.mdl.password
       modifyStaffSheetRow(this.newmdl).then((response) => {
         this.modifyInfo = response.info
         if(this.modifyInfo === 'ok'){
@@ -627,7 +658,7 @@ export default {
           description: '本条员工记录修改成功',
           icon: <a-icon type="check" style="color: #108ee9" />,
         });
-        this.sfData = [...response.data.msfData]
+        this.sfData = [...response.data]
           this.sfDataShow = this.sfData
         }
         else{
@@ -652,6 +683,10 @@ export default {
       this.visible5 = true
 
     },
+    modifyPassword(){
+      this.editPassword = true
+      this.passwordCheck = false
+    },
     onClickDelete (id) {
       console.log(id)
       this.todelete = id
@@ -665,10 +700,10 @@ export default {
       console.log(newData)
       const target = newData.filter(item => this.todelete === item.id)[0]
       console.log(target)
-      deleteStaffSheetRow(target.id).then((response) => {
+      deleteStaffSheetRow({id:target.id}).then((response) => {
         this.deleteInfo = response.info
         if(this.deleteInfo === 'ok'){
-          this.sfData = [...response.data.sfData]
+          this.sfData = [...response.data]
           this.sfDataShow = this.sfData
           this.$notification.open({
           message: '删除成功',
@@ -712,7 +747,7 @@ export default {
           description: '本条员工记录添加成功。新员工的账号为'+this.accountInfo,
           icon: <a-icon type="check" style="color: #108ee9" />,
         });
-          this.sfData = [...response.data.asfData]
+          this.sfData = [...response.data]
           this.sfDataShow = this.sfData
         }
         else{

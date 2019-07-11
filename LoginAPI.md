@@ -36,10 +36,9 @@ return: {
 ```
 
 ```
-name: postInfo
+name: getInfo
 url: '/api/user/info'
-method: 'post'
-data: token // 请求者的token
+method: 'get'
 
 return: {
     result: {
@@ -55,6 +54,8 @@ return: {
         'role': { // 重要
             'id': 'admin',
             'name': '管理员',
+            'start': '周一',
+            'end': '周五',
             'describe': '拥有所有权限',
             'status': 1,
             'deleted': 0,
