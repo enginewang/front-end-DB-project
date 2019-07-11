@@ -296,6 +296,11 @@ export default {
           this.equipmentShow = this.equipment
         })
         .catch(err => {
+          this.$notification.open({
+            message: '添加失败',
+            description: '请查看控制台信息',
+            icon: <a-icon type="exclamation-circle" style="color: #108ee9" />
+          })
           console.log(err)
         })
       this.visibleE = false
@@ -309,6 +314,11 @@ export default {
           this.accessoryShow = this.accessory
         })
         .catch(err => {
+          this.$notification.open({
+            message: '添加失败',
+            description: '请查看控制台信息',
+            icon: <a-icon type="exclamation-circle" style="color: #108ee9" />
+          })
           console.log(err)
         })
       this.visibleA = false
@@ -323,6 +333,11 @@ export default {
         this.warehouseDetail.detailAddress = response.data.detailAddress
       })
       .catch(err => {
+        this.$notification.open({
+          message: '获取仓库详情失败',
+          description: '请查看控制台信息',
+          icon: <a-icon type="exclamation-circle" style="color: #108ee9" />
+        })
         console.log(err)
       })
     // get info of goods
@@ -331,6 +346,11 @@ export default {
         this.allWarehouse = [...response.data]
       })
       .catch(err => {
+        this.$notification.open({
+          message: '获取仓库列表失败',
+          description: '请查看控制台信息',
+          icon: <a-icon type="exclamation-circle" style="color: #108ee9" />
+        })
         console.log(err)
       })
     postGoods({ id: this.warehouseID })
@@ -341,6 +361,11 @@ export default {
         this.accessoryShow = this.accessory
       })
       .catch(err => {
+        this.$notification.open({
+          message: '获取物品信息失败',
+          description: '请查看控制台信息',
+          icon: <a-icon type="exclamation-circle" style="color: #108ee9" />
+        })
         console.log(err)
       })
   }
