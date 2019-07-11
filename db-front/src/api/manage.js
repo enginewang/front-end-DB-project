@@ -60,3 +60,14 @@ export function saveService (parameter) {
     data: parameter
   })
 }
+
+export function modifyPassword (data) {
+  return axios({
+    url: api.user,
+    method: 'post',
+    data: data,
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
+  })
+}

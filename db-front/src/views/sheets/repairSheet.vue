@@ -69,7 +69,13 @@
             </a-card-meta>
             <div class="cardItemContent" style="">
               <span>{{ item.updatedAt | fromNow }}</span>
-              <a-button type='primary' @click="showDynamicModal(item)" >查看详情</a-button>
+
+
+
+
+              <router-link :to="{ name: 'repairDetail', params:{ details: item} }">查看详情</router-link>
+              <!--<a-button type='primary' @click="shownewPage(item)">查看详情</a-button>-->
+
               <!-- <div class="avatarList">
                 <avatar-list size="mini">
                   <avatar-list-item
@@ -161,12 +167,12 @@ export default {
       return moment(date).fromNow()
     }
   },
-  mounted () {
+  created () {
     this.getList()
   },
   methods: {
-    
-    refreshTable() {
+
+   refreshTable() {
       this.loading = true
       getRepairSheet().then(response => {
       console.log('sssss',response.data)
@@ -176,8 +182,8 @@ export default {
       })
 
     },
-    
-    getList () {
+
+        getList () {
       // this.$http.get('/list/article', { params: { count: 12 } }).then(res => {
       //   console.log('res', res)
       //   this.data = res.result
@@ -281,17 +287,8 @@ export default {
       
     },
 
-    showDynamicModal (item) {
-      console.log("itemInfo",item)
-      this.$modal.show(repairSheetDetail,
-       {details: item},
-    {
-        adaptive: true,
-        draggable: false,
-        scrollable: true,
-        height: "auto",
-        width: "60%"})
-    },
+    
+    
   }
   
 }
@@ -338,6 +335,6 @@ export default {
       flex: 0 1 auto;
     }
   }
-  
+
 }
 </style>
