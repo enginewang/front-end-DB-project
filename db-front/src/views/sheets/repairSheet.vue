@@ -38,9 +38,9 @@
                   @change="onChange"
                   v-decorator="['rate']"
                   >
-                  <a-select-option value="状态：0">用户提交</a-select-option>
-                  <a-select-option value="状态：1">巡检员提交</a-select-option>
-                  <a-select-option value="状态：2">已调度</a-select-option>
+                  <a-select-option value="0">用户提交</a-select-option>
+                  <a-select-option value="1">巡检员提交</a-select-option>
+                  <a-select-option value="2">已调度</a-select-option>
                 </a-select>
               </a-form-item>
             </a-col>
@@ -131,7 +131,7 @@ export default {
       allData: [],
       form: this.$form.createForm(this),
       loading: true,
-      state: {"状态：0":"状态：用户提交","状态：1":"状态：巡检员提交","状态：2":"状态：已调度"},
+      state: {"0":"状态：用户提交","1":"状态：巡检员提交","2":"状态：已调度"},
       pagination:{
         pageSize: 8,
         showTotal: (total, range) => {
