@@ -24,8 +24,6 @@
         <a-col :xl="16" :lg="24" :md="24" :sm="24" :xs="24">
           <!--调度管理-->
           <a-card
-                  class="project-list"
-                  :loading="loading"
                   style="margin-bottom: 24px; margin-top: 0px"
                   :bordered="false"
                   title="调度管理"
@@ -191,86 +189,88 @@
                 :xs="24">
           <!--个人信息-->
           <a-card
-                  class="project-list"
-                  :loading="loading"
-                  style="margin-bottom: 32px; margin-top: 0px"
+                  style="margin-bottom: 24px; margin-top: 0px"
                   :bordered="false"
                   title="个人信息"
                   :body-style="{ padding: 0 }">
-            <a-card style="font-size: medium">
-              <a-row style="margin-bottom: 20px">
+            <a-card >
+              <a-row style="margin-bottom: 12px">
                 <a-icon type="idcard" theme="twoTone" twoToneColor="#3A5FCD"/>
                 <strong> 账号：</strong>
                 {{userInfo.id }}
               </a-row>
-              <a-row style="margin-bottom: 20px">
+              <a-row style="margin-bottom: 12px">
                 <a-icon type="tag" theme="twoTone" twoToneColor="#3A5FCD"/>
                 <strong> 姓名：</strong>
                 {{ userInfo.name }}
               </a-row>
-              <a-row style="margin-bottom: 20px">
+              <a-row style="margin-bottom: 12px">
                 <a-icon type="phone" theme="twoTone" twoToneColor="#3A5FCD"/>
                 <strong> 联系电话：</strong>
                 {{userInfo.telephone }}
               </a-row>
-              <a-row style="margin-bottom: 20px">
+              <a-row style="margin-bottom: 12px">
                 <a-icon type="up-circle" theme="twoTone" twoToneColor="#3A5FCD"/>
                 <strong> 工作开始时间：</strong>
                 周一
               </a-row>
-              <a-row style="margin-bottom: 20px">
+              <a-row style="margin-bottom: 12px">
                 <a-icon type="down-circle" theme="twoTone" twoToneColor="#3A5FCD"/>
                 <strong> 工作结束时间：</strong>
-                周日
+                周五
               </a-row>
+              <a-row style="margin-bottom: 12px">
+                <a-icon type="lock" theme="twoTone" twoToneColor="#3A5FCD"/>
+                <strong> 修改密码：</strong>
+                <a-button @click="modifyPassButton" type="primary" icon="plus"> 修改密码 </a-button>
 
-
-            </a-card>
-          </a-card>
-          <!--密码修改-->
-          <a-card
-                  class="project-list"
-                  :loading="loading"
-                  style="margin-bottom: 24px; margin-top: 0px"
-                  :bordered="false"
-                  title="修改密码"
-                  :body-style="{ padding: 0 }">
-            <a-card >
-              <a-form @submit="handleModifyPassword" :form = "form">
-                <a-form-item
-                        label="旧密码"
-                        :labelCol="{lg: {span: 7}, sm: {span: 7}}"
-                        :wrapperCol="{lg: {span: 10}, sm: {span: 17} }">
-                  <a-input
-                          v-decorator="[
+                <a-modal v-model="showPasswordForm" footer="">
+                  <a-form title="修改密码" @submit="handleSubmit" :form="form">
+                    <a-form-item
+                      :wrapperCol="{ span: 24 }"
+                      style="text-align: center"
+                    >
+                      <h3>修改密码</h3>
+                    </a-form-item>
+                    <a-form-item
+                      label="旧密码"
+                      :labelCol="{lg: {span: 7}, sm: {span: 7}}"
+                      :wrapperCol="{lg: {span: 10}, sm: {span: 17} }">
+                      <a-input
+                        v-decorator="[
             'old_password',
             {rules: [{ required: true, message: '请输入旧的密码' }]}
           ]"
-                          name="old_password"
-                          placeholder="请输入旧的密码" />
-                </a-form-item>
-                <a-form-item
-                        label="新密码"
-                        :labelCol="{lg: {span: 7}, sm: {span: 7}}"
-                        :wrapperCol="{lg: {span: 10}, sm: {span: 17} }">
-                  <a-input
-                          v-decorator="[
+                        name="old_password"
+                        placeholder="请输入旧的密码" />
+                    </a-form-item>
+                    <a-form-item
+                      label="新密码"
+                      :labelCol="{lg: {span: 7}, sm: {span: 7}}"
+                      :wrapperCol="{lg: {span: 10}, sm: {span: 17} }">
+                      <a-input
+                        v-decorator="[
             'new_password',
             {rules: [{ required: true, message: '请输入新的密码' }]}
           ]"
-                          name="new_password"
-                          placeholder="请输入新的密码" />
-                </a-form-item>
-                <a-form-item
-                        :wrapperCol="{ span: 24 }"
-                        style="text-align: center"
-                >
-                  <a-button htmlType="submit" type="primary">提交</a-button>
-                  <a-button style="margin-left: 8px" @click="cancelModifyPassword">取消</a-button>
-                </a-form-item>
-              </a-form>
+                        name="new_password"
+                        placeholder="请输入新的密码" />
+                    </a-form-item>
+                    <a-form-item
+                      :wrapperCol="{ span: 24 }"
+                      style="text-align: center"
+                    >
+                      <a-button htmlType="submit" type="primary">提交</a-button>
+                      <a-button style="margin-left: 8px" @click="cancelModifyPassword">取消</a-button>
+                    </a-form-item>
+
+                  </a-form>
+                </a-modal>
+                </a-button>
+              </a-row>
             </a-card>
           </a-card>
+          <!--密码修改-->
         </a-col>
       </a-row>
     </div>
@@ -280,21 +280,23 @@
 <script>
   import {timeFix} from '@/utils/util'
   import {mapGetters} from 'vuex'
-
+  import {Button} from 'ant-design-vue'
   import {PageView} from '@/layouts'
   import HeadInfo from '@/components/tools/HeadInfo'
   import {Radar} from '@/components'
 
-  import {getRoleList, getServiceList} from '@/api/manage'
+  import {getRoleList, getServiceList,modifyPassword} from '@/api/manage'
   import ARow from "ant-design-vue/es/grid/Row";
   import ACol from "ant-design-vue/es/grid/Col";
-
+  import AFormItem from "ant-design-vue/es/form/FormItem";
+  import md5 from 'md5'
 
   const DataSet = require('@antv/data-set')
 
   export default {
     name: 'Homepage',
     components: {
+      AFormItem,
       ACol,
       ARow,
       PageView,
@@ -314,6 +316,11 @@
         old_password: '',
         new_password: '',
         form: this.$form.createForm(this),
+        showPasswordForm: false,
+        new_identity: {
+          id: '',
+          newPassword: '',
+        },
         // data
         axis1Opts: {
           dataKey: 'item',
@@ -361,60 +368,12 @@
     created() {
       this.user = this.userInfo
       this.avatar = this.userInfo.avatar
-
-      getRoleList().then(res => {
-        console.log('workplace -> call getRoleList()', res)
-      })
-
-      getServiceList().then(res => {
-        console.log('workplace -> call getServiceList()', res)
-      })
     },
     mounted() {
       console.log('vuex',this.userInfo )
-      this.getProjects()
-      this.getActivity()
-      this.getTeams()
-      this.initRadar()
     },
     methods: {
       ...mapGetters(['nickname', 'welcome']),
-      getProjects() {
-        this.$http.get('/list/search/projects')
-            .then(res => {
-              this.projects = res.result && res.result.data
-              this.loading = false
-            })
-      },
-      getActivity() {
-        this.$http.get('/workplace/activity')
-            .then(res => {
-              this.activities = res.result
-            })
-      },
-      getTeams() {
-        this.$http.get('/workplace/teams')
-            .then(res => {
-              this.teams = res.result
-            })
-      },
-      initRadar() {
-        this.radarLoading = true
-
-        this.$http.get('/workplace/radar')
-            .then(res => {
-              const dv = new DataSet.View().source(res.result)
-              dv.transform({
-                type: 'fold',
-                fields: ['个人', '团队', '部门'],
-                key: 'user',
-                value: 'score'
-              })
-
-              this.radarData = dv.rows
-              this.radarLoading = false
-            })
-      },
       handleModifyPassword (e) {
         e.preventDefault()
         this.form.validateFields((err, values) => {
@@ -436,12 +395,32 @@
       cancelModifyPassword() {
         console.log('Cancel modify passsword')
       },
-      handlePasswordChange(value){
-        console.log(value)
-        if(value === this.old_password){
-          console.log("Pass!")
-        }
-      }
+      modifyPassButton(){
+        this.showPasswordForm= true;
+      },
+      cancelModifyPassword() {
+        this.showPasswordForm= false;
+      },
+      handleSubmit(e) {
+        e.preventDefault()
+        this.form.validateFields((err, value) => {
+          if (!err) {
+            if(md5(value.old_password) === this.userInfo.password){
+              this.new_identity.newPassword = value.new_password
+              this.new_identity.id = this.userInfo.id
+              console.log(this.new_identity)
+              modifyPassword(this.new_identity).then(() => {
+                this.$message.success('密码修改成功！')
+              })
+              console.log("Pass!")
+            }else{
+              this.$message.error('旧密码输入错误！')
+              console.log("Failed!")
+            }
+          }
+        })
+        this.showPasswordForm = false;
+      },
     }
   }
 </script>

@@ -89,7 +89,12 @@
                     </div>
                     <div class="modal">
                       数量:
-                      <a-input-number :max="max" :min="min" class="input" v-model="scheduleA.num" />
+                      <a-input-number
+                        :max="max"
+                        :min="min"
+                        class="modal-number"
+                        v-model="scheduleA.num"
+                      />
                     </div>
                   </a-modal>
                   <!-- modal end -->
@@ -105,7 +110,7 @@
 </template>
 
 <script>
-import { postWarehouseDetail, getAllWarehouse, postGoods, postSchedule } from '@/api/warehouse'
+import { postWarehouseDetail, postAllWarehouse, postGoods, postSchedule } from '@/api/warehouse'
 import { PageView } from '@/layouts'
 import Fuse from 'fuse.js'
 
@@ -207,19 +212,19 @@ export default {
       // 2 schedules
       scheduleA: {
         type: 'Accessory',
-        id: '',
-        model: '',
-        from: '',
+        id: String,
+        model: String,
+        from: String,
         // the name of "to" warehouse
-        to: '',
+        to: String,
         num: 1
       },
       scheduleE: {
         type: 'Equipment',
-        id: '',
-        from: '',
+        id: String,
+        from: String,
         // the name of "to" warehouse
-        to: ''
+        to: String
       }
     }
   },
@@ -268,6 +273,15 @@ export default {
       this.max = target.number
       this.visibleA = true
 
+      if (typeof this.scheduleA.num !== 'number') {
+        this.$notification.open({
+          message: '添加失败',
+          description: '请输入合法的数字',
+          icon: <a-icon type="exclamation-circle" style="color: #108ee9" />
+        })
+        return
+      }
+
       this.scheduleA.model = target.model
       this.scheduleA.id = target.id
       this.scheduleA.from = this.warehouseDetail.name
@@ -312,20 +326,19 @@ export default {
         console.log(err)
       })
     // get info of goods
+    postAllWarehouse({ id: this.warehouseID })
+      .then(response => {
+        this.allWarehouse = [...response.data]
+      })
+      .catch(err => {
+        console.log(err)
+      })
     postGoods({ id: this.warehouseID })
       .then(response => {
         this.equipment = [...response.data.equipment]
         this.equipmentShow = this.equipment
         this.accessory = [...response.data.accessory]
         this.accessoryShow = this.accessory
-      })
-      .catch(err => {
-        console.log(err)
-      })
-    getAllWarehouse()
-      .then(response => {
-        this.allWarehouse = [...response.data]
-        // this.allWarehouse.splice(this.allWarehouse.indexOf(this.warehouseDetail.name), 1)
       })
       .catch(err => {
         console.log(err)
@@ -352,5 +365,8 @@ export default {
 .modal {
   margin-top: 1rem;
   margin-bottom: 1rem;
+  .modal-number {
+    margin-left: 0.6rem;
+  }
 }
 </style>

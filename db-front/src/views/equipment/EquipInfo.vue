@@ -105,7 +105,7 @@
         QRcode: '',
         icon: '',
         infoData: [],
-        IDTitle: '器材编号：EQ' + this.$route.params.id,
+        IDTitle: '器材编号：' + this.$route.params.id,
 
         equipmentID: this.$route.params.id,
       }
@@ -120,7 +120,7 @@
       }
     },
     mounted() {
-      postEquipmentDetail(this.equipmentID).then((response) => {
+      postEquipmentDetail({id: this.equipmentID}).then((response) => {
         console.log(response);
         console.log(this.equipmentID);
         this.DetailData = response.data;
@@ -131,6 +131,8 @@
         this.unit = this.DetailData.unit;
         this.address = this.DetailData.address;
         this.if_damage = this.DetailData.if_damage;
+        this.icon = this.DetailData.icon;
+        this.QRcode = this.DetailData.QRcode;
         var date = new Date();
         var nowMonth = date.getMonth() + 1;
         var strDate = date.getDate();

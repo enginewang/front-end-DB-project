@@ -130,6 +130,15 @@ export const asyncRouterMap = [
             component: () => import( '@/views/sheets/checkSheet' ),
             meta: {title: '巡检单', keepAlive: false, icon: 'copy'}
           },
+          {
+            path: '/sheets/components/:details',
+            name: 'repairDetail',
+            hidden: true,
+            component: () => import( '@/views/sheets/components/repairSheetDetail' ),
+            meta: {
+              title: '报修单详情', keepAlive: false, icon: 'bars'
+            },
+          },
         ]
       },
 

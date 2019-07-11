@@ -6,7 +6,8 @@ const api = {
   service: '/service',
   permission: '/permission',
   permissionNoPager: '/permission/no-pager',
-  orgTree: '/org/tree'
+  orgTree: '/org/tree',
+  modifyPassword: '/user/modifyPassword',
 }
 
 export default api
@@ -58,5 +59,16 @@ export function saveService (parameter) {
     url: api.service,
     method: parameter.id === 0 ? 'post' : 'put',
     data: parameter
+  })
+}
+
+export function modifyPassword (data) {
+  return axios({
+    url: api.modifyPassword,
+    method: 'post',
+    data: data,
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
   })
 }
