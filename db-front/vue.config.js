@@ -8,7 +8,7 @@ function resolve(dir) {
 // vue.config.js
 module.exports = {
   publicPath: process.env.NODE_ENV === 'production'
-    ? '/my-project/'
+    ? '/front-end-DB-project/'
     : '/',
   /*
     Vue-cli3:
