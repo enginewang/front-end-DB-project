@@ -527,7 +527,11 @@ export default {
         if(this.newmdl.telNumber.length !== 11){
           return "error"
         }
+        if(!(/(^[0-9]\d*$)/.test(this.newmdl.telNumber))){
+          return "error"
+      }else{
         return "success"
+      }
       },
       successIdcard: function(){
         if(this.newmdl.idCardNumber.length !== 18){
@@ -536,7 +540,7 @@ export default {
         return "success"
       },
       successPassword: function(){
-        if(this.newmdl.password.length < 8){
+        if(this.newmdl.password.length < 8||this.newmdl.password.length > 12){
           return "error"
         }
         return "success"
@@ -555,13 +559,16 @@ export default {
         return "success"
       },
       successAddPassword: function(){
-        if(this.addmdl.password.length < 8){
+        if(this.addmdl.password.length < 8 ||this.addmdl.password.length > 12){
           return "error"
         }
         return "success"
       },
       successAddTel: function(){
         if(this.addmdl.telNumber.length !== 11){
+          return "error"
+        }
+        if(!(/(^[0-9]\d*$)/.test(this.addmdl.telNumber))){
           return "error"
         }
         return "success"

@@ -51,8 +51,8 @@
         <a-row  grid last>
 
           <a-row>
-            <a-col :span='9'>
-              <a-form-item  :validate-status="successRepair" style="textAlign:left" label="维修员" :label-col="{ span: 8 }" :wrapper-col="{ span: 15 }" 
+            <a-col :span='8'>
+              <a-form-item  :validate-status="successRepair" style="textAlign:left" label="维 修 员 " :label-col="{ span: 8 }" :wrapper-col="{ span: 15 }" 
                >
                 <a-select :disabled="qualified"
                   style="max-width: 200px; width: 120%;"
@@ -69,7 +69,7 @@
           </a-row>
             <a-row>
             <a-col :span='8'>
-              <a-form-item label="器材选择" :label-col="{ span: 8 }" :wrapper-col="{ span: 15 }">
+              <a-form-item label="器材选择" :label-col="{ span: 8 }" :wrapper-col="{ span: 15 }" style="textAlign:left">
                 <a-select :disabled="qualified"
                   style="width: 120%;"
                   placeholder="选择器材类型"
@@ -82,15 +82,10 @@
               </a-form-item>
             </a-col>
      
-            <a-col :span='9'>
+            <a-col :span='2'>
              
-              <a-form-item :validate-status="compare" label="数量" :label-col="{ span: 5 }" :wrapper-col="{ span: 18 }">
-                <a-input :disabled="qualified"
-                  :placeholder="text"
-                  
-                  v-model="eqNum"
-                  style="width: 100%"
-                />
+              <a-form-item :validate-status="compare"  :label-col="{ span: 2 }" :wrapper-col="{ span: 2 }">
+                
               </a-form-item>
             </a-col>
             <a-col :span='6' style="">

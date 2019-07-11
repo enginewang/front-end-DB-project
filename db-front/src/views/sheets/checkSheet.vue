@@ -234,25 +234,26 @@ export default {
       console.log(newData)
       const target = newData.filter(item => this.todelete === item.id)[0]
       console.log(target)
-      deleteCheckSheetRow(target.id).then((response) => {
-        this.deleteInfo = response.info
+      deleteCheckSheetRow({ id : target.id}).then((response) => {
+        console.log('res', response)
         if(this.deleteInfo !== 'fail'){
-          this.Data = [...response.data.Data]
+          this.Data = [...response.data]
           this.DataShow = this.Data
+          
         }
         if(this.deleteInfo === 'ok'){
           this.$notification.open({
           message: '删除成功',
           description: '本条巡检单记录删除成功',
           icon: <a-icon type="check" style="color: #108ee9" />,
-        });
+        })
         }
         else{
           this.$notification.open({
           message: '删除失败',
           description: '本条巡检单记录删除失败',
           icon: <a-icon type="warning" style="color: #108ee9" />,
-        });
+        })
         }
       })
       // to be complete
