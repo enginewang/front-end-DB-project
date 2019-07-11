@@ -110,8 +110,6 @@
         </a-card>
         <!-- table end -->
       </a-layout>
-
-        </a-form>
       </div>
       <!-- input bar end -->
       <!-- refresh button -->
@@ -137,10 +135,8 @@
         <a-table :columns="columns" :dataSource="DataShow" :loading="loading"/>
       </a-card>
       <!-- table end -->
-    </a-layout>
 
 
-    </div>
   </page-view>
 </template>
 
