@@ -119,7 +119,7 @@ export default {
       var myIcon = new BMap.Icon(warehouseMarker, new BMap.Size(70, 70))
       var marker = new BMap.Marker(point, { icon: myIcon })
       var sContent =
-      `<h4 style='margin:0 0 5px 0;padding:0.2em 0'>${name}</route-link></h4>` + 
+      `<h4 style='margin:0 0 5px 0;padding:0.2em 0'>${name}</h4>` + 
       `<p style='margin:0;line-height:1.5;font-size:13px;text-indent:2em'>${address}</p>` + 
       "</div>";
       var infoWindow = new BMap.InfoWindow(sContent);
@@ -140,12 +140,17 @@ export default {
       var myIcon = new BMap.Icon(usingEquipMarker, new BMap.Size(70, 70))
       var marker = new BMap.Marker(point, { icon: myIcon })
       var sContent =
-      `<h4 style='margin:0 0 5px 0;padding:0.2em 0'>${address}</route-link></h4>` + 
-      `<p style='margin:0;line-height:1.5;font-size:13px;text-indent:2em'>${address}</p>` + 
+      `<h4 style='margin:0 0 5px 0;padding:0.2em 0'>${type} : ${model}</h4>` + 
+      `<img style='float:right;margin:4px' id='imgDemo' src='${pic}' width='70' height='70' title='${type} : ${model}'/>` +
+       `<img style='float:right;margin:4px' id='imgDemo' src='${qrCode}' width='70' height='70' title='${type} : ${model}'/>` +
+      `<p style='margin:0;line-height:1.5;font-size:13px;'>${address}</p>` + 
       "</div>";
       var infoWindow = new BMap.InfoWindow(sContent);
       marker.addEventListener("mouseover", function(){
         this.openInfoWindow(infoWindow)
+        document.getElementById('imgDemo').onload = function (){
+          infoWindow.redraw();   
+        }
       })
       marker.addEventListener("mouseout", function(){
         this.closeInfoWindow(infoWindow)
@@ -218,8 +223,8 @@ export default {
       //     })
       //   }
       // }
-      var shanghai = new BMap.Point(121.48, 31.22)
-      window.map.centerAndZoom(shanghai, 11)
+      var TJJD = new BMap.Point(121.222, 31.291)
+      window.map.centerAndZoom(TJJD, 16)
     }
   },
   mounted() {
