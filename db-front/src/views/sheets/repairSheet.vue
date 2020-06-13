@@ -234,7 +234,7 @@ export default {
       //   pageData = this.data
       // })
       getRepairSheet().then(response => {
-        console.log('sssss', response.data)
+        console.log('res: ', response.data)
         pageData = response.data
         var dic = new Array()
         // console.log(response.data["0"])
