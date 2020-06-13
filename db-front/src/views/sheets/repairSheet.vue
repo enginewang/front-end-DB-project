@@ -198,8 +198,30 @@ export default {
       getRepairSheet().then(response => {
         console.log('sssss', response.data)
         pageData = response.data
+        var dic = new Array()
+        // console.log(response.data["0"])
+        for (let i = 0; i < pageData.length; i++) {
+          console.log("i :" + pageData[i])
+          var item = pageData[i]
+          dic[item.title] = item;
+        }
+        console.log('dic', dic)
+        var titles = Object.keys(dic).sort().reverse();
+        console.log('titles', titles)
+        // this.data.push(pageData[titles])
+        var result = new Array()
+        for (let i = 0; i < titles.length; i++) {
+          var title = titles[i]
+          console.log("title", titles[i])
+          console.log("item", dic[title])
+          result.push(dic[title])
+
+        }
+        console.log('result', result)
+
+
         this.loading = false
-        this.data = pageData
+        this.data = result
       })
 
     },
@@ -214,8 +236,30 @@ export default {
       getRepairSheet().then(response => {
         console.log('sssss', response.data)
         pageData = response.data
+        var dic = new Array()
+        // console.log(response.data["0"])
+        for (let i = 0; i < pageData.length; i++) {
+          console.log("i :" + pageData[i])
+          var item = pageData[i]
+          dic[item.title] = item;
+        }
+        console.log('dic', dic)
+        var titles = Object.keys(dic).sort().reverse();
+        console.log('titles', titles)
+        // this.data.push(pageData[titles])
+        var result = new Array()
+        for (let i = 0; i < titles.length; i++) {
+          var title = titles[i]
+          console.log("title", titles[i])
+          console.log("item", dic[title])
+          result.push(dic[title])
+
+        }
+        console.log('result', result)
+
+
         this.loading = false
-        this.data = pageData
+        this.data = result
       })
 
     },
