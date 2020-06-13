@@ -1,56 +1,51 @@
 <template>
   <div class="main">
-    <a-form
-      id="formLogin"
-      class="user-layout-login"
-      ref="formLogin"
-      :form="form"
-      @submit="handleSubmit"
-    >
-      <a-tabs
-        :activeKey="customActiveKey"
-        :tabBarStyle="{ textAlign: 'center', borderBottom: 'unset' }"
-      >
-        <a-tab-pane key="tab1" tab="账号密码登录">
+    <a-form id="formLogin"
+            class="user-layout-login"
+            ref="formLogin"
+            :form="form"
+            @submit="handleSubmit">
+      <a-tabs :activeKey="customActiveKey"
+              :tabBarStyle="{ textAlign: 'center', borderBottom: 'unset' }">
+        <a-tab-pane key="tab1"
+                    tab="账号密码登录">
           <a-form-item>
-            <a-input
-              size="large"
-              type="text"
-              placeholder="账户: 您的用户名"
-              v-decorator="[
+            <a-input size="large"
+                     type="text"
+                     placeholder="账户: 您的用户名"
+                     v-decorator="[
                 'username',
                 {rules: [{ required: true, message: '请输入帐户名或者邮箱' }, { validator: handleUsernameOrEmail }], validateTrigger: 'change'}
-              ]"
-            >
-              <a-icon slot="prefix" type="user" :style="{ color: 'rgba(0,0,0,.25)' }" />
+              ]">
+              <a-icon slot="prefix"
+                      type="user"
+                      :style="{ color: 'rgba(0,0,0,.25)' }" />
             </a-input>
           </a-form-item>
 
           <a-form-item>
-            <a-input
-              size="large"
-              type="password"
-              autocomplete="false"
-              placeholder="密码: 您的密码，比如：admin "
-              v-decorator="[
+            <a-input size="large"
+                     type="password"
+                     autocomplete="false"
+                     placeholder="密码: 您的密码，比如：admin "
+                     v-decorator="[
                 'password',
                 {rules: [{ required: true, message: '请输入密码' }], validateTrigger: 'blur'}
-              ]"
-            >
-              <a-icon slot="prefix" type="lock" :style="{ color: 'rgba(0,0,0,.25)' }" />
+              ]">
+              <a-icon slot="prefix"
+                      type="lock"
+                      :style="{ color: 'rgba(0,0,0,.25)' }" />
             </a-input>
           </a-form-item>
         </a-tab-pane>
       </a-tabs>
       <a-form-item style="margin-top:24px">
-        <a-button
-          size="large"
-          type="primary"
-          htmlType="submit"
-          class="login-button"
-          :loading="state.loginBtn"
-          :disabled="state.loginBtn"
-        >确定</a-button>
+        <a-button size="large"
+                  type="primary"
+                  htmlType="submit"
+                  class="login-button"
+                  :loading="state.loginBtn"
+                  :disabled="state.loginBtn">确定</a-button>
       </a-form-item>
     </a-form>
   </div>
@@ -63,7 +58,7 @@ import { timeFix } from '@/utils/util'
 import { getSmsCaptcha, get2step } from '@/api/login'
 
 export default {
-  data() {
+  data () {
     return {
       customActiveKey: 'tab1',
       loginBtn: false,
@@ -83,7 +78,7 @@ export default {
   methods: {
     ...mapActions(['Login', 'Logout']),
     // handler
-    handleUsernameOrEmail(rule, value, callback) {
+    handleUsernameOrEmail (rule, value, callback) {
       const { state } = this
       const regex = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/
       if (regex.test(value)) {
@@ -93,7 +88,7 @@ export default {
       }
       callback()
     },
-    handleSubmit(e) {
+    handleSubmit (e) {
       e.preventDefault()
       const {
         form: { validateFields },
@@ -127,9 +122,12 @@ export default {
         }
       })
     },
-    loginSuccess(res) {
+    loginSuccess (res) {
       console.log(res)
-      this.$router.push({ name: 'homepage' })
+      // this.$router.push({ name: 'homepage' })
+      this.$router.push('/homepage').catch(err => {
+        console.log('all good')
+      })
       // 延迟 1 秒显示欢迎信息
       setTimeout(() => {
         this.$notification.success({
@@ -138,7 +136,7 @@ export default {
         })
       }, 1000)
     },
-    requestFailed(err) {
+    requestFailed (err) {
       this.$notification['error']({
         message: '错误',
         description: ((err.response || {}).data || {}).message || '请求出现错误，请稍后再试',
