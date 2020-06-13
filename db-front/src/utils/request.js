@@ -11,8 +11,7 @@ import {
 
 // 创建 axios 实例
 const service = axios.create({
-  // baseURL: 'https://tjsseibm.club/api', // api base_url
-  baseURL: '/api',
+  baseURL: 'https://tjsseibm.club/api', // api base_url
   timeout: 6000 // 请求超时时间
 })
 
@@ -59,7 +58,7 @@ service.interceptors.response.use((response) => {
 
 const installer = {
   vm: {},
-  install (Vue) {
+  install(Vue) {
     Vue.use(VueAxios, service)
   }
 }
