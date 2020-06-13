@@ -12,7 +12,7 @@ import {
 // 创建 axios 实例
 const service = axios.create({
   // baseURL: 'https://tjsseibm.club/api', // api base_url
-  baseURL: 'http://localhost:8000/api',
+  baseURL: '/api',
   timeout: 6000 // 请求超时时间
 })
 
