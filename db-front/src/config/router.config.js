@@ -158,33 +158,33 @@ export const asyncRouterMap = [
           }
         ]
       },
-      // {
-      //   path: '/server',
-      //   name: 'server',
-      //   redirect: '/server/KibanaMonitor',
-      //   component: RouteView,
-      //   meta: { title: '服务器', keepAlive: true, icon: bxAnaalyse },
-      //   children: [
-      //     {
-      //       path: '/server/KibanaMonitor',
-      //       name: 'KibanaMonitor',
-      //       component: () => import('@/views/server/KibanaMonitor'),
-      //       meta: { title: '监控', keepAlive: false, icon: bxAnaalyse }
-      //     },
-      //     {
-      //       path: '/server/Swagger',
-      //       name: 'Swagger',
-      //       component: () => import('@/views/server/Swagger'),
-      //       meta: { title: 'API', keepAlive: false, icon: codeAPI }
-      //     },
-      //   ]
-      // },
-      // {
-      //   path: '/chat',
-      //   name: 'chat',
-      //   component: () => import('@/views/chat/Rocket'),
-      //   meta: { title: '聊天', keepAlive: true, icon: chat },
-      // }
+      {
+        path: '/server',
+        name: 'server',
+        redirect: '/server/KibanaMonitor',
+        component: RouteView,
+        meta: { title: '服务器', keepAlive: true, icon: bxAnaalyse },
+        children: [
+          {
+            path: '/server/KibanaMonitor',
+            name: 'KibanaMonitor',
+            component: () => import('@/views/server/KibanaMonitor'),
+            meta: { title: '监控', keepAlive: false, icon: bxAnaalyse }
+          },
+          {
+            path: '/server/Swagger',
+            name: 'Swagger',
+            component: () => import('@/views/server/Swagger'),
+            meta: { title: 'API', keepAlive: false, icon: codeAPI }
+          },
+        ]
+      },
+      {
+        path: '/chat',
+        name: 'chat',
+        component: () => import('@/views/chat/Rocket'),
+        meta: { title: '聊天', keepAlive: true, icon: chat },
+      }
     ]
   },
   {
