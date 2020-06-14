@@ -2,7 +2,7 @@
 
 <template>
   <div id="pleaseresize">
-    <a-layout id="map-components" style="height:100%;">
+    <a-layout id="map-components" style="height:180%;">
       <a-layout-content>
         <div class="map" id="map" style="height:100%"></div>
       </a-layout-content>
@@ -43,7 +43,7 @@ const treeData = [{
   title: '仓库',
   value: '0-0',
   key: '0-0',
-}, 
+},
 {
   title: '在用器材',
   value: '0-1',
@@ -65,7 +65,7 @@ function initialize() {
   map.enableScrollWheelZoom(true)
   // 覆盖区域图层测试
   map.addTileLayer(new BMap.PanoramaCoverageLayer())
-  
+
   var stCtrl = new BMap.PanoramaControl() // 构造全景控件
   stCtrl.setOffset(new BMap.Size(20, 20))
   map.addControl(stCtrl) // 添加全景控件
@@ -119,8 +119,8 @@ export default {
       var myIcon = new BMap.Icon(warehouseMarker, new BMap.Size(70, 70))
       var marker = new BMap.Marker(point, { icon: myIcon })
       var sContent =
-      `<h4 style='margin:0 0 5px 0;padding:0.2em 0'>${name}</h4>` + 
-      `<p style='margin:0;line-height:1.5;font-size:13px;text-indent:2em'>${address}</p>` + 
+      `<h4 style='margin:0 0 5px 0;padding:0.2em 0'>${name}</h4>` +
+      `<p style='margin:0;line-height:1.5;font-size:13px;text-indent:2em'>${address}</p>` +
       "</div>";
       var infoWindow = new BMap.InfoWindow(sContent);
       marker.addEventListener("mouseover", function(){
@@ -140,16 +140,16 @@ export default {
       var myIcon = new BMap.Icon(usingEquipMarker, new BMap.Size(70, 70))
       var marker = new BMap.Marker(point, { icon: myIcon })
       var sContent =
-      `<h4 style='margin:0 0 5px 0;padding:0.2em 0'>${type} : ${model}</h4>` + 
+      `<h4 style='margin:0 0 5px 0;padding:0.2em 0'>${type} : ${model}</h4>` +
       `<img style='float:right;margin:4px' id='imgDemo' src='${pic}' width='70' height='70' title='${type} : ${model}'/>` +
        `<img style='float:right;margin:4px' id='imgDemo' src='${qrCode}' width='70' height='70' title='${type} : ${model}'/>` +
-      `<p style='margin:0;line-height:1.5;font-size:13px;'>${address}</p>` + 
+      `<p style='margin:0;line-height:1.5;font-size:13px;'>${address}</p>` +
       "</div>";
       var infoWindow = new BMap.InfoWindow(sContent);
       marker.addEventListener("mouseover", function(){
         this.openInfoWindow(infoWindow)
         document.getElementById('imgDemo').onload = function (){
-          infoWindow.redraw();   
+          infoWindow.redraw();
         }
       })
       marker.addEventListener("mouseout", function(){
