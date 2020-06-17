@@ -200,8 +200,8 @@ export default {
         // var type = functionBox[v][0]
         // if (v == "仓库") {
 
-        var finallat = 121.222
-        var finallon = 31.291
+        var finallat = 31.291
+        var finallon = 121.222
         for (var warehouse of warehouses) {
 
           var id = warehouse.id
