@@ -190,6 +190,7 @@ export default {
       for (var overlay of overlays) {
         window.map.removeOverlay(overlay)
       }
+
       getAll().then(response => {
         var warehouses = response.data.warehouse
         var equips = response.data.usingEquipment
@@ -198,6 +199,9 @@ export default {
         // for (var v of this.value) {
         // var type = functionBox[v][0]
         // if (v == "仓库") {
+
+        var finallat = 121.222
+        var finallon = 31.291
         for (var warehouse of warehouses) {
 
           var id = warehouse.id
@@ -208,6 +212,8 @@ export default {
           var detailedAddress = warehouse.detailedAddress
           if (this.value.indexOf(name) != -1) {
             console.log("inininin")
+            finallat = lat
+            finallon = lon
             this.appendWarehouse(detailedAddress, id, name, lat, lon)
 
           }
@@ -230,6 +236,10 @@ export default {
         }
 
         console.log(response)
+        console.log('point', finallat, finallon)
+
+        var TJJD = new BMap.Point(finallon, finallat)
+        window.map.centerAndZoom(TJJD, 16)
       })
 
 
@@ -257,8 +267,7 @@ export default {
       //     })
       //   }
       // }
-      var TJJD = new BMap.Point(121.222, 31.291)
-      window.map.centerAndZoom(TJJD, 16)
+
     }
   },
   created () {
