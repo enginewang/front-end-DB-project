@@ -9,7 +9,7 @@
              id="map"
              style="height:100%"></div>
       </a-layout-content>
-      <a-layout-sider theme="light">
+      <a-layout-sider theme="light" style="background-color: #eff1f4">
         <a-tree-select :treeData="treeData"
                        :value="value"
                        @change="onChange"
@@ -200,8 +200,8 @@ export default {
         // var type = functionBox[v][0]
         // if (v == "仓库") {
 
-        var finallat = 121.222
-        var finallon = 31.291
+        var finallat = 31.291
+        var finallon = 121.222
         for (var warehouse of warehouses) {
 
           var id = warehouse.id
@@ -221,17 +221,17 @@ export default {
           // }
           // else {
           //   console.log("在用器材")
-          //   for (var equip of equips) {
-          //     var detailedAddress = equip.detailedAddress
-          //     var lat = equip.lat
-          //     var lon = equip.lon
-          //     var model = equip.model
-          //     var pic = equip.pic
-          //     var qrCode = equip.qrCode
-          //     var type = equip.type
-          //     var id = equip.id
-          //     this.appendEquipment(detailedAddress, lat, lon, model, pic, qrCode, type, id)
-          //   }
+          for (var equip of equips) {
+            var detailedAddress = equip.detailedAddress
+            var lat = equip.lat
+            var lon = equip.lon
+            var model = equip.model
+            var pic = equip.pic
+            var qrCode = equip.qrCode
+            var type = equip.type
+            var id = equip.id
+            this.appendEquipment(detailedAddress, lat, lon, model, pic, qrCode, type, id)
+          }
           // }
         }
 

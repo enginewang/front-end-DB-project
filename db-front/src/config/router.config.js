@@ -162,6 +162,7 @@ export const asyncRouterMap = [
         path: '/server',
         name: 'server',
         redirect: '/server/KibanaMonitor',
+        hidden:'true',
         component: RouteView,
         meta: { title: '服务器', keepAlive: true, icon: bxAnaalyse },
         children: [
@@ -182,6 +183,7 @@ export const asyncRouterMap = [
       {
         path: '/chat',
         name: 'chat',
+        hidden:'true',
         component: () => import('@/views/chat/Rocket'),
         meta: { title: '聊天', keepAlive: true, icon: chat },
       }
