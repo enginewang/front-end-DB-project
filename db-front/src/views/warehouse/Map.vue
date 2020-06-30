@@ -220,26 +220,28 @@ export default {
           // }
           // }
           // else {
-          //   console.log("在用器材")
-          //   for (var equip of equips) {
-          //     var detailedAddress = equip.detailedAddress
-          //     var lat = equip.lat
-          //     var lon = equip.lon
-          //     var model = equip.model
-          //     var pic = equip.pic
-          //     var qrCode = equip.qrCode
-          //     var type = equip.type
-          //     var id = equip.id
-          //     this.appendEquipment(detailedAddress, lat, lon, model, pic, qrCode, type, id)
+          //   
           //   }
           // }
         }
+        console.log("在用器材")
+        for (var equip of equips) {
+          var detailedAddress = equip.detailedAddress
+          var lat = equip.lat
+          var lon = equip.lon
+          var model = equip.model
+          var pic = equip.pic
+          var qrCode = equip.qrCode
+          var type = equip.type
+          var id = equip.id
+          this.appendEquipment(detailedAddress, lat, lon, model, pic, qrCode, type, id)
 
-        console.log(response)
-        console.log('point', finallat, finallon)
+          console.log(response)
+          console.log('point', finallat, finallon)
 
-        var TJJD = new BMap.Point(finallon, finallat)
-        window.map.centerAndZoom(TJJD, 16)
+          var TJJD = new BMap.Point(finallon, finallat)
+          window.map.centerAndZoom(TJJD, 16)
+        }
       })
 
 
