@@ -200,46 +200,48 @@ export default {
         // var type = functionBox[v][0]
         // if (v == "仓库") {
 
-        var finallat = 121.222
-        var finallon = 31.291
-        for (var warehouse of warehouses) {
+        var finallat = 31.291
+        var finallon = 121.222
+        // for (var warehouse of warehouses) {
 
-          var id = warehouse.id
-          var lat = warehouse.lat
-          var lon = warehouse.lon
-          var name = warehouse.name
-          console.log('data.value', this.value)
-          var detailedAddress = warehouse.detailedAddress
-          if (this.value.indexOf(name) != -1) {
-            console.log("inininin")
-            finallat = lat
-            finallon = lon
-            this.appendWarehouse(detailedAddress, id, name, lat, lon)
+        //   var id = warehouse.id
+        //   var lat = warehouse.lat
+        //   var lon = warehouse.lon
+        //   var name = warehouse.name
+        //   console.log('data.value', this.value)
+        //   var detailedAddress = warehouse.detailedAddress
+        //   if (this.value.indexOf(name) != -1) {
+        //     console.log("inininin")
+        //     finallat = lat
+        //     finallon = lon
+        //     this.appendWarehouse(detailedAddress, id, name, lat, lon)
 
-          }
-          // }
-          // }
-          // else {
-          //   console.log("在用器材")
-          //   for (var equip of equips) {
-          //     var detailedAddress = equip.detailedAddress
-          //     var lat = equip.lat
-          //     var lon = equip.lon
-          //     var model = equip.model
-          //     var pic = equip.pic
-          //     var qrCode = equip.qrCode
-          //     var type = equip.type
-          //     var id = equip.id
-          //     this.appendEquipment(detailedAddress, lat, lon, model, pic, qrCode, type, id)
-          //   }
-          // }
+        //   }
+        //   // }
+        //   // }
+        //   // else {
+        //   //   
+        //   //   }
+        //   // }
+        // }
+        console.log("在用器材")
+        for (var equip of equips) {
+          var detailedAddress = equip.detailedAddress
+          var lat = equip.lat
+          var lon = equip.lon
+          var model = equip.model
+          var pic = equip.pic
+          var qrCode = equip.qrCode
+          var type = equip.type
+          var id = equip.id
+          this.appendEquipment(detailedAddress, lat, lon, model, pic, qrCode, type, id)
+
+          console.log(response)
+          console.log('point', finallat, finallon)
+
+          var TJJD = new BMap.Point(finallon, finallat)
+          window.map.centerAndZoom(TJJD, 16)
         }
-
-        console.log(response)
-        console.log('point', finallat, finallon)
-
-        var TJJD = new BMap.Point(finallon, finallat)
-        window.map.centerAndZoom(TJJD, 16)
       })
 
 
