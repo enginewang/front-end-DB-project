@@ -4,7 +4,7 @@
       <div class="top">
         <div class="header">
           <a href="/">
-            
+
             <img src="/EportLogo.png" class="logo" alt="logo" >
             <span class="title">Eport</span>
           </a>
@@ -25,7 +25,7 @@
         </div>
         -->
         <div class="copyright">
-          Copyright &copy; 2019 Eport
+          Copyright &copy; 2020 Eport
         </div>
       </div>
     </div>
@@ -83,7 +83,7 @@ export default {
         .header {
           height: 78px;
           line-height: 44px;
-          
+
 
           .badge {
             position: absolute;
