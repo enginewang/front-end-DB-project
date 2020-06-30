@@ -202,28 +202,28 @@ export default {
 
         var finallat = 31.291
         var finallon = 121.222
-        for (var warehouse of warehouses) {
+        // for (var warehouse of warehouses) {
 
-          var id = warehouse.id
-          var lat = warehouse.lat
-          var lon = warehouse.lon
-          var name = warehouse.name
-          console.log('data.value', this.value)
-          var detailedAddress = warehouse.detailedAddress
-          if (this.value.indexOf(name) != -1) {
-            console.log("inininin")
-            finallat = lat
-            finallon = lon
-            this.appendWarehouse(detailedAddress, id, name, lat, lon)
+        //   var id = warehouse.id
+        //   var lat = warehouse.lat
+        //   var lon = warehouse.lon
+        //   var name = warehouse.name
+        //   console.log('data.value', this.value)
+        //   var detailedAddress = warehouse.detailedAddress
+        //   if (this.value.indexOf(name) != -1) {
+        //     console.log("inininin")
+        //     finallat = lat
+        //     finallon = lon
+        //     this.appendWarehouse(detailedAddress, id, name, lat, lon)
 
-          }
-          // }
-          // }
-          // else {
-          //   
-          //   }
-          // }
-        }
+        //   }
+        //   // }
+        //   // }
+        //   // else {
+        //   //   
+        //   //   }
+        //   // }
+        // }
         console.log("在用器材")
         for (var equip of equips) {
           var detailedAddress = equip.detailedAddress

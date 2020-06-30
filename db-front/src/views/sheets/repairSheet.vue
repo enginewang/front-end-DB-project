@@ -82,6 +82,9 @@
                   <ellipsis :length="70">{{ state[item.state] }}</ellipsis>
                   <br>
                   <ellipsis :length="70">{{`待维修器材编号：${item['EqId']}`}}</ellipsis>
+                  <br>
+                  <ellipsis :length="70">{{`时间：${item['updateTime']}`}}</ellipsis>
+
                 </template>
                 <template slot="description">
 

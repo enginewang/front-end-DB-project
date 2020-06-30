@@ -2,7 +2,7 @@
   <page-view title="报修单"
              logo="/repairSheet.png">
 
-    <detail-list slot="headerContent"
+    <!-- <detail-list slot="headerContent"
                  size="small"
                  :col="1"
                  class="detail-layout">
@@ -10,16 +10,7 @@
       <detail-list-item term="详细描述">{{this.details.details}}</detail-list-item>
       <detail-list-item term="所需配件">{{this.details.stuffNeeded}}</detail-list-item>
       <detail-list-item term="报修用户电话">{{this.details.telNumber}}</detail-list-item>
-    </detail-list>
-    <a-row slot="extra"
-           class="status-list">
-      <a-col :xs="12"
-             :sm="12">
-        <div class="text">报修单单号</div>
-        <div class="heading"
-             span="4">{{this.details.title}}</div>
-      </a-col>
-    </a-row>
+    </detail-list> -->
 
     <a-card :bordered='false'
             :gutter="24">
@@ -40,6 +31,27 @@
                :alt="details.title" />
         </a-col>
       </div>
+      <!-- <a-col :xs="120"
+             :sm="120">
+        <div class="text">报修单单号</div>
+        <div class="heading"
+             span="10">{{this.details.title}}</div>
+      </a-col> -->
+      <detail-list size="small"
+                   :col="1"
+                   class="detail-layout">
+        <detail-list-item term="报修单单号">{{this.details.title}}</detail-list-item>
+        <detail-list-item term="待检修器材">{{this.details.EqId}}</detail-list-item>
+        <detail-list-item term="详细描述">{{this.details.details}}</detail-list-item>
+        <detail-list-item term="所需配件">{{this.details.stuffNeeded}}</detail-list-item>
+        <detail-list-item term="报修用户电话">{{this.details.telNumber}}</detail-list-item>
+        <detail-list-item term="时间">{{this.details.updateTime.split("T").join()}}</detail-list-item>
+      </detail-list>
+      <!-- <a-row slot="extra"
+             class="status-list"> -->
+
+      <!-- </a-row> -->
+
     </a-card>
 
     <a-card :bordered="false"
