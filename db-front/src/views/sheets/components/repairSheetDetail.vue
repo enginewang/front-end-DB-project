@@ -47,9 +47,9 @@
           <detail-list-item term="报修单单号">{{this.details.title}}</detail-list-item>
           <detail-list-item term="待检修器材">{{this.details.EqId}}</detail-list-item>
           <detail-list-item term="详细描述">{{this.details.details}}</detail-list-item>
-          <detail-list-item term="所需配件">{{this.details.stuffNeeded}}</detail-list-item>
+          <detail-list-item term="所需器材/配件">{{this.details.stuffNeeded}}</detail-list-item>
           <detail-list-item term="报修用户电话">{{this.details.telNumber}}</detail-list-item>
-          <detail-list-item term="时间">{{this.details.updateTime.split('T').join()}}</detail-list-item>
+          <detail-list-item term="时间">{{this.details.updateTime.split('T').join(' ')}}</detail-list-item>
         </detail-list>
 
       </a-col>
@@ -483,11 +483,18 @@ export default {
     handleOK () {
 
       this.visible = false
-      this.result.stfId = "ST" + this.result.stfId
+      if (this.result.stfId.indexOf('ST')==-1){
+        this.result.stfId = "ST" + this.result.stfId
+      }
       console.log("this.result.stfId", this.result.stfId)
+      console.log("提交的数据：  ",this.result)
       submitScheduleDetail(this.result).then((response) => {
         this.info = response.info
+        if(this.info==='fail'){
+          console.log("submit fail")
+        }
         if (this.info === 'ok') {
+          console.log("submit succeed")
           this.submit = true
           this.details.state = '2'
           this.$notification.open({

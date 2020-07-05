@@ -97,13 +97,13 @@
                 <a-col :md="24"
                        :lg="6">
                   <a-card hoverable>
-                    <img alt="仓库地图"
+                    <img alt="器材地图"
                          src="https://res.cloudinary.com/dbmkzs2ez/image/upload/v1562593159/map.png"
                          slot="cover" />
                     <router-link :to="{name: 'Map'}"
                                  active-class="active">
-                      <a-card-meta title="仓库地图"
-                                   description="点击查看仓库地图">
+                      <a-card-meta title="器材地图"
+                                   description="点击查看器材地图">
                       </a-card-meta>
                     </router-link>
                   </a-card>

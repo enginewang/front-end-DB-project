@@ -44,12 +44,6 @@ export const asyncRouterMap = [
               title: '详细', keepAlive: false
             }
           },
-          {
-            path: '/warehouse/map',
-            name: 'Map',
-            component: () => import('@/views/warehouse/Map'),
-            meta: { title: '地图', keepAlive: false, icon: 'picture' }
-          }
         ]
       },
       // equipment
@@ -84,6 +78,12 @@ export const asyncRouterMap = [
             meta: {
               title: '器材详情', keepAlive: false, icon: 'bars'
             },
+          },
+          {
+            path: '/warehouse/map',
+            name: 'Map',
+            component: () => import('@/views/warehouse/Map'),
+            meta: { title: '地图', keepAlive: false, icon: 'picture' }
           },
         ]
       },

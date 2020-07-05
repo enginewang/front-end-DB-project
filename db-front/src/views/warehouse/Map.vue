@@ -9,14 +9,14 @@
              id="map"
              style="height:100%"></div>
       </a-layout-content>
-      <a-layout-sider theme="light" style="background-color: #eff1f4">
-        <a-tree-select :treeData="treeData"
-                       :value="value"
-                       @change="onChange"
-                       treeCheckable
-                       :showCheckedStrategy="SHOW_PARENT"
-                       searchPlaceholder="Please select"
-                       style="width:100%;" />
+      <a-layout-sider theme="light" style="background-color: #eff1f4;width: 1px">
+<!--        <a-tree-select :treeData="treeData"-->
+<!--                       :value="value"-->
+<!--                       @change="onChange"-->
+<!--                       treeCheckable-->
+<!--                       :showCheckedStrategy="SHOW_PARENT"-->
+<!--                       searchPlaceholder="Please select"-->
+<!--                       style="width:100%;" />-->
       </a-layout-sider>
     </a-layout>
   </div>
@@ -220,7 +220,7 @@ export default {
         //   // }
         //   // }
         //   // else {
-        //   //   
+        //   //
         //   //   }
         //   // }
         // }
